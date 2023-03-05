@@ -1,13 +1,13 @@
 class Medication {
   final String id;
   final String name;
-  final int amount;
-  final double dosage;
+  final int tabletsTaken;
+  final double dose;
 
   Medication({
     required this.id,
     required this.name,
-    required this.amount,
-    required this.dosage,
+    required this.tabletsTaken,
+    required this.dose,
   });
 }
