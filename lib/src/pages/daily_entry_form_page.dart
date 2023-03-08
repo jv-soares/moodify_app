@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../model/symptom.dart';
 import 'components/form_slider.dart';
+import 'components/symptom_checker.dart';
 
 class DailyEntryFormPage extends StatelessWidget {
   const DailyEntryFormPage({super.key});
@@ -30,6 +32,10 @@ class DailyEntryFormPage extends StatelessWidget {
                 label: 'Quantas horas você dormiu?',
                 values: List.generate(11, (index) => DescriptiveValue(index)),
                 onChanged: (value) {},
+              ),
+              SymptomChecker(
+                symptoms: Symptom.values,
+                onSymptomsChanged: (symptoms) {},
               ),
             ],
           ),
