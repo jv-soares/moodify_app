@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'home_page.dart';
+import 'pages/daily_entry_form_page.dart';
 import 'theme/color_schemes.dart';
 
 class App extends StatelessWidget {
@@ -11,7 +11,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: 'Moodify',
       theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
-      home: const HomePage(title: 'Flutter Demo Home Page'),
+      home: const DailyEntryFormPage(),
     );
   }
 }
