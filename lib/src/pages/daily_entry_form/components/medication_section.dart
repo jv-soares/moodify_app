@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../model/medication.dart';
-import '../../widgets/moodify_button.dart';
+import '../../../model/medication.dart';
+import '../../../widgets/moodify_button.dart';
 import 'new_medication_dialog.dart';
 import 'taken_medication_card.dart';
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../model/medication.dart';
+import '../../../model/medication.dart';
 import 'new_medication_form.dart';
 
 Future<Medication?> showNewMedicationDialog(BuildContext context) {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:moodify_app/src/pages/components/medication_section.dart';
+import 'package:moodify_app/src/pages/daily_entry_form/components/medication_section.dart';
 import 'package:provider/provider.dart';
 
-import '../../model/medication.dart';
+import '../../../model/medication.dart';
 
 class TakenMedicationsCard extends StatelessWidget {
   final List<Medication> medications;
