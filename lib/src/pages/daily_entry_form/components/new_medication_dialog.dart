@@ -36,7 +36,12 @@ class NewMedicationDialogState extends State<_NewMedicationDialog> {
             automaticallyImplyLeading: false,
             leading: IconButton(
               icon: const Icon(Icons.close),
-              onPressed: Navigator.of(context).pop,
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (_) => _DiscardFormAlertDialog(),
+                );
+              },
             ),
             actions: [
               TextButton(
@@ -55,6 +60,36 @@ class NewMedicationDialogState extends State<_NewMedicationDialog> {
             child: NewMedicationForm(key: _formKey),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _DiscardFormAlertDialog extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      content: const Text('Deseja descartar o formulário?'),
+      actions: [
+        TextButton(
+          onPressed: Navigator.of(context).pop,
+          child: const Text('Cancelar'),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+            Navigator.of(context).pop();
+          },
+          child: const Text('Descartar'),
+        ),
+      ],
+      contentPadding: const EdgeInsets.symmetric(
+        horizontal: 24,
+        vertical: 24,
+      ),
+      actionsPadding: const EdgeInsets.symmetric(
+        horizontal: 16,
+        vertical: 12,
       ),
     );
   }
