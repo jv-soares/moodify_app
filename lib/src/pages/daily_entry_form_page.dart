@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:moodify_app/src/pages/components/medication_section.dart';
+import 'package:moodify_app/src/widgets/moodify_button.dart';
 
 import '../model/symptom.dart';
 import 'components/form_slider.dart';
@@ -37,6 +39,7 @@ class DailyEntryFormPage extends StatelessWidget {
                 symptoms: Symptom.values,
                 onSymptomsChanged: (symptoms) {},
               ),
+              MedicationSection(),
             ],
           ),
         ),
