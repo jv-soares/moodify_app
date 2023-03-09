@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:moodify_app/src/pages/daily_entry_form/components/medication_section.dart';
-import 'package:moodify_app/src/widgets/moodify_button.dart';
 
 import '../../model/symptom.dart';
 import 'components/form_slider.dart';

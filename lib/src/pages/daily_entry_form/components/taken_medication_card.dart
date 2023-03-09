@@ -49,7 +49,7 @@ class _MedicationListItemState extends State<_MedicationListItem> {
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               Text(
-                '${widget.medication.dose.value} ${widget.medication.dose.unitOfMeasurement}',
+                widget.medication.dose.toString(),
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
             ],

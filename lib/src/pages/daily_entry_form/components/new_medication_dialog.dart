@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../model/medication.dart';
 import 'new_medication_form.dart';
@@ -14,40 +15,47 @@ class _NewMedicationDialog extends StatefulWidget {
   const _NewMedicationDialog();
 
   @override
-  State<_NewMedicationDialog> createState() => _NewMedicationDialogState();
+  State<_NewMedicationDialog> createState() => NewMedicationDialogState();
 }
 
-class _NewMedicationDialogState extends State<_NewMedicationDialog> {
+class NewMedicationDialogState extends State<_NewMedicationDialog> {
+  final _formKey = GlobalKey<NewMedicationFormState>();
+
+  void closeWithMedication(Medication medication) {
+    return Navigator.of(context).pop(medication);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Dialog.fullscreen(
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Novo medicamento'),
-          automaticallyImplyLeading: false,
-          leading: IconButton(
-            icon: const Icon(Icons.close),
-            onPressed: Navigator.of(context).pop,
-          ),
-          actions: [
-            TextButton(
-              child: const Text('Salvar'),
-              onPressed: () => Navigator.of(context).pop(_medication),
+    return Provider.value(
+      value: this,
+      child: Dialog.fullscreen(
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Novo medicamento'),
+            automaticallyImplyLeading: false,
+            leading: IconButton(
+              icon: const Icon(Icons.close),
+              onPressed: Navigator.of(context).pop,
             ),
-          ],
-        ),
-        body: const Padding(
-          padding: EdgeInsets.all(16.0),
-          child: NewMedicationForm(),
+            actions: [
+              TextButton(
+                child: const Text('Salvar'),
+                onPressed: () {
+                  if (_formKey.currentState!.isValid) {
+                    final medication = _formKey.currentState!.save();
+                    closeWithMedication(medication);
+                  }
+                },
+              ),
+            ],
+          ),
+          body: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: NewMedicationForm(key: _formKey),
+          ),
         ),
       ),
     );
   }
 }
-
-final _medication = Medication(
-  id: '1',
-  name: 'Omeprazol',
-  tabletsTaken: 0,
-  dose: Dose(300, 'mg'),
-);

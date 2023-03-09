@@ -37,10 +37,23 @@ class Medication extends Equatable {
 
 class Dose extends Equatable {
   final double value;
-  final String unitOfMeasurement;
+  final UnitOfMeasurement unitOfMeasurement;
 
   const Dose(this.value, this.unitOfMeasurement);
 
   @override
   List<Object?> get props => [value, unitOfMeasurement];
+
+  @override
+  String toString() {
+    if (_hasDecimal) {
+      return '$value ${unitOfMeasurement.name}';
+    } else {
+      return '${value.truncate()} ${unitOfMeasurement.name}';
+    }
+  }
+
+  bool get _hasDecimal => value % 1 != 0;
 }
+
+enum UnitOfMeasurement { ml, mg, g }
