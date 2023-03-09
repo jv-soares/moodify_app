@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:moodify_app/src/pages/components/medication_section.dart';
+import 'package:provider/provider.dart';
 
 import '../../model/medication.dart';
 
 class TakenMedicationsCard extends StatelessWidget {
   final List<Medication> medications;
 
-  const TakenMedicationsCard({super.key, required this.medications});
+  const TakenMedicationsCard(this.medications, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,9 +17,7 @@ class TakenMedicationsCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
-        children: medications
-            .map((e) => _MedicationListItem(e, onAmountChanged: (amount) {}))
-            .toList(),
+        children: medications.map((e) => _MedicationListItem(e)).toList(),
       ),
     );
   }
@@ -25,22 +25,17 @@ class TakenMedicationsCard extends StatelessWidget {
 
 class _MedicationListItem extends StatefulWidget {
   final Medication medication;
-  final ValueChanged<int> onAmountChanged;
 
-  const _MedicationListItem(
-    this.medication, {
-    required this.onAmountChanged,
-  });
+  const _MedicationListItem(this.medication);
 
   @override
   State<_MedicationListItem> createState() => _MedicationListItemState();
 }
 
 class _MedicationListItemState extends State<_MedicationListItem> {
-  int _amount = 0;
-
   @override
   Widget build(BuildContext context) {
+    final medicationsNotifier = context.read<MedicationsNotifier>();
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Row(
@@ -61,16 +56,24 @@ class _MedicationListItemState extends State<_MedicationListItem> {
           ),
           Row(
             children: [
-              _buildButton(Icons.remove, () {
-                if (_amount > 0) setState(() => _amount--);
-              }),
+              _buildButton(
+                Icons.remove,
+                () => medicationsNotifier.decrementTabletsTaken(
+                  widget.medication.id,
+                ),
+              ),
               const SizedBox(width: 16),
               Text(
-                _amount.toString(),
+                widget.medication.tabletsTaken.toString(),
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               const SizedBox(width: 16),
-              _buildButton(Icons.add, () => setState(() => _amount++)),
+              _buildButton(
+                Icons.add,
+                () => medicationsNotifier.incrementTabletsTaken(
+                  widget.medication.id,
+                ),
+              ),
             ],
           ),
         ],

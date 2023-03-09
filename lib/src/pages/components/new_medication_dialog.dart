@@ -32,7 +32,7 @@ class _NewMedicationDialogState extends State<_NewMedicationDialog> {
           actions: [
             TextButton(
               child: const Text('Salvar'),
-              onPressed: () => Navigator.of(context).pop(medication),
+              onPressed: () => Navigator.of(context).pop(_medication),
             ),
           ],
         ),
@@ -45,7 +45,7 @@ class _NewMedicationDialogState extends State<_NewMedicationDialog> {
   }
 }
 
-final medication = Medication(
+final _medication = Medication(
   id: '1',
   name: 'Omeprazol',
   tabletsTaken: 0,

@@ -13,6 +13,10 @@ class Medication extends Equatable {
     required this.dose,
   });
 
+  Medication incrementedTablets() => copyWith(tabletsTaken: tabletsTaken + 1);
+
+  Medication decrementedTablets() => copyWith(tabletsTaken: tabletsTaken - 1);
+
   Medication copyWith({
     String? id,
     String? name,
