@@ -7,9 +7,9 @@ import 'new_medication_dialog.dart';
 import 'taken_medication_card.dart';
 
 class MedicationSection extends StatefulWidget {
-  final ValueChanged<List<Medication>>? onChanged;
+  final ValueChanged<List<Medication>> onChanged;
 
-  const MedicationSection({super.key, this.onChanged});
+  const MedicationSection({super.key, required this.onChanged});
 
   @override
   State<MedicationSection> createState() => _MedicationSectionState();
@@ -17,6 +17,14 @@ class MedicationSection extends StatefulWidget {
 
 class _MedicationSectionState extends State<MedicationSection> {
   final _medicationsNotifier = MedicationsNotifier();
+
+  @override
+  void initState() {
+    super.initState();
+    _medicationsNotifier.addListener(_notifyOnChanged);
+  }
+
+  void _notifyOnChanged() => widget.onChanged(_medicationsNotifier.value);
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +70,7 @@ class _MedicationSectionState extends State<MedicationSection> {
 
   @override
   void dispose() {
+    _medicationsNotifier.removeListener(_notifyOnChanged);
     _medicationsNotifier.dispose();
     super.dispose();
   }

@@ -45,9 +45,7 @@ class DailyEntryFormPage extends StatelessWidget {
               ),
               _formSpacing,
               MedicationSection(
-                onChanged: (value) {
-                  print(value);
-                },
+                onChanged: (value) {},
               ),
             ],
           ),
