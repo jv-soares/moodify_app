@@ -49,7 +49,9 @@ class _MedicationSectionState extends State<MedicationSection> {
                       ),
                   ],
                 ),
-                const SizedBox(height: 8),
+                medications.isNotEmpty
+                    ? const SizedBox(height: 8)
+                    : const SizedBox(height: 16),
                 medications.isEmpty
                     ? MoodifyFilledButton(
                         label: 'Adicionar medicação',

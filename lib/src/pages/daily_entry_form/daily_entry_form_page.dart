@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moodify_app/src/pages/daily_entry_form/components/life_event_section.dart';
 import 'package:moodify_app/src/pages/daily_entry_form/components/medication_section.dart';
 
 import '../../model/symptom.dart';
@@ -16,10 +17,9 @@ class DailyEntryFormPage extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
           child: Column(
             children: [
-              const SizedBox(height: 24),
               FormSlider(
                 label: 'Como você se sente?',
                 values: functionalImpairment,
@@ -46,6 +46,12 @@ class DailyEntryFormPage extends StatelessWidget {
               _formSpacing,
               MedicationSection(
                 onChanged: (value) {},
+              ),
+              _formSpacing,
+              LifeEventSection(
+                onChanged: (value) {
+                  print(value);
+                },
               ),
             ],
           ),
