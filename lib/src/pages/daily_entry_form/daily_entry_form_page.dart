@@ -19,30 +19,42 @@ class DailyEntryFormPage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             children: [
+              const SizedBox(height: 24),
               FormSlider(
                 label: 'Como você se sente?',
                 values: functionalImpairment,
                 onChanged: (value) {},
               ),
+              _formSpacing,
               FormSlider(
                 label: 'Como está seu humor?',
                 values: mood,
                 onChanged: (value) {},
               ),
+              _formSpacing,
               FormSlider(
                 label: 'Quantas horas você dormiu?',
                 values: List.generate(11, (index) => DescriptiveValue(index)),
                 onChanged: (value) {},
+                showLabel: true,
               ),
+              _formSpacing,
               SymptomChecker(
                 symptoms: Symptom.values,
                 onSymptomsChanged: (symptoms) {},
               ),
-              MedicationSection(),
+              _formSpacing,
+              MedicationSection(
+                onChanged: (value) {
+                  print(value);
+                },
+              ),
             ],
           ),
         ),
       ),
     );
   }
+
+  SizedBox get _formSpacing => const SizedBox(height: 48);
 }

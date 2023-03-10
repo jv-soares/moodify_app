@@ -6,12 +6,14 @@ class FormSlider extends StatefulWidget {
   final String label;
   final List<DescriptiveValue> values;
   final void Function(int)? onChanged;
+  final bool showLabel;
 
   const FormSlider({
     super.key,
     required this.label,
     required this.values,
     this.onChanged,
+    this.showLabel = false,
   });
 
   @override
@@ -41,7 +43,7 @@ class _FormSliderState extends State<FormSlider> {
           min: widget.values.first.value.toDouble(),
           max: widget.values.last.value.toDouble(),
           divisions: widget.values.length - 1,
-          label: _value.toInt().toString(),
+          label: widget.showLabel ? _value.toInt().toString() : null,
           onChanged: (newValue) {
             setState(() => _value = newValue);
             widget.onChanged?.call(_value.toInt());
