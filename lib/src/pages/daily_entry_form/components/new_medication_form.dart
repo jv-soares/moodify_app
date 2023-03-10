@@ -17,10 +17,11 @@ class NewMedicationFormState extends State<NewMedicationForm> {
   var _dose = 0.0;
   var _unitOfMeasurement = UnitOfMeasurement.g;
 
+  bool get isEmpty => _name.isEmpty && _dose == 0;
+
   bool get isValid => _formKey.currentState!.validate();
 
   Medication save() {
-    _formKey.currentState!.save();
     return Medication(
       id: const Uuid().v1(),
       name: _name,
@@ -38,7 +39,7 @@ class NewMedicationFormState extends State<NewMedicationForm> {
         children: [
           MoodifyTextFormField(
             label: 'Nome',
-            onSaved: (value) => _name = value!,
+            onChanged: (value) => _name = value,
             validator: _emptyFieldValidator,
           ),
           const SizedBox(height: 24),
@@ -49,7 +50,7 @@ class NewMedicationFormState extends State<NewMedicationForm> {
                 flex: 3,
                 child: MoodifyTextFormField(
                   label: 'Dose',
-                  onSaved: (value) => _dose = double.parse(value!),
+                  onChanged: (value) => _dose = double.parse(value),
                   validator: _emptyFieldValidator,
                   keyboardType: const TextInputType.numberWithOptions(
                     decimal: true,

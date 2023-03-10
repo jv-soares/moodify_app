@@ -21,6 +21,8 @@ class _NewMedicationDialog extends StatefulWidget {
 class NewMedicationDialogState extends State<_NewMedicationDialog> {
   final _formKey = GlobalKey<NewMedicationFormState>();
 
+  NewMedicationFormState get _formState => _formKey.currentState!;
+
   void closeWithMedication(Medication medication) {
     return Navigator.of(context).pop(medication);
   }
@@ -37,6 +39,7 @@ class NewMedicationDialogState extends State<_NewMedicationDialog> {
             leading: IconButton(
               icon: const Icon(Icons.close),
               onPressed: () {
+                if (_formState.isEmpty) return Navigator.of(context).pop();
                 showDialog(
                   context: context,
                   builder: (_) => _DiscardFormAlertDialog(),
@@ -47,9 +50,8 @@ class NewMedicationDialogState extends State<_NewMedicationDialog> {
               TextButton(
                 child: const Text('Salvar'),
                 onPressed: () {
-                  if (_formKey.currentState!.isValid) {
-                    final medication = _formKey.currentState!.save();
-                    closeWithMedication(medication);
+                  if (_formState.isValid) {
+                    closeWithMedication(_formState.save());
                   }
                 },
               ),
