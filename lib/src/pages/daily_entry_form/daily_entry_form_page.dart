@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:moodify_app/src/pages/daily_entry_form/components/life_event_section.dart';
-import 'package:moodify_app/src/pages/daily_entry_form/components/medication_section.dart';
 
 import '../../model/symptom.dart';
 import 'components/form_slider.dart';
+import 'components/life_event_section.dart';
+import 'components/medication_section.dart';
 import 'components/symptom_checker.dart';
 
 class DailyEntryFormPage extends StatelessWidget {

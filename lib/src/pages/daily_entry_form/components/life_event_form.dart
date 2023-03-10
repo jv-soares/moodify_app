@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:moodify_app/src/pages/daily_entry_form/components/life_event_section.dart';
-import 'package:moodify_app/src/utils/mirrored_integers_generator.dart';
 import 'package:provider/provider.dart';
 
+import '../../../utils/mirrored_integers_generator.dart';
 import '../../../widgets/moodify_text_field.dart';
+import 'life_event_section.dart';
 
 class LifeEventForm extends StatelessWidget {
   const LifeEventForm({super.key});

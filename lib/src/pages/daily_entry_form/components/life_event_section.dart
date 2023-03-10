@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:moodify_app/src/model/life_event.dart';
 import 'package:provider/provider.dart';
 
+import '../../../model/life_event.dart';
 import '../../../widgets/moodify_button.dart';
 import 'life_event_form.dart';
 

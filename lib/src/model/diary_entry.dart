@@ -1,8 +1,7 @@
-import 'package:moodify_app/src/model/symptom.dart';
-
 import 'episode_severity.dart';
 import 'life_event.dart';
 import 'medication.dart';
+import 'symptom.dart';
 
 class DiaryEntry {
   final String id;

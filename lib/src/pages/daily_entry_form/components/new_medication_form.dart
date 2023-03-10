@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:moodify_app/src/model/medication.dart';
-import 'package:moodify_app/src/widgets/moodify_dropdown_form_field.dart';
-import 'package:moodify_app/src/widgets/moodify_text_form_field.dart';
 import 'package:uuid/uuid.dart';
+
+import '../../../model/medication.dart';
+import '../../../widgets/moodify_dropdown_form_field.dart';
+import '../../../widgets/moodify_text_form_field.dart';
 
 class NewMedicationForm extends StatefulWidget {
   const NewMedicationForm({super.key});
