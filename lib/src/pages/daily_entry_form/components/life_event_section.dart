@@ -44,7 +44,7 @@ class _LifeEventSectionState extends State<LifeEventSection> {
           _isShowingForm
               ? const LifeEventForm()
               : MoodifyFilledButton(
-                  label: 'Adicionar medicação',
+                  label: 'Adicionar acontecimento',
                   icon: Icons.add,
                   onPressed: () {
                     setState(() => _isShowingForm = true);
