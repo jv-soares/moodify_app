@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moodify_app/src/pages/daily_entry_form/components/observation_section.dart';
 
 import '../../model/symptom.dart';
 import 'components/form_slider.dart';
@@ -49,9 +50,11 @@ class DailyEntryFormPage extends StatelessWidget {
               ),
               _formSpacing,
               LifeEventSection(
-                onChanged: (value) {
-                  print(value);
-                },
+                onChanged: (value) {},
+              ),
+              _formSpacing,
+              ObservationSection(
+                onChanged: (value) {},
               ),
             ],
           ),
