@@ -9,10 +9,10 @@ class DiaryEntry {
   final EpisodeSeverity episode;
   final int moodRating;
   final List<Symptom> symptoms;
+  final List<Medication> medications;
   final int? hoursOfSleep;
   final int? moodSwitchesPerDay;
   final LifeEvent? lifeEvent;
-  final List<Medication>? medications;
   final String? observations;
 
   DiaryEntry({
@@ -21,10 +21,10 @@ class DiaryEntry {
     required this.episode,
     required this.moodRating,
     required this.symptoms,
+    required this.medications,
     this.hoursOfSleep,
     this.moodSwitchesPerDay,
     this.lifeEvent,
-    this.medications,
     this.observations,
   });
 }
