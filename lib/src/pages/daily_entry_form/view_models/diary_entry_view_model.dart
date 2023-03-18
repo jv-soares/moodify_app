@@ -1,10 +1,10 @@
-import 'package:moodify_app/src/model/episode_severity.dart';
+import 'package:moodify_app/src/models/episode_severity.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../model/diary_entry.dart';
-import '../../../model/life_event.dart';
-import '../../../model/medication.dart';
-import '../../../model/symptom.dart';
+import '../../../models/diary_entry.dart';
+import '../../../models/life_event.dart';
+import '../../../models/medication.dart';
+import '../../../models/symptom.dart';
 
 class DiaryEntryViewModel {
   int functionalImpairment = 0;

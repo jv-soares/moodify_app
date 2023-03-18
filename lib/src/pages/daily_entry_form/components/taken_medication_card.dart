@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../model/medication.dart';
+import '../../../models/medication.dart';
 import 'medication_section.dart';
 
 class TakenMedicationsCard extends StatelessWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../model/medication.dart';
+import '../../../models/medication.dart';
 import '../../../widgets/moodify_dropdown_form_field.dart';
 import '../../../widgets/moodify_text_form_field.dart';
 

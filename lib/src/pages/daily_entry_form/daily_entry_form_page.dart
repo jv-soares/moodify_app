@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../model/symptom.dart';
+import '../../models/symptom.dart';
 import 'components/descriptive_values.dart';
 import 'components/form_slider.dart';
 import 'components/life_event_section.dart';

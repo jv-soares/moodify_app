@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../model/symptom.dart';
+import '../../../models/symptom.dart';
 
 class SymptomChecker extends StatefulWidget {
   final List<Symptom> symptoms;
