@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'pages/daily_entry_form/diary_entry_form_page.dart';
+import 'pages/diary_entry_form/diary_entry_form_page.dart';
 import 'theme/color_schemes.dart';
 
 class App extends StatelessWidget {
