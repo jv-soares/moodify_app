@@ -1,4 +1,4 @@
-import 'package:moodify_app/src/models/episode_severity.dart';
+import '../../../models/episode_severity.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../models/diary_entry.dart';

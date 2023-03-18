@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:moodify_app/src/widgets/moodify_text_field.dart';
+import '../../../widgets/moodify_text_field.dart';
 
 class ObservationSection extends StatelessWidget {
   final ValueChanged<String> onChanged;

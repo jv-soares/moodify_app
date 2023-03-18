@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../diary_dashboard_page.dart';
+import '../../repositories/diary_entry_repository.dart';
 
 import '../../models/symptom.dart';
 import 'components/descriptive_values.dart';
@@ -18,8 +20,22 @@ class DiaryEntryFormPage extends StatefulWidget {
 }
 
 class _DiaryEntryFormPageState extends State<DiaryEntryFormPage> {
-  final _notifier = DiaryEntryFormNotifier();
+  final _notifier = DiaryEntryFormNotifier(TempDiaryEntryRepository());
   final _viewModel = DiaryEntryViewModel();
+
+  @override
+  void initState() {
+    super.initState();
+    _notifier.addListener(_navigateWhenSaved);
+  }
+
+  void _navigateWhenSaved() {
+    if (_notifier.value is Saved) {
+      Navigator.of(context).push(
+        MaterialPageRoute(builder: (_) => const DiaryDashboardPage()),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -113,6 +129,7 @@ class _DiaryEntryFormPageState extends State<DiaryEntryFormPage> {
 
   @override
   void dispose() {
+    _notifier.removeListener(_navigateWhenSaved);
     _notifier.dispose();
     super.dispose();
   }
