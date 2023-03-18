@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../view_models/diary_entry_view_model.dart';
 
-part 'daily_entry_form_state.dart';
+part 'diary_entry_form_state.dart';
 
-class DailyEntryFormNotifier extends ValueNotifier<DailyEntryFormState> {
-  DailyEntryFormNotifier() : super(Initial());
+class DiaryEntryFormNotifier extends ValueNotifier<DiaryEntryFormState> {
+  DiaryEntryFormNotifier() : super(Initial());
 
   Future<void> save(DiaryEntryViewModel diaryEntry) async {
     value = Loading();

@@ -7,18 +7,18 @@ import 'components/life_event_section.dart';
 import 'components/medication_section.dart';
 import 'components/observation_section.dart';
 import 'components/symptom_checker.dart';
-import 'notifiers/daily_entry_form_notifier.dart';
+import 'notifiers/diary_entry_form_notifier.dart';
 import 'view_models/diary_entry_view_model.dart';
 
-class DailyEntryFormPage extends StatefulWidget {
-  const DailyEntryFormPage({super.key});
+class DiaryEntryFormPage extends StatefulWidget {
+  const DiaryEntryFormPage({super.key});
 
   @override
-  State<DailyEntryFormPage> createState() => _DailyEntryFormPageState();
+  State<DiaryEntryFormPage> createState() => _DiaryEntryFormPageState();
 }
 
-class _DailyEntryFormPageState extends State<DailyEntryFormPage> {
-  final _notifier = DailyEntryFormNotifier();
+class _DiaryEntryFormPageState extends State<DiaryEntryFormPage> {
+  final _notifier = DiaryEntryFormNotifier();
   final _viewModel = DiaryEntryViewModel();
 
   @override

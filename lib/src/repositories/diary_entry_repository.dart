@@ -1,12 +1,12 @@
 import '../core/failures.dart';
 import '../models/diary_entry.dart';
 
-abstract class DailyEntryRepository {
+abstract class DiaryEntryRepository {
   Future<DiaryEntry> read(String id);
   Future<String> create(DiaryEntry entry);
 }
 
-class TempDailyEntryRepository implements DailyEntryRepository {
+class TempDiaryEntryRepository implements DiaryEntryRepository {
   final _entries = <DiaryEntry>{};
 
   @override
