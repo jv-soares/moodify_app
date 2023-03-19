@@ -3,6 +3,8 @@ import 'package:moodify_app/src/models/diary_entry.dart';
 import 'package:moodify_app/src/pages/diary_dashboard/components/episodes_chart_entry.dart';
 
 import '../../models/episode_severity.dart';
+import '../../models/life_event.dart';
+import '../../models/medication.dart';
 import 'components/diary_entry_draggable_bottom_sheet.dart';
 
 class DiaryDashboardPage extends StatelessWidget {
@@ -28,16 +30,7 @@ class DiaryDashboardPage extends StatelessWidget {
       body: Stack(
         children: [
           EpisodesChart(episodes: generateEpisodes()),
-          DiaryEntryDraggableBottomSheet(
-            DiaryEntry(
-              id: 'id',
-              createdAt: DateTime.now(),
-              episode: Mania(Level.mild),
-              moodRating: 50,
-              symptoms: [],
-              medications: [],
-            ),
-          ),
+          DiaryEntryDraggableBottomSheet(diaryEntry),
         ],
       ),
     );
@@ -78,3 +71,31 @@ final episodes = [
   Balanced(),
   Balanced(),
 ];
+
+final diaryEntry = DiaryEntry(
+  id: '123',
+  createdAt: DateTime.now(),
+  episode: Mania(Level.mild),
+  moodRating: 50,
+  symptoms: [],
+  medications: const [
+    Medication(
+      id: '1',
+      name: 'Omeprazol',
+      tabletsTaken: 3,
+      dose: Dose(300, UnitOfMeasurement.mg),
+    ),
+    Medication(
+      id: '2',
+      name: 'Tramadol',
+      tabletsTaken: 2,
+      dose: Dose(200, UnitOfMeasurement.mg),
+    ),
+  ],
+  lifeEvent: const LifeEvent(
+    impactRating: 3,
+    description:
+        'Hoje acordei com o pe esquerdo e fui pro trabalho na base da chibatada',
+  ),
+  observations: 'Foi um dia difícil',
+);

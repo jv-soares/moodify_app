@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moodify_app/src/models/life_event.dart';
+import 'package:moodify_app/src/pages/diary_dashboard/diary_dashboard_page.dart';
 
 import '../../../models/diary_entry.dart';
 import '../../../models/medication.dart';
@@ -29,42 +30,31 @@ class DiaryEntryDraggableBottomSheet extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             children: [
-              Center(
-                child: Container(
-                  margin: const EdgeInsets.symmetric(vertical: 16),
-                  width: 32,
-                  height: 4,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surfaceVariant,
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                ),
-              ),
-              const _Header(),
-              const _LifeEventSection(
-                LifeEvent(
-                  impactRating: 3,
-                  description:
-                      'Hoje acordei com o pe esquerdo e fui pro trabalho na base da chibatada',
-                ),
-              ),
-              const _MedicationsSection([
-                Medication(
-                  id: '1',
-                  name: 'Omeprazol',
-                  tabletsTaken: 3,
-                  dose: Dose(300, UnitOfMeasurement.mg),
-                ),
-                Medication(
-                  id: '2',
-                  name: 'Tramadol',
-                  tabletsTaken: 2,
-                  dose: Dose(200, UnitOfMeasurement.mg),
-                ),
-              ]),
-              const _ObservationsSection('Foi um dia difícil'),
+              _buildHandle(context),
+              _Header(diaryEntry),
+              if (diaryEntry.lifeEvent != null)
+                _LifeEventSection(diaryEntry.lifeEvent!),
+              if (diaryEntry.medications.isNotEmpty)
+                _MedicationsSection(diaryEntry.medications),
+              if (diaryEntry.observations != '' &&
+                  diaryEntry.observations != null)
+                _ObservationsSection(diaryEntry.observations!),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHandle(BuildContext context) {
+    return Center(
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 16),
+        width: 32,
+        height: 4,
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surfaceVariant,
+          borderRadius: BorderRadius.circular(24),
         ),
       ),
     );
@@ -72,7 +62,9 @@ class DiaryEntryDraggableBottomSheet extends StatelessWidget {
 }
 
 class _Header extends StatelessWidget {
-  const _Header();
+  final DiaryEntry entry;
+
+  const _Header(this.entry);
 
   @override
   Widget build(BuildContext context) {
