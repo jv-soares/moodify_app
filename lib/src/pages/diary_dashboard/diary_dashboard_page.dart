@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:moodify_app/src/models/diary_entry.dart';
 import 'package:moodify_app/src/pages/diary_dashboard/components/episodes_chart_entry.dart';
 
 import '../../models/episode_severity.dart';
+import 'components/diary_entry_draggable_bottom_sheet.dart';
 
 class DiaryDashboardPage extends StatelessWidget {
   const DiaryDashboardPage({super.key});
@@ -9,6 +11,7 @@ class DiaryDashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         title: const Text('Janeiro de 2023'),
         leading: IconButton(
@@ -22,14 +25,20 @@ class DiaryDashboardPage extends StatelessWidget {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            EpisodesChart(
-              episodes: generateEpisodes(),
+      body: Stack(
+        children: [
+          EpisodesChart(episodes: generateEpisodes()),
+          DiaryEntryDraggableBottomSheet(
+            DiaryEntry(
+              id: 'id',
+              createdAt: DateTime.now(),
+              episode: Mania(Level.mild),
+              moodRating: 50,
+              symptoms: [],
+              medications: [],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -44,9 +44,8 @@ class _EpisodesChartState extends State<EpisodesChart> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: widget.rowHeight * 9,
-      color: Colors.green.shade100,
       child: Stack(
         children: [
           Padding(
