@@ -108,7 +108,13 @@ class _EpisodesChartState extends State<EpisodesChart> {
                     _buildMarkerFrame(
                       child: Text(
                         item.createdAt.day.toString(),
-                        style: Theme.of(context).textTheme.labelMedium,
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelMedium
+                            ?.copyWith(
+                                color: _selectedEpisode == item
+                                    ? Colors.white
+                                    : null),
                       ),
                     ),
                   ],
