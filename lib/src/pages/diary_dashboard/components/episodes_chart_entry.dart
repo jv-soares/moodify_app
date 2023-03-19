@@ -20,7 +20,6 @@ class EpisodesChart extends StatelessWidget {
       child: Stack(
         children: [
           Padding(
-            key: key,
             padding: EdgeInsets.symmetric(vertical: rowHeight / 2),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -32,6 +31,18 @@ class EpisodesChart extends StatelessWidget {
                   height: rowHeight,
                   width: double.infinity,
                 ),
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.centerRight,
+            child: Container(
+              height: rowHeight * (episodes.length - 1),
+              width: 32,
+              margin: const EdgeInsets.symmetric(horizontal: 16),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primary,
+                borderRadius: BorderRadius.circular(24),
               ),
             ),
           ),
