@@ -35,7 +35,7 @@ class DiaryEntryDraggableBottomSheet extends StatelessWidget {
                   width: 32,
                   height: 4,
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.outline,
+                    color: Theme.of(context).colorScheme.surfaceVariant,
                     borderRadius: BorderRadius.circular(24),
                   ),
                 ),
