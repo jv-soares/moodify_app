@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:moodify_app/src/models/life_event.dart';
 
 import '../../../models/diary_entry.dart';
+import '../../../models/medication.dart';
 import '../../../widgets/moodify_info_chip.dart';
+import '../../../widgets/moodify_primary_container.dart';
 
 class DiaryEntryDraggableBottomSheet extends StatelessWidget {
   final DiaryEntry entry;
@@ -46,9 +48,21 @@ class DiaryEntryDraggableBottomSheet extends StatelessWidget {
                       'Hoje acordei com o pe esquerdo e fui pro trabalho na base da chibatada',
                 ),
               ),
-              const Placeholder(
-                fallbackHeight: 1000,
-              ),
+              const _MedicationsSection([
+                Medication(
+                  id: '1',
+                  name: 'Omeprazol',
+                  tabletsTaken: 3,
+                  dose: Dose(300, UnitOfMeasurement.mg),
+                ),
+                Medication(
+                  id: '2',
+                  name: 'Tramadol',
+                  tabletsTaken: 2,
+                  dose: Dose(200, UnitOfMeasurement.mg),
+                ),
+              ]),
+              const _ObservationsSection('Foi um dia difícil'),
             ],
           ),
         ),
@@ -118,51 +132,147 @@ class _LifeEventSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return _SectionContainer(
+      label: 'Acontecimento',
+      child: MoodifyPrimaryContainer(
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                lifeEvent.description,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Theme.of(context).colorScheme.onBackground,
+                    ),
+              ),
+            ),
+            Container(
+              height: 40,
+              width: 40,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(4),
+                color: Theme.of(context).colorScheme.surface,
+              ),
+              child: Center(
+                child: Text(
+                  '+${lifeEvent.impactRating}',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _MedicationsSection extends StatelessWidget {
+  final List<Medication> medications;
+
+  const _MedicationsSection(this.medications);
+
+  @override
+  Widget build(BuildContext context) {
+    return _SectionContainer(
+      label: 'Medicamentos',
+      child: MoodifyPrimaryContainer(
+        padding: EdgeInsets.zero,
+        child: Column(
+          children: medications
+              .map(
+                (e) => Container(
+                  padding: const EdgeInsets.all(16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            e.name,
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                          Text(
+                            '${e.dose.value.toInt()} ${e.dose.unitOfMeasurement.name}',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        ],
+                      ),
+                      Container(
+                        height: 40,
+                        width: 40,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          color: Theme.of(context).colorScheme.surface,
+                        ),
+                        child: Center(
+                          child: Text(
+                            '3',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+              .toList(),
+        ),
+      ),
+    );
+  }
+}
+
+class _ObservationsSection extends StatelessWidget {
+  final String observations;
+
+  const _ObservationsSection(this.observations);
+
+  @override
+  Widget build(BuildContext context) {
+    return _SectionContainer(
+      label: 'Observações',
+      child: MoodifyPrimaryContainer(
+        width: double.infinity,
+        child: Text(
+          observations,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Theme.of(context).colorScheme.onBackground,
+              ),
+        ),
+      ),
+    );
+  }
+}
+
+class _SectionContainer extends StatelessWidget {
+  final String label;
+  final Widget child;
+
+  const _SectionContainer({required this.label, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'ACONTECIMENTO',
-            style: Theme.of(context).textTheme.labelLarge,
+            label.toUpperCase(),
+            style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                  color: Theme.of(context).colorScheme.onBackground,
+                ),
           ),
           const SizedBox(height: 16),
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              color: Theme.of(context).colorScheme.primaryContainer,
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    lifeEvent.description,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Theme.of(context).colorScheme.onBackground,
-                        ),
-                  ),
-                ),
-                Container(
-                  height: 40,
-                  width: 40,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
-                    color: Theme.of(context).colorScheme.surface,
-                  ),
-                  child: Center(
-                    child: Text(
-                      '+${lifeEvent.impactRating}',
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          child,
         ],
       ),
     );
