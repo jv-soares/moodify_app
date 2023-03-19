@@ -14,4 +14,13 @@ class Mania extends EpisodeSeverity {
   Mania(this.level);
 }
 
-enum Level { mild, moderateLow, moderateHigh, severe }
+enum Level {
+  mild(1),
+  moderateLow(2),
+  moderateHigh(3),
+  severe(4);
+
+  final int value;
+
+  const Level(this.value);
+}

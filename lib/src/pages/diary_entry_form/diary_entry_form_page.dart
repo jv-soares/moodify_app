@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../diary_dashboard_page.dart';
+import '../diary_dashboard/diary_dashboard_page.dart';
 import '../../repositories/diary_entry_repository.dart';
 
 import '../../models/symptom.dart';
