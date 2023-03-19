@@ -180,51 +180,59 @@ class _MedicationsSection extends StatelessWidget {
       child: MoodifyPrimaryContainer(
         padding: EdgeInsets.zero,
         child: Column(
-          children: medications
-              .map(
-                (e) => Container(
-                  padding: const EdgeInsets.all(16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            e.name,
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                          Text(
-                            '${e.dose.value.toInt()} ${e.dose.unitOfMeasurement.name}',
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                        ],
-                      ),
-                      Container(
-                        height: 40,
-                        width: 40,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4),
-                          color: Theme.of(context).colorScheme.surface,
-                        ),
-                        child: Center(
-                          child: Text(
-                            '3',
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
-                                ?.copyWith(
-                                  color: Theme.of(context).colorScheme.primary,
-                                ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              )
-              .toList(),
+          children: medications.map(_MedicationListItem.new).toList(),
         ),
+      ),
+    );
+  }
+}
+
+class _MedicationListItem extends StatelessWidget {
+  final Medication medication;
+
+  const _MedicationListItem(this.medication, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                medication.name,
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: Theme.of(context).colorScheme.onPrimaryContainer,
+                    ),
+              ),
+              Text(
+                '${medication.dose.value.toInt()} ${medication.dose.unitOfMeasurement.name}',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
+              ),
+            ],
+          ),
+          Container(
+            height: 40,
+            width: 40,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(4),
+              color: Theme.of(context).colorScheme.surface,
+            ),
+            child: Center(
+              child: Text(
+                medication.tabletsTaken.toString(),
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
