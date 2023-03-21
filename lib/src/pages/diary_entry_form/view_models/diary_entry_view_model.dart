@@ -8,7 +8,7 @@ import '../../../models/symptom.dart';
 
 class DiaryEntryViewModel {
   int functionalImpairment = 0;
-  int moodRating = 0;
+  int moodRating = 50;
   int? hoursOfSleep;
   List<Symptom>? symptoms;
   List<Medication>? medications;

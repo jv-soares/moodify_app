@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:moodify_app/src/pages/diary_entry_form/components/form_slider.dart';
 import '../diary_dashboard/diary_dashboard_page.dart';
 import '../../repositories/diary_entry_repository.dart';
 
 import '../../models/symptom.dart';
 import 'components/descriptive_values.dart';
-import 'components/form_slider.dart';
 import 'components/life_event_section.dart';
+import 'components/descriptive_form_slider.dart';
 import 'components/medication_section.dart';
 import 'components/observation_section.dart';
 import 'components/symptom_checker.dart';
@@ -66,7 +67,7 @@ class _DiaryEntryFormPageState extends State<DiaryEntryFormPage> {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
           child: Column(
             children: [
-              FormSlider(
+              DescriptiveFormSlider(
                 label: 'Como você se sente?',
                 values: functionalImpairment,
                 initialValue: _viewModel.functionalImpairment.toDouble(),
@@ -77,8 +78,10 @@ class _DiaryEntryFormPageState extends State<DiaryEntryFormPage> {
               _formSpacing,
               FormSlider(
                 label: 'Como está seu humor?',
-                values: mood,
+                min: 0,
+                max: 100,
                 initialValue: _viewModel.moodRating.toDouble(),
+                showLabel: true,
                 onChanged: (value) {
                   _viewModel.moodRating = value;
                 },
@@ -86,7 +89,8 @@ class _DiaryEntryFormPageState extends State<DiaryEntryFormPage> {
               _formSpacing,
               FormSlider(
                 label: 'Quantas horas você dormiu?',
-                values: List.generate(11, (index) => DescriptiveValue(index)),
+                min: 0,
+                max: 10,
                 onChanged: (value) {
                   _viewModel.hoursOfSleep = value;
                 },
