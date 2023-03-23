@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:moodify_app/src/models/life_event.dart';
-import 'package:moodify_app/src/pages/diary_dashboard/diary_dashboard_page.dart';
+import 'package:moodify_app/src/models/symptom.dart';
+import 'package:moodify_app/src/pages/diary_dashboard/notifiers/diary_dashboard_notifier.dart';
+import 'package:provider/provider.dart';
 
 import '../../../models/diary_entry.dart';
+import '../../../models/episode_severity.dart';
 import '../../../models/medication.dart';
 import '../../../widgets/moodify_info_chip.dart';
 import '../../../widgets/moodify_primary_container.dart';
 
 class DiaryEntryDraggableBottomSheet extends StatelessWidget {
-  final DiaryEntry entry;
-
-  const DiaryEntryDraggableBottomSheet(this.entry, {super.key});
+  const DiaryEntryDraggableBottomSheet({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,14 +33,7 @@ class DiaryEntryDraggableBottomSheet extends StatelessWidget {
           child: Column(
             children: [
               _buildHandle(context),
-              _Header(diaryEntry),
-              if (diaryEntry.lifeEvent != null)
-                _LifeEventSection(diaryEntry.lifeEvent!),
-              if (diaryEntry.medications.isNotEmpty)
-                _MedicationsSection(diaryEntry.medications),
-              if (diaryEntry.observations != '' &&
-                  diaryEntry.observations != null)
-                _ObservationsSection(diaryEntry.observations!),
+              _buildContent(context),
             ],
           ),
         ),
@@ -59,12 +54,61 @@ class DiaryEntryDraggableBottomSheet extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildContent(BuildContext context) {
+    final notifier = context.watch<DiaryDashboardNotifier>();
+    if (notifier.dashboardState is Loading) {
+      return Container(
+        margin: const EdgeInsets.only(top: 100),
+        child: const CircularProgressIndicator(),
+      );
+    } else if (notifier.dashboardState is Loaded) {
+      final entry = notifier.selectedEntry;
+      return Column(
+        children: [
+          _Header(entry),
+          if (entry.lifeEvent != null) _LifeEventSection(entry.lifeEvent!),
+          if (entry.medications.isNotEmpty)
+            _MedicationsSection(entry.medications),
+          if (entry.observations != '' && entry.observations != null)
+            _ObservationsSection(entry.observations!),
+        ],
+      );
+    }
+    return const SizedBox.shrink();
+  }
 }
 
 class _Header extends StatelessWidget {
   final DiaryEntry entry;
 
   const _Header(this.entry);
+
+  String _getName(EpisodeSeverity episode) {
+    var name = '';
+    if (episode is Mania) {
+      name += 'Mania';
+      return _getLevel(episode.level, name);
+    } else if (episode is Depression) {
+      name += 'Depressão';
+      return _getLevel(episode.level, name);
+    } else {
+      return 'Normal';
+    }
+  }
+
+  String _getLevel(Level level, String name) {
+    switch (level) {
+      case Level.mild:
+        return name += ' leve';
+      case Level.moderateLow:
+        return name += ' moderada-baixa';
+      case Level.moderateHigh:
+        return name += ' moderada-alta';
+      case Level.severe:
+        return name += ' severa';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +120,7 @@ class _Header extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Mania moderada-alta',
+              _getName(entry.episode),
               style: Theme.of(context).textTheme.titleLarge,
             ),
             TextButton(
@@ -94,7 +138,7 @@ class _Header extends StatelessWidget {
         Row(
           children: [
             Text(
-              'Domingo, 17 de fevereiro',
+              DateFormat.MMMMEEEEd().format(entry.createdAt),
               style: Theme.of(context).textTheme.bodySmall,
             ),
           ],
@@ -102,13 +146,18 @@ class _Header extends StatelessWidget {
         const SizedBox(height: 16),
         Wrap(
           spacing: 8,
-          children: const [
-            MoodifyInfoChip(Icons.bedtime_outlined, '7 horas'),
-            MoodifyInfoChip(Icons.mood, '35'),
-            MoodifyInfoChip(
-              Icons.battery_charging_full,
-              'Mania disfórica',
-            ),
+          children: [
+            if (entry.hoursOfSleep != null)
+              MoodifyInfoChip(
+                Icons.bedtime_outlined,
+                '${entry.hoursOfSleep} horas',
+              ),
+            MoodifyInfoChip(Icons.mood, entry.moodRating.toString()),
+            if (entry.symptoms.contains(Symptom.dysphoricMania))
+              const MoodifyInfoChip(
+                Icons.battery_charging_full,
+                'Mania disfórica',
+              ),
           ],
         ),
         const SizedBox(height: 24),
