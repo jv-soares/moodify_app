@@ -92,6 +92,7 @@ class _ContentState extends State<_Content> {
             listViewPadding: EdgeInsets.zero,
             onItemFocus: (index) {
               setState(() => _selectedIndex = index);
+              notifier.selectEntry(entries[index]);
             },
             scrollDirection: Axis.horizontal,
             itemCount: entries.length,

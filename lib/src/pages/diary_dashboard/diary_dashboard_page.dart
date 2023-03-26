@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:moodify_app/src/pages/diary_dashboard/components/episodes_chart.dart';
 import 'package:moodify_app/src/pages/diary_dashboard/notifiers/diary_dashboard_notifier.dart';
 import 'package:moodify_app/src/pages/diary_entry_form/diary_entry_form_page.dart';
+import 'package:moodify_app/src/utils/string_x.dart';
 import 'package:provider/provider.dart';
 
 import 'components/diary_entry_draggable_bottom_sheet.dart';
@@ -34,9 +35,9 @@ class DiaryDashboardPage extends StatelessWidget {
           title: AnimatedBuilder(
             animation: notifier,
             builder: (context, _) => Text(
-              DateFormat.yMMMM().format(
-                notifier.selectedEntry?.createdAt ?? DateTime.now(),
-              ),
+              DateFormat.yMMMM()
+                  .format(notifier.selectedEntry?.createdAt ?? DateTime.now())
+                  .capitalize(),
             ),
           ),
           leading: IconButton(

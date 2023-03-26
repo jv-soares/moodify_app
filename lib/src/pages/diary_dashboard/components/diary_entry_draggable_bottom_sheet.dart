@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:moodify_app/src/models/life_event.dart';
 import 'package:moodify_app/src/models/symptom.dart';
 import 'package:moodify_app/src/pages/diary_dashboard/notifiers/diary_dashboard_notifier.dart';
+import 'package:moodify_app/src/utils/string_x.dart';
 import 'package:provider/provider.dart';
 
 import '../../../models/diary_entry.dart';
@@ -140,7 +141,7 @@ class _Header extends StatelessWidget {
         Row(
           children: [
             Text(
-              DateFormat.MMMMEEEEd().format(entry.createdAt),
+              DateFormat.MMMMEEEEd().format(entry.createdAt).capitalize(),
               style: Theme.of(context).textTheme.bodySmall,
             ),
           ],
