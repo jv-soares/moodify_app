@@ -19,22 +19,24 @@ class DiaryEntryDraggableBottomSheet extends StatelessWidget {
     return DraggableScrollableSheet(
       initialChildSize: .65,
       minChildSize: .65,
-      builder: (context, scrollController) => SingleChildScrollView(
-        controller: scrollController,
-        child: Container(
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(24),
-              topRight: Radius.circular(24),
-            ),
+      builder: (context, scrollController) => Container(
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(24),
+            topRight: Radius.circular(24),
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            children: [
-              _buildHandle(context),
-              _buildContent(context),
-            ],
+        ),
+        child: SingleChildScrollView(
+          controller: scrollController,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              children: [
+                _buildHandle(context),
+                _buildContent(context),
+              ],
+            ),
           ),
         ),
       ),
