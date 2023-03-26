@@ -30,7 +30,7 @@ class DiaryDashboardNotifier extends ChangeNotifier {
       (e) => e.createdAt,
       (a, b) => b.compareTo(a),
     );
-    _dashboardState = Loaded(sortedEntries);
+    _dashboardState = Loaded(sortedEntries..addAll(diaryEntries));
     selectEntry(diaryEntries.first);
   }
 }

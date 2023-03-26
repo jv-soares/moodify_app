@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:moodify_app/src/diary_entries.dart';
 import 'package:moodify_app/src/pages/diary_dashboard/components/episodes_chart.dart';
 import 'package:moodify_app/src/pages/diary_dashboard/notifiers/diary_dashboard_notifier.dart';
 import 'package:provider/provider.dart';

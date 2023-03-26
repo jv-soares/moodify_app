@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:moodify_app/src/pages/diary_dashboard/notifiers/diary_dashboard_notifier.dart';
 import 'package:provider/provider.dart';
-import 'package:scroll_snap_list/scroll_snap_list.dart';
 
 import '../../../models/episode_severity.dart';
+import 'my_snap_list.dart';
 
 class EpisodesChart extends StatefulWidget {
   final double rowHeight;
@@ -52,10 +52,17 @@ class _EpisodesChartState extends State<EpisodesChart> {
   }
 }
 
-class _Content extends StatelessWidget {
+class _Content extends StatefulWidget {
   final double rowHeight;
 
   const _Content(this.rowHeight);
+
+  @override
+  State<_Content> createState() => _ContentState();
+}
+
+class _ContentState extends State<_Content> {
+  int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -64,9 +71,11 @@ class _Content extends StatelessWidget {
     final selectedEntry = notifier.selectedEntry;
     return Stack(
       children: [
-        Align(
-          alignment: Alignment.centerRight,
+        AnimatedPositioned(
+          duration: const Duration(milliseconds: 150),
+          right: _selectedIndex * 32,
           child: Container(
+            height: widget.rowHeight * 9,
             width: 32,
             margin: const EdgeInsets.symmetric(horizontal: 16),
             decoration: BoxDecoration(
@@ -77,9 +86,13 @@ class _Content extends StatelessWidget {
         ),
         Container(
           margin: const EdgeInsets.only(right: 16),
-          child: ScrollSnapList(
+          child: MyScrollSnapList(
+            scrollPhysics: const ClampingScrollPhysics(),
+            selectedItemAnchor: SelectedItemAnchor.START,
             listViewPadding: EdgeInsets.zero,
-            onItemFocus: (index) {},
+            onItemFocus: (index) {
+              setState(() => _selectedIndex = index);
+            },
             scrollDirection: Axis.horizontal,
             itemCount: entries.length,
             itemSize: 32,
@@ -102,7 +115,7 @@ class _Content extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: _calculateMarkerPosition(item.episode)),
-                  SizedBox(height: 28),
+                  SizedBox(height: widget.rowHeight),
                   _buildMarkerFrame(
                     child: Text(
                       item.createdAt.day.toString(),
@@ -120,7 +133,7 @@ class _Content extends StatelessWidget {
   }
 
   Widget _buildMarkerFrame({required Widget child}) {
-    final verticalMargin = (rowHeight - 16) / 2;
+    final verticalMargin = (widget.rowHeight - 16) / 2;
     return Container(
       margin: EdgeInsets.symmetric(vertical: verticalMargin, horizontal: 8),
       child: child,
@@ -129,9 +142,9 @@ class _Content extends StatelessWidget {
 
   double _calculateMarkerPosition(EpisodeSeverity episode) {
     if (episode is Mania) {
-      return episode.level.value * rowHeight;
+      return episode.level.value * widget.rowHeight;
     } else if (episode is Depression) {
-      return episode.level.value * rowHeight;
+      return episode.level.value * widget.rowHeight;
     }
     return 0;
   }
