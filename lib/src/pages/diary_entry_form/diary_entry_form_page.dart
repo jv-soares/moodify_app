@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:moodify_app/src/pages/diary_entry_form/components/form_slider.dart';
-import '../diary_dashboard/diary_dashboard_page.dart';
-import '../../repositories/diary_entry_repository.dart';
 
 import '../../models/symptom.dart';
+import '../../repositories/diary_entry_repository.dart';
+import '../diary_dashboard/diary_dashboard_page.dart';
+import 'components/descriptive_form_slider.dart';
 import 'components/descriptive_values.dart';
 import 'components/life_event_section.dart';
-import 'components/descriptive_form_slider.dart';
 import 'components/medication_section.dart';
 import 'components/observation_section.dart';
 import 'components/symptom_checker.dart';
