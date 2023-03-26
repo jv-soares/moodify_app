@@ -193,14 +193,12 @@ class MyScrollSnapListState extends State<MyScrollSnapList> {
   }
 
   ///Scroll list to an offset
-  void _animateScroll(double location) {
-    Future.delayed(Duration.zero, () {
-      widget.listController.animateTo(
-        location,
-        duration: Duration(milliseconds: widget.duration),
-        curve: widget.curve,
-      );
-    });
+  Future<void> _animateScroll(double location) {
+    return widget.listController.animateTo(
+      location,
+      duration: Duration(milliseconds: widget.duration),
+      curve: widget.curve,
+    );
   }
 
   ///Calculate scale transformation for dynamic item size
@@ -340,10 +338,7 @@ class MyScrollSnapListState extends State<MyScrollSnapList> {
               onNotification: (scrollInfo) {
                 //Check if the received gestures are coming directly from the MyScrollSnapList. If not, skip them
                 //Try to avoid inifinte animation loop caused by multi-level NotificationListener
-                if (scrollInfo.depth > 0) {
-                  return false;
-                }
-
+                if (scrollInfo.depth > 0) return false;
                 if (!widget.allowAnotherDirection) {
                   if (scrollInfo.metrics.axisDirection == AxisDirection.right ||
                       scrollInfo.metrics.axisDirection == AxisDirection.left) {

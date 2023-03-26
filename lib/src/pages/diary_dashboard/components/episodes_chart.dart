@@ -63,20 +63,29 @@ class _Content extends StatefulWidget {
 
 class _ContentState extends State<_Content> {
   int _selectedIndex = 0;
+  int _endIndex = 0;
+  bool _shouldMove = false;
+  double _itemSize = 0;
+
+  double _calculateItemSize() {
+    final screenWidth = MediaQuery.of(context).size.width - 16;
+    return screenWidth / 12;
+  }
 
   @override
   Widget build(BuildContext context) {
     final notifier = context.watch<DiaryDashboardNotifier>();
     final entries = (notifier.dashboardState as Loaded).entries;
     final selectedEntry = notifier.selectedEntry;
+    _itemSize = _calculateItemSize();
     return Stack(
       children: [
         AnimatedPositioned(
           duration: const Duration(milliseconds: 150),
-          right: _selectedIndex * 32,
+          right: _shouldMove ? _endIndex * _itemSize : 0,
           child: Container(
             height: widget.rowHeight * 9,
-            width: 32,
+            width: _itemSize,
             margin: const EdgeInsets.symmetric(horizontal: 16),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.primary,
@@ -84,50 +93,54 @@ class _ContentState extends State<_Content> {
             ),
           ),
         ),
-        Container(
+        MyScrollSnapList(
           margin: const EdgeInsets.only(right: 16),
-          child: MyScrollSnapList(
-            scrollPhysics: const ClampingScrollPhysics(),
-            selectedItemAnchor: SelectedItemAnchor.START,
-            listViewPadding: EdgeInsets.zero,
-            onItemFocus: (index) {
-              setState(() => _selectedIndex = index);
-              notifier.selectEntry(entries[index]);
-            },
-            scrollDirection: Axis.horizontal,
-            itemCount: entries.length,
-            itemSize: 32,
-            reverse: true,
-            itemBuilder: (context, index) {
-              final item = entries[index];
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  _buildMarkerFrame(
-                    child: Container(
-                      height: 16,
-                      width: 16,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: selectedEntry == item
-                            ? Colors.white
-                            : Theme.of(context).colorScheme.primary,
-                      ),
+          scrollPhysics: const ClampingScrollPhysics(),
+          selectedItemAnchor: SelectedItemAnchor.START,
+          listViewPadding: EdgeInsets.zero,
+          onItemFocus: (index) {
+            setState(() {
+              _selectedIndex = index;
+            });
+            notifier.selectEntry(entries[index]);
+          },
+          onReachEnd: () {
+            setState(() => _shouldMove = true);
+          },
+          endOfListTolerance: 0,
+          scrollDirection: Axis.horizontal,
+          itemCount: entries.length,
+          itemSize: _itemSize,
+          reverse: true,
+          itemBuilder: (context, index) {
+            final item = entries[index];
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                _buildMarkerFrame(
+                  child: Container(
+                    height: 16,
+                    width: 16,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: selectedEntry == item
+                          ? Colors.white
+                          : Theme.of(context).colorScheme.primary,
                     ),
                   ),
-                  SizedBox(height: _calculateMarkerPosition(item.episode)),
-                  SizedBox(height: widget.rowHeight),
-                  _buildMarkerFrame(
-                    child: Text(
-                      item.createdAt.day.toString(),
-                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                          color: selectedEntry == item ? Colors.white : null),
-                    ),
+                ),
+                SizedBox(height: _calculateMarkerPosition(item.episode)),
+                SizedBox(height: widget.rowHeight),
+                _buildMarkerFrame(
+                  child: Text(
+                    item.createdAt.day.toString(),
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                        color: selectedEntry == item ? Colors.white : null),
                   ),
-                ],
-              );
-            },
-          ),
+                ),
+              ],
+            );
+          },
         ),
       ],
     );
@@ -135,8 +148,12 @@ class _ContentState extends State<_Content> {
 
   Widget _buildMarkerFrame({required Widget child}) {
     final verticalMargin = (widget.rowHeight - 16) / 2;
+    final horizontalMargin = (_itemSize - 16) / 2;
     return Container(
-      margin: EdgeInsets.symmetric(vertical: verticalMargin, horizontal: 8),
+      margin: EdgeInsets.symmetric(
+        vertical: verticalMargin,
+        horizontal: horizontalMargin,
+      ),
       child: child,
     );
   }
