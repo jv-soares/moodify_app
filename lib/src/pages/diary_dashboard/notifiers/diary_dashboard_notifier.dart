@@ -11,8 +11,8 @@ class DiaryDashboardNotifier extends ChangeNotifier {
     _loadEntries();
   }
 
-  DiaryEntry get selectedEntry => _selectedEntry;
-  late DiaryEntry _selectedEntry;
+  DiaryEntry? get selectedEntry => _selectedEntry;
+  DiaryEntry? _selectedEntry;
 
   DiaryDashboardState get dashboardState => _dashboardState;
   DiaryDashboardState _dashboardState = Initial();
