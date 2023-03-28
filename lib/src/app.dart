@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'pages/diary_entry_form/diary_entry_form_page.dart';
 import 'theme/color_schemes.dart';
@@ -12,6 +13,8 @@ class App extends StatelessWidget {
       title: 'Moodify',
       theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
       home: const DiaryEntryFormPage(),
+      localizationsDelegates: const [GlobalMaterialLocalizations.delegate],
+      supportedLocales: const [Locale('pt', 'BR')],
     );
   }
 }

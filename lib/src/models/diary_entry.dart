@@ -1,9 +1,11 @@
+import 'package:equatable/equatable.dart';
+
 import 'episode_severity.dart';
 import 'life_event.dart';
 import 'medication.dart';
 import 'symptom.dart';
 
-class DiaryEntry {
+class DiaryEntry extends Equatable {
   final String id;
   final DateTime createdAt;
   final EpisodeSeverity episode;
@@ -15,7 +17,7 @@ class DiaryEntry {
   final LifeEvent? lifeEvent;
   final String? observations;
 
-  DiaryEntry({
+  const DiaryEntry({
     required this.id,
     required this.createdAt,
     required this.episode,
@@ -27,4 +29,18 @@ class DiaryEntry {
     this.lifeEvent,
     this.observations,
   });
+
+  @override
+  List<Object?> get props => [
+        id,
+        createdAt,
+        episode,
+        moodRating,
+        symptoms,
+        medications,
+        hoursOfSleep,
+        moodSwitchesPerDay,
+        lifeEvent,
+        observations,
+      ];
 }
