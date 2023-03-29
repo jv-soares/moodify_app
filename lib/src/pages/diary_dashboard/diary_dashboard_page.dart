@@ -42,7 +42,22 @@ class DiaryDashboardPage extends StatelessWidget {
           ),
           leading: IconButton(
             icon: const Icon(Icons.calendar_today),
-            onPressed: () {},
+            onPressed: () async {
+              final now = DateTime.now();
+              final selectedRange = await showDateRangePicker(
+                context: context,
+                firstDate: notifier.oldestEntry?.createdAt ?? now,
+                lastDate: notifier.newestEntry?.createdAt ?? now,
+                saveText: 'Salvar',
+                locale: Localizations.localeOf(context),
+              );
+              if (selectedRange != null) {
+                notifier.selectDateRange(
+                  selectedRange.start,
+                  selectedRange.end,
+                );
+              }
+            },
           ),
           actions: [
             IconButton(
