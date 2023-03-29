@@ -11,10 +11,20 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Moodify',
-      theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
+      theme: _buildTheme(),
       home: const DiaryEntryFormPage(),
-      localizationsDelegates: const [GlobalMaterialLocalizations.delegate],
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       supportedLocales: const [Locale('pt', 'BR')],
     );
   }
+}
+
+ThemeData _buildTheme() {
+  return ThemeData(
+    useMaterial3: true,
+    colorScheme: lightColorScheme,
+  );
 }
