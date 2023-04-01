@@ -151,14 +151,10 @@ class _ContentState extends State<_Content> {
   }
 
   Widget _buildMarkerFrame({required Widget child}) {
-    final verticalMargin = (widget.rowHeight - 16) / 2;
-    final horizontalMargin = (_itemSize - 16) / 2;
-    return Container(
-      margin: EdgeInsets.symmetric(
-        vertical: verticalMargin,
-        horizontal: horizontalMargin,
-      ),
-      child: child,
+    return SizedBox(
+      height: widget.rowHeight,
+      width: _itemSize,
+      child: Center(child: child),
     );
   }
 
