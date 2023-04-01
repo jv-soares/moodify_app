@@ -62,7 +62,6 @@ class _Content extends StatefulWidget {
 }
 
 class _ContentState extends State<_Content> {
-  int _selectedIndex = 0;
   int _endIndex = 0;
   bool _shouldMove = false;
   double _itemSize = 0;
@@ -99,10 +98,10 @@ class _ContentState extends State<_Content> {
           selectedItemAnchor: SelectedItemAnchor.START,
           listViewPadding: EdgeInsets.zero,
           onItemFocus: (index) {
-            setState(() {
-              _selectedIndex = index;
-            });
-            notifier.selectEntry(entries[index]);
+            final selectedEntry = entries[index];
+            if (selectedEntry.hasDiaryEntry) {
+              notifier.selectEntry(selectedEntry);
+            }
           },
           onReachEnd: () {
             setState(() => _shouldMove = true);
