@@ -67,7 +67,7 @@ class _ContentState extends State<_Content> {
   double _itemSize = 0;
 
   double _calculateItemSize() {
-    final screenWidth = MediaQuery.of(context).size.width - 16;
+    final screenWidth = MediaQuery.of(context).size.width - 32;
     return screenWidth / 12;
   }
 
@@ -94,9 +94,9 @@ class _ContentState extends State<_Content> {
         ),
         ScrollSnapList(
           margin: const EdgeInsets.only(right: 16),
+          listViewPadding: const EdgeInsets.only(left: 16),
           scrollPhysics: const ClampingScrollPhysics(),
           selectedItemAnchor: SelectedItemAnchor.START,
-          listViewPadding: EdgeInsets.zero,
           onItemFocus: (index) {
             final selectedEntry = entries[index];
             if (selectedEntry.hasDiaryEntry) {
