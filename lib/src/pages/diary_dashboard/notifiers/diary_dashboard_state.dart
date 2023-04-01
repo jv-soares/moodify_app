@@ -7,7 +7,11 @@ class Initial extends DiaryDashboardState {}
 class Loading extends DiaryDashboardState {}
 
 class Loaded extends DiaryDashboardState {
-  final List<DiaryEntry> entries;
+  final List<EpisodeEntry> entries;
+
+  EpisodeEntry get oldestEntry => entries.last;
+
+  EpisodeEntry get newestEntry => entries.first;
 
   Loaded(this.entries);
 }

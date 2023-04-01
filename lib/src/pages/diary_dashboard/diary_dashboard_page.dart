@@ -36,18 +36,27 @@ class DiaryDashboardPage extends StatelessWidget {
             animation: notifier,
             builder: (context, _) => Text(
               DateFormat.yMMMM()
-                  .format(notifier.selectedEntry?.createdAt ?? DateTime.now())
+                  .format(notifier.selectedEntry?.diaryEntry?.createdAt ??
+                      DateTime.now())
                   .capitalize(),
             ),
           ),
           leading: IconButton(
             icon: const Icon(Icons.calendar_today),
             onPressed: () async {
-              final now = DateTime.now();
+              DateTime firstDate;
+              DateTime lastDate;
+              if (notifier.state is Loaded) {
+                firstDate = (notifier.state as Loaded).oldestEntry.date;
+                lastDate = (notifier.state as Loaded).newestEntry.date;
+              } else {
+                firstDate = DateTime.now();
+                lastDate = DateTime.now();
+              }
               final selectedRange = await showDateRangePicker(
                 context: context,
-                firstDate: notifier.oldestEntry?.createdAt ?? now,
-                lastDate: notifier.newestEntry?.createdAt ?? now,
+                firstDate: firstDate,
+                lastDate: lastDate,
                 saveText: 'Salvar',
                 locale: Localizations.localeOf(context),
               );

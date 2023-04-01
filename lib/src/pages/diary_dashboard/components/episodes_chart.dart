@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:moodify_app/src/pages/diary_dashboard/notifiers/diary_dashboard_notifier.dart';
 import 'package:provider/provider.dart';
+import 'package:scroll_snap_list/scroll_snap_list.dart';
 
 import '../../../models/episode_severity.dart';
-import 'my_snap_list.dart';
 
 class EpisodesChart extends StatefulWidget {
   final double rowHeight;
@@ -40,12 +40,12 @@ class _EpisodesChartState extends State<EpisodesChart> {
               ),
             ),
           ),
-          if (notifier.dashboardState is Loading)
+          if (notifier.state is Loading)
             const Align(
               alignment: Alignment.center,
               child: CircularProgressIndicator(),
             ),
-          if (notifier.dashboardState is Loaded) _Content(widget.rowHeight),
+          if (notifier.state is Loaded) _Content(widget.rowHeight),
         ],
       ),
     );
@@ -75,7 +75,7 @@ class _ContentState extends State<_Content> {
   @override
   Widget build(BuildContext context) {
     final notifier = context.watch<DiaryDashboardNotifier>();
-    final entries = (notifier.dashboardState as Loaded).entries;
+    final entries = (notifier.state as Loaded).entries;
     final selectedEntry = notifier.selectedEntry;
     _itemSize = _calculateItemSize();
     return Stack(
@@ -93,7 +93,7 @@ class _ContentState extends State<_Content> {
             ),
           ),
         ),
-        MyScrollSnapList(
+        ScrollSnapList(
           margin: const EdgeInsets.only(right: 16),
           scrollPhysics: const ClampingScrollPhysics(),
           selectedItemAnchor: SelectedItemAnchor.START,
@@ -113,29 +113,34 @@ class _ContentState extends State<_Content> {
           itemSize: _itemSize,
           reverse: true,
           itemBuilder: (context, index) {
-            final item = entries[index];
+            final entry = entries[index];
             return Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                _buildMarkerFrame(
-                  child: Container(
-                    height: 16,
-                    width: 16,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: selectedEntry == item
-                          ? Colors.white
-                          : Theme.of(context).colorScheme.primary,
+                if (entry.hasDiaryEntry) ...[
+                  _buildMarkerFrame(
+                    child: Container(
+                      height: 16,
+                      width: 16,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: selectedEntry == entry
+                            ? Colors.white
+                            : Theme.of(context).colorScheme.primary,
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(height: _calculateMarkerPosition(item.episode)),
+                  SizedBox(
+                    height: _calculateMarkerPosition(entry.diaryEntry!.episode),
+                  ),
+                ],
                 SizedBox(height: widget.rowHeight),
                 _buildMarkerFrame(
                   child: Text(
-                    item.createdAt.day.toString(),
+                    entry.date.day.toString(),
                     style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                        color: selectedEntry == item ? Colors.white : null),
+                          color: selectedEntry == entry ? Colors.white : null,
+                        ),
                   ),
                 ),
               ],

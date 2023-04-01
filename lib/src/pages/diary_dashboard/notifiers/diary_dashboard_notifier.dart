@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:moodify_app/src/diary_entries.dart';
+import 'package:moodify_app/src/utils/date_time_utils.dart';
 
 import '../../../models/diary_entry.dart';
 
@@ -11,22 +12,13 @@ class DiaryDashboardNotifier extends ChangeNotifier {
     _loadEntries();
   }
 
-  DiaryEntry? get selectedEntry => _selectedEntry;
-  DiaryEntry? _selectedEntry;
+  EpisodeEntry? get selectedEntry => _selectedEntry;
+  EpisodeEntry? _selectedEntry;
 
-  List<DiaryEntry>? get _entries {
-    if (_dashboardState is! Loaded) return null;
-    return (_dashboardState as Loaded).entries;
-  }
+  DiaryDashboardState get state => _state;
+  DiaryDashboardState _state = Initial();
 
-  DiaryEntry? get oldestEntry => _entries?.last;
-
-  DiaryEntry? get newestEntry => _entries?.first;
-
-  DiaryDashboardState get dashboardState => _dashboardState;
-  DiaryDashboardState _dashboardState = Initial();
-
-  void selectEntry(DiaryEntry entry) {
+  void selectEntry(EpisodeEntry entry) {
     _selectedEntry = entry;
     notifyListeners();
   }
@@ -36,14 +28,31 @@ class DiaryDashboardNotifier extends ChangeNotifier {
   }
 
   Future<void> _loadEntries() async {
-    _dashboardState = Loading();
+    _state = Loading();
     notifyListeners();
     await Future.delayed(const Duration(seconds: 1));
     final sortedEntries = diaryEntries.sortedByCompare(
       (e) => e.createdAt,
       (a, b) => b.compareTo(a),
-    );
-    _dashboardState = Loaded(sortedEntries);
-    selectEntry(diaryEntries.first);
+    )..removeWhere((element) => element.createdAt.day == 26);
+    final oldest = sortedEntries.first.createdAt;
+    final newest = sortedEntries.last.createdAt;
+    final episodes = DateTimeUtils.generateList(oldest, newest).map((date) {
+      final entryOrNull = sortedEntries.singleWhereOrNull(
+        (e) => DateTimeUtils.compareDayOfYear(e.createdAt, date),
+      );
+      return EpisodeEntry(date, entryOrNull);
+    }).toList();
+    _state = Loaded(episodes);
+    selectEntry(episodes.first);
   }
+}
+
+class EpisodeEntry {
+  final DateTime date;
+  final DiaryEntry? diaryEntry;
+
+  const EpisodeEntry(this.date, [this.diaryEntry]);
+
+  bool get hasDiaryEntry => diaryEntry != null;
 }
