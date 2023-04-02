@@ -63,20 +63,9 @@ class _Content extends StatefulWidget {
 
 class _ContentState extends State<_Content> {
   final _scrollController = ScrollController();
-  final _indicatorOffsetNotifier = ValueNotifier(0.0);
   int _indicatorIndex = 0;
+  int _indicatorShadowIndex = 0;
   double _itemSize = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController.addListener(() {
-      print(_scrollController.offset / 30); // indicator index
-    });
-    _indicatorOffsetNotifier.addListener(() {
-      print(_indicatorOffsetNotifier.value);
-    });
-  }
 
   double _calculateItemSize() {
     final screenWidth = MediaQuery.of(context).size.width - 32;
@@ -111,6 +100,7 @@ class _ContentState extends State<_Content> {
           scrollPhysics: const ClampingScrollPhysics(),
           selectedItemAnchor: SelectedItemAnchor.START,
           onItemFocus: (index) {
+            _indicatorShadowIndex = index;
             final entry = entries[index + _indicatorIndex];
             notifier.selectEntry(entry);
           },
@@ -177,7 +167,7 @@ class _ContentState extends State<_Content> {
       onTap: () {
         setState(() {
           notifier.selectEntry(entries[index]);
-          _indicatorIndex = index;
+          _indicatorIndex = index - _indicatorShadowIndex;
         });
       },
       child: SizedBox(
