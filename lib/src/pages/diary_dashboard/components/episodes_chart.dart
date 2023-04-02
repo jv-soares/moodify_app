@@ -62,9 +62,21 @@ class _Content extends StatefulWidget {
 }
 
 class _ContentState extends State<_Content> {
-  int _endIndex = 0;
-  bool _shouldMove = false;
+  final _scrollController = ScrollController();
+  final _indicatorOffsetNotifier = ValueNotifier(0.0);
+  int _indicatorIndex = 0;
   double _itemSize = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(() {
+      print(_scrollController.offset / 30); // indicator index
+    });
+    _indicatorOffsetNotifier.addListener(() {
+      print(_indicatorOffsetNotifier.value);
+    });
+  }
 
   double _calculateItemSize() {
     final screenWidth = MediaQuery.of(context).size.width - 32;
@@ -80,8 +92,8 @@ class _ContentState extends State<_Content> {
     return Stack(
       children: [
         AnimatedPositioned(
-          duration: const Duration(milliseconds: 150),
-          right: _shouldMove ? _endIndex * _itemSize : 0,
+          duration: const Duration(milliseconds: 100),
+          right: _indicatorIndex * _itemSize,
           child: Container(
             height: widget.rowHeight * 9,
             width: _itemSize,
@@ -93,19 +105,16 @@ class _ContentState extends State<_Content> {
           ),
         ),
         ScrollSnapList(
+          listController: _scrollController,
           margin: const EdgeInsets.only(right: 16),
           listViewPadding: const EdgeInsets.only(left: 16),
           scrollPhysics: const ClampingScrollPhysics(),
           selectedItemAnchor: SelectedItemAnchor.START,
           onItemFocus: (index) {
-            final selectedEntry = entries[index];
-            if (selectedEntry.hasDiaryEntry) {
-              notifier.selectEntry(selectedEntry);
-            }
+            final entry = entries[index + _indicatorIndex];
+            notifier.selectEntry(entry);
           },
-          onReachEnd: () {
-            setState(() => _shouldMove = true);
-          },
+          focusOnItemTap: false,
           endOfListTolerance: 0,
           scrollDirection: Axis.horizontal,
           itemCount: entries.length,
@@ -113,34 +122,45 @@ class _ContentState extends State<_Content> {
           reverse: true,
           itemBuilder: (context, index) {
             final entry = entries[index];
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.end,
+            return Stack(
               children: [
-                if (entry.hasDiaryEntry) ...[
-                  _buildMarkerFrame(
-                    child: Container(
-                      height: 16,
-                      width: 16,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: selectedEntry == entry
-                            ? Colors.white
-                            : Theme.of(context).colorScheme.primary,
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    if (entry.hasDiaryEntry) ...[
+                      _buildMarkerFrame(
+                        index: index,
+                        child: Container(
+                          height: 16,
+                          width: 16,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: selectedEntry == entry
+                                ? Colors.white
+                                : Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height:
+                            _calculateMarkerPosition(entry.diaryEntry!.episode),
+                      ),
+                    ],
+                    SizedBox(height: widget.rowHeight),
+                    _buildMarkerFrame(
+                      index: index,
+                      child: Text(
+                        entry.date.day.toString(),
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelMedium
+                            ?.copyWith(
+                              color:
+                                  selectedEntry == entry ? Colors.white : null,
+                            ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: _calculateMarkerPosition(entry.diaryEntry!.episode),
-                  ),
-                ],
-                SizedBox(height: widget.rowHeight),
-                _buildMarkerFrame(
-                  child: Text(
-                    entry.date.day.toString(),
-                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                          color: selectedEntry == entry ? Colors.white : null,
-                        ),
-                  ),
+                  ],
                 ),
               ],
             );
@@ -150,11 +170,21 @@ class _ContentState extends State<_Content> {
     );
   }
 
-  Widget _buildMarkerFrame({required Widget child}) {
-    return SizedBox(
-      height: widget.rowHeight,
-      width: _itemSize,
-      child: Center(child: child),
+  Widget _buildMarkerFrame({required Widget child, required int index}) {
+    final notifier = context.read<DiaryDashboardNotifier>();
+    final entries = (notifier.state as Loaded).entries;
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          notifier.selectEntry(entries[index]);
+          _indicatorIndex = index;
+        });
+      },
+      child: SizedBox(
+        height: widget.rowHeight,
+        width: _itemSize,
+        child: Center(child: child),
+      ),
     );
   }
 
@@ -165,5 +195,11 @@ class _ContentState extends State<_Content> {
       return episode.level.value * widget.rowHeight;
     }
     return 0;
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 }
