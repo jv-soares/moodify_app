@@ -165,10 +165,12 @@ class _ContentState extends State<_Content> {
     final entries = (notifier.state as Loaded).entries;
     return GestureDetector(
       onTap: () {
-        setState(() {
-          notifier.selectEntry(entries[index]);
-          _indicatorIndex = index - _indicatorShadowIndex;
-        });
+        if (entries[index].hasDiaryEntry) {
+          setState(() {
+            notifier.selectEntry(entries[index]);
+            _indicatorIndex = index - _indicatorShadowIndex;
+          });
+        }
       },
       child: SizedBox(
         height: widget.rowHeight,
