@@ -57,4 +57,20 @@ void main() {
       DateTime(2022, 1, 1),
     ]);
   });
+
+  test('should check whether date interval contains date', () {
+    var date = DateTime(2022, 2, 15);
+    var from = DateTime(2022, 1);
+    var to = DateTime(2022, 3);
+    expect(date.isBetween(from, to), isTrue);
+
+    from = DateTime(2022, 2, 15);
+    expect(date.isBetween(from, to), isTrue);
+
+    to = DateTime(2022, 2, 15);
+    expect(date.isBetween(from, to), isTrue);
+
+    date = DateTime(2022, 2, 16);
+    expect(date.isBetween(from, to), isFalse);
+  });
 }

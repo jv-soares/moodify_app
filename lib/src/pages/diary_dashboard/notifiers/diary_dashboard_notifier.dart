@@ -24,7 +24,14 @@ class DiaryDashboardNotifier extends ChangeNotifier {
   }
 
   void selectDateRange(DateTime start, DateTime end) {
-    print('selected from $start to $end');
+    if (_state is! Loaded) return;
+    final newEntries = (_state as Loaded)
+        .entries
+        .where((entry) => entry.date.isBetween(start, end))
+        .toList();
+    _state = Loaded(newEntries);
+    notifyListeners();
+    selectEntry(newEntries.first);
   }
 
   Future<void> _loadEntries() async {

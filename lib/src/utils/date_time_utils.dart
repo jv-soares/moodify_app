@@ -35,3 +35,12 @@ abstract class DateTimeUtils {
     return isDayEqual && isMonthEqual && isYearEqual;
   }
 }
+
+extension DateTimeX on DateTime {
+  bool isBetween(DateTime start, DateTime end) {
+    final startMicroseconds = start.microsecondsSinceEpoch;
+    final endMicroseconds = end.microsecondsSinceEpoch;
+    return microsecondsSinceEpoch >= startMicroseconds &&
+        microsecondsSinceEpoch <= endMicroseconds;
+  }
+}
