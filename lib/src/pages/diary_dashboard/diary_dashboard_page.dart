@@ -9,78 +9,74 @@ import 'package:provider/provider.dart';
 import 'components/diary_entry_draggable_bottom_sheet.dart';
 
 class DiaryDashboardPage extends StatelessWidget {
-  DiaryDashboardPage({super.key});
-
-  final notifier = DiaryDashboardNotifier();
+  const DiaryDashboardPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider.value(
-      value: notifier,
-      child: Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.background,
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => const DiaryEntryFormPage(),
-            ));
-          },
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          child: Icon(
-            Icons.add,
-            color: Theme.of(context).colorScheme.onPrimary,
+    final notifier = context.watch<DiaryDashboardNotifier>();
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => const DiaryEntryFormPage(),
+          ));
+        },
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        child: Icon(
+          Icons.add,
+          color: Theme.of(context).colorScheme.onPrimary,
+        ),
+      ),
+      appBar: AppBar(
+        title: AnimatedBuilder(
+          animation: notifier,
+          builder: (context, _) => Text(
+            DateFormat.yMMMM()
+                .format(notifier.selectedEntry?.diaryEntry?.createdAt ??
+                    DateTime.now())
+                .capitalize(),
           ),
         ),
-        appBar: AppBar(
-          title: AnimatedBuilder(
-            animation: notifier,
-            builder: (context, _) => Text(
-              DateFormat.yMMMM()
-                  .format(notifier.selectedEntry?.diaryEntry?.createdAt ??
-                      DateTime.now())
-                  .capitalize(),
-            ),
-          ),
-          leading: IconButton(
-            icon: const Icon(Icons.calendar_today),
-            onPressed: () async {
-              DateTime firstDate;
-              DateTime lastDate;
-              if (notifier.state is Loaded) {
-                firstDate = (notifier.state as Loaded).oldestEntry.date;
-                lastDate = (notifier.state as Loaded).newestEntry.date;
-              } else {
-                firstDate = DateTime.now();
-                lastDate = DateTime.now();
-              }
-              final selectedRange = await showDateRangePicker(
-                context: context,
-                firstDate: firstDate,
-                lastDate: lastDate,
-                saveText: 'Salvar',
-                locale: Localizations.localeOf(context),
+        leading: IconButton(
+          icon: const Icon(Icons.calendar_today),
+          onPressed: () async {
+            DateTime firstDate;
+            DateTime lastDate;
+            if (notifier.state is Loaded) {
+              firstDate = (notifier.state as Loaded).oldestEntry.date;
+              lastDate = (notifier.state as Loaded).newestEntry.date;
+            } else {
+              firstDate = DateTime.now();
+              lastDate = DateTime.now();
+            }
+            final selectedRange = await showDateRangePicker(
+              context: context,
+              firstDate: firstDate,
+              lastDate: lastDate,
+              saveText: 'Salvar',
+              locale: Localizations.localeOf(context),
+            );
+            if (selectedRange != null) {
+              notifier.selectDateRange(
+                selectedRange.start,
+                selectedRange.end,
               );
-              if (selectedRange != null) {
-                notifier.selectDateRange(
-                  selectedRange.start,
-                  selectedRange.end,
-                );
-              }
-            },
+            }
+          },
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {},
           ),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.settings),
-              onPressed: () {},
-            ),
-          ],
-        ),
-        body: Stack(
-          children: const [
-            EpisodesChart(),
-            DiaryEntryDraggableBottomSheet(),
-          ],
-        ),
+        ],
+      ),
+      body: Stack(
+        children: const [
+          EpisodesChart(),
+          DiaryEntryDraggableBottomSheet(),
+        ],
       ),
     );
   }
