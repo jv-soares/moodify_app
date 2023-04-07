@@ -55,9 +55,10 @@ class _DiaryEntryFormPageState extends State<DiaryEntryFormPage> {
                 ),
               );
             } else {
-              return FloatingActionButton(
+              return FloatingActionButton.extended(
                 onPressed: () => _notifier.save(_viewModel),
-                child: const Icon(Icons.check),
+                label: const Text('Salvar'),
+                icon: const Icon(Icons.check),
               );
             }
           }),
