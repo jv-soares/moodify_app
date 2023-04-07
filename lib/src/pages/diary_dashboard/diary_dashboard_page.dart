@@ -16,18 +16,20 @@ class DiaryDashboardPage extends StatelessWidget {
     final notifier = context.watch<DiaryDashboardNotifier>();
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => const DiaryEntryFormPage(),
-          ));
-        },
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        child: Icon(
-          Icons.add,
-          color: Theme.of(context).colorScheme.onPrimary,
-        ),
-      ),
+      floatingActionButton: notifier.canAddEntry
+          ? FloatingActionButton(
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              child: Icon(
+                Icons.add,
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const DiaryEntryFormPage(),
+                ));
+              },
+            )
+          : null,
       appBar: AppBar(
         title: AnimatedBuilder(
           animation: notifier,

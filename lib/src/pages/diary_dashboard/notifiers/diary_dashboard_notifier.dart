@@ -26,6 +26,15 @@ class DiaryDashboardNotifier extends ChangeNotifier {
 
   StreamSubscription? _subscription;
 
+  bool get canAddEntry {
+    if (newestEntry == null) return true;
+    final isEntryToday = DateTimeUtils.compareDayOfYear(
+      DateTime.now(),
+      newestEntry!.date,
+    );
+    return !isEntryToday;
+  }
+
   Future<void> initialize() async {
     _subscription = _repository.watchAll().listen((entries) {
       final newest = entries.first.createdAt;
