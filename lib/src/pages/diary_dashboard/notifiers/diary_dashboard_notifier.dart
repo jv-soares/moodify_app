@@ -1,6 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:moodify_app/src/diary_entries.dart';
+import 'package:moodify_app/src/repositories/diary_entry_repository.dart';
 import 'package:moodify_app/src/utils/date_time_utils.dart';
 
 import '../../../models/diary_entry.dart';
@@ -8,26 +8,30 @@ import '../../../models/diary_entry.dart';
 part 'diary_dashboard_state.dart';
 
 class DiaryDashboardNotifier extends ChangeNotifier {
+  final _repository = TempDiaryEntryRepository();
+
   EpisodeEntry? get selectedEntry => _selectedEntry;
   EpisodeEntry? _selectedEntry;
 
   DiaryDashboardState get state => _state;
   DiaryDashboardState _state = Initial();
 
+  List<EpisodeEntry>? _allEpisodes;
+
+  EpisodeEntry? get oldestEntry => _allEpisodes?.first;
+  EpisodeEntry? get newestEntry => _allEpisodes?.last;
+
   Future<void> initialize() async {
-    await Future.delayed(const Duration(seconds: 1));
-    final sortedEntries = diaryEntries.sortedByCompare(
-      (e) => e.createdAt,
-      (a, b) => b.compareTo(a),
-    )..removeWhere((element) => element.createdAt.day == 26);
-    final oldest = sortedEntries.first.createdAt;
-    final newest = sortedEntries.last.createdAt;
+    final entries = await _repository.readAll();
+    final newest = entries.first.createdAt;
+    final oldest = entries.last.createdAt;
     final episodes = DateTimeUtils.generateList(oldest, newest).map((date) {
-      final entryOrNull = sortedEntries.singleWhereOrNull(
+      final entryOrNull = entries.singleWhereOrNull(
         (e) => DateTimeUtils.compareDayOfYear(e.createdAt, date),
       );
       return EpisodeEntry(date, entryOrNull);
     }).toList();
+    _allEpisodes = episodes;
     _state = Loaded(episodes);
     selectEntry(episodes.first);
   }
@@ -38,9 +42,8 @@ class DiaryDashboardNotifier extends ChangeNotifier {
   }
 
   void selectDateRange(DateTime start, DateTime end) {
-    if (_state is! Loaded) return;
-    final newEntries = (_state as Loaded)
-        .entries
+    if (_allEpisodes == null) return;
+    final newEntries = _allEpisodes!
         .where((entry) => entry.date.isBetween(start, end))
         .toList();
     _state = Loaded(newEntries);

@@ -39,7 +39,8 @@ abstract class DateTimeUtils {
 extension DateTimeX on DateTime {
   bool isBetween(DateTime start, DateTime end) {
     final startMicroseconds = start.microsecondsSinceEpoch;
-    final endMicroseconds = end.microsecondsSinceEpoch;
+    final endMicroseconds =
+        end.microsecondsSinceEpoch + const Duration(hours: 23).inMicroseconds;
     return microsecondsSinceEpoch >= startMicroseconds &&
         microsecondsSinceEpoch <= endMicroseconds;
   }
