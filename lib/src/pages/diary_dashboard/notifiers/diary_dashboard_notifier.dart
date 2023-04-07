@@ -18,14 +18,14 @@ class DiaryDashboardNotifier extends ChangeNotifier {
 
   List<EpisodeEntry>? _allEpisodes;
 
-  EpisodeEntry? get oldestEntry => _allEpisodes?.first;
-  EpisodeEntry? get newestEntry => _allEpisodes?.last;
+  EpisodeEntry? get oldestEntry => _allEpisodes?.last;
+  EpisodeEntry? get newestEntry => _allEpisodes?.first;
 
   Future<void> initialize() async {
     final entries = await _repository.readAll();
     final newest = entries.first.createdAt;
     final oldest = entries.last.createdAt;
-    final episodes = DateTimeUtils.generateList(oldest, newest).map((date) {
+    final episodes = DateTimeUtils.generateList(newest, oldest).map((date) {
       final entryOrNull = entries.singleWhereOrNull(
         (e) => DateTimeUtils.compareDayOfYear(e.createdAt, date),
       );
@@ -49,6 +49,36 @@ class DiaryDashboardNotifier extends ChangeNotifier {
     _state = Loaded(newEntries);
     notifyListeners();
     selectEntry(newEntries.first);
+    resetIndicator();
+  }
+
+  int _indicatorIndex = 0;
+  int _indicatorShadowIndex = 0;
+
+  double _itemSize = 0;
+  set itemSize(double size) => _itemSize = size;
+
+  double get indicatorPosition => _indicatorIndex * _itemSize;
+
+  int onItemFocus(int index) {
+    _indicatorShadowIndex = index;
+    return index + _indicatorIndex;
+  }
+
+  void onItemTap(int index) {
+    _indicatorIndex = index - _indicatorShadowIndex;
+    notifyListeners();
+  }
+
+  void moveIndicatorTo(int index) {
+    _indicatorIndex = index;
+    notifyListeners();
+  }
+
+  void resetIndicator() {
+    _indicatorIndex = 0;
+    _indicatorShadowIndex = 0;
+    notifyListeners();
   }
 }
 

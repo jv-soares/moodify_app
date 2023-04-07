@@ -62,9 +62,6 @@ class _Content extends StatefulWidget {
 }
 
 class _ContentState extends State<_Content> {
-  final _scrollController = ScrollController();
-  int _indicatorIndex = 0;
-  int _indicatorShadowIndex = 0;
   double _itemSize = 0;
 
   double _calculateItemSize() {
@@ -75,14 +72,15 @@ class _ContentState extends State<_Content> {
   @override
   Widget build(BuildContext context) {
     final notifier = context.watch<DiaryDashboardNotifier>();
+    _itemSize = _calculateItemSize();
+    notifier.itemSize = _itemSize;
     final entries = (notifier.state as Loaded).entries;
     final selectedEntry = notifier.selectedEntry;
-    _itemSize = _calculateItemSize();
     return Stack(
       children: [
         AnimatedPositioned(
           duration: const Duration(milliseconds: 100),
-          right: _indicatorIndex * _itemSize,
+          right: notifier.indicatorPosition,
           child: Container(
             height: widget.rowHeight * 9,
             width: _itemSize,
@@ -94,15 +92,13 @@ class _ContentState extends State<_Content> {
           ),
         ),
         ScrollSnapList(
-          listController: _scrollController,
           margin: const EdgeInsets.only(right: 16),
           listViewPadding: const EdgeInsets.only(left: 16),
           scrollPhysics: const ClampingScrollPhysics(),
           selectedItemAnchor: SelectedItemAnchor.START,
           onItemFocus: (index) {
-            _indicatorShadowIndex = index;
-            final entry = entries[index + _indicatorIndex];
-            notifier.selectEntry(entry);
+            final entryIndex = notifier.onItemFocus(index);
+            notifier.selectEntry(entries[entryIndex]);
           },
           focusOnItemTap: false,
           endOfListTolerance: 0,
@@ -168,7 +164,7 @@ class _ContentState extends State<_Content> {
         if (entries[index].hasDiaryEntry) {
           setState(() {
             notifier.selectEntry(entries[index]);
-            _indicatorIndex = index - _indicatorShadowIndex;
+            notifier.onItemTap(index);
           });
         }
       },
@@ -191,7 +187,6 @@ class _ContentState extends State<_Content> {
 
   @override
   void dispose() {
-    _scrollController.dispose();
     super.dispose();
   }
 }
