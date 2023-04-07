@@ -5,7 +5,7 @@ import 'package:scroll_snap_list/scroll_snap_list.dart';
 
 import '../../../models/episode_severity.dart';
 
-class EpisodesChart extends StatefulWidget {
+class EpisodesChart extends StatelessWidget {
   final double rowHeight;
 
   const EpisodesChart({
@@ -14,27 +14,22 @@ class EpisodesChart extends StatefulWidget {
   });
 
   @override
-  State<EpisodesChart> createState() => _EpisodesChartState();
-}
-
-class _EpisodesChartState extends State<EpisodesChart> {
-  @override
   Widget build(BuildContext context) {
     final notifier = context.watch<DiaryDashboardNotifier>();
     return SizedBox(
-      height: widget.rowHeight * 9,
+      height: rowHeight * 9,
       child: Stack(
         children: [
           Padding(
-            padding: EdgeInsets.symmetric(vertical: widget.rowHeight / 2),
+            padding: EdgeInsets.symmetric(vertical: rowHeight / 2),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: List.generate(
                 4,
                 (index) => Container(
-                  margin: EdgeInsets.symmetric(vertical: widget.rowHeight / 2),
+                  margin: EdgeInsets.symmetric(vertical: rowHeight / 2),
                   color: Theme.of(context).colorScheme.surfaceVariant,
-                  height: widget.rowHeight,
+                  height: rowHeight,
                   width: double.infinity,
                 ),
               ),
@@ -45,7 +40,7 @@ class _EpisodesChartState extends State<EpisodesChart> {
               alignment: Alignment.center,
               child: CircularProgressIndicator(),
             ),
-          if (notifier.state is Loaded) _Content(widget.rowHeight),
+          if (notifier.state is Loaded) _Content(rowHeight),
         ],
       ),
     );
