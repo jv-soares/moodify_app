@@ -9,7 +9,7 @@ final diaryEntries = List.generate(
   30,
   (index) => DiaryEntry(
     id: index.toString(),
-    createdAt: DateTime.now().subtract(Duration(days: index)),
+    createdAt: DateTime(2023, 4, 1).subtract(Duration(days: index)),
     episode: _getEpisode(index),
     moodRating: _random.nextInt(100),
     hoursOfSleep: _random.nextInt(10),

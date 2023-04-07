@@ -5,12 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:moodify_app/src/repositories/diary_entry_repository.dart';
 import 'package:moodify_app/src/utils/date_time_utils.dart';
 
+import '../../../app_container.dart';
 import '../../../models/diary_entry.dart';
 
 part 'diary_dashboard_state.dart';
 
 class DiaryDashboardNotifier extends ChangeNotifier {
-  final _repository = TempDiaryEntryRepository();
+  final _repository = AppContainer.get<DiaryEntryRepository>();
 
   EpisodeEntry? get selectedEntry => _selectedEntry;
   EpisodeEntry? _selectedEntry;
@@ -26,7 +27,6 @@ class DiaryDashboardNotifier extends ChangeNotifier {
   StreamSubscription? _subscription;
 
   Future<void> initialize() async {
-    final completer = Completer();
     _subscription = _repository.watchAll().listen((entries) {
       final newest = entries.first.createdAt;
       final oldest = entries.last.createdAt;
@@ -39,9 +39,7 @@ class DiaryDashboardNotifier extends ChangeNotifier {
       _allEpisodes = episodes;
       _state = Loaded(episodes);
       selectEntry(episodes.first);
-      completer.complete();
     });
-    return completer.future;
   }
 
   void selectEntry(EpisodeEntry entry) {

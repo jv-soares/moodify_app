@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:moodify_app/src/pages/diary_entry_form/components/form_slider.dart';
 
 import '../../models/symptom.dart';
-import '../../repositories/diary_entry_repository.dart';
 import '../diary_dashboard/diary_dashboard_page.dart';
 import 'components/descriptive_form_slider.dart';
 import 'components/descriptive_values.dart';
@@ -21,7 +20,7 @@ class DiaryEntryFormPage extends StatefulWidget {
 }
 
 class _DiaryEntryFormPageState extends State<DiaryEntryFormPage> {
-  final _notifier = DiaryEntryFormNotifier(TempDiaryEntryRepository());
+  final _notifier = DiaryEntryFormNotifier();
   final _viewModel = DiaryEntryViewModel();
 
   @override

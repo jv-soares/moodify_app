@@ -13,22 +13,24 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+  late DiaryDashboardNotifier _dashboardNotifier;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final dashboardNotifier = context.read<DiaryDashboardNotifier>();
-    dashboardNotifier.initialize().then(
-          (_) => _onDashboardStateChanged(dashboardNotifier.state),
-        );
+    _dashboardNotifier = context.read<DiaryDashboardNotifier>();
+    _dashboardNotifier.initialize();
+    _dashboardNotifier.addListener(_onDashboardStateChanged);
   }
 
-  void _onDashboardStateChanged(DiaryDashboardState state) {
+  void _onDashboardStateChanged() {
+    final state = _dashboardNotifier.state;
     if (state is Loaded) {
-      Navigator.of(context).push(
+      Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (_) => const DiaryDashboardPage()),
       );
     } else {
-      Navigator.of(context).push(
+      Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (_) => const DiaryEntryFormPage()),
       );
     }
@@ -37,5 +39,11 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(body: Center(child: CircularProgressIndicator()));
+  }
+
+  @override
+  void dispose() {
+    _dashboardNotifier.removeListener(_onDashboardStateChanged);
+    super.dispose();
   }
 }

@@ -16,20 +16,24 @@ abstract class DiaryEntryRepository {
 }
 
 class TempDiaryEntryRepository implements DiaryEntryRepository {
-  TempDiaryEntryRepository([List<DiaryEntry>? initialEntries]) {
-    if (initialEntries != null) _controller.add(initialEntries);
+  TempDiaryEntryRepository() {
+    _controller.add(diaryEntries);
   }
 
-  final _controller = BehaviorSubject<List<DiaryEntry>>.seeded([]);
+  final _controller = BehaviorSubject<List<DiaryEntry>>();
 
   @override
   Stream<List<DiaryEntry>> watchAll() async* {
-    yield* _controller.map(
-      (entries) => entries.sortedByCompare(
-        (e) => e.createdAt,
-        (a, b) => b.compareTo(a),
-      ),
-    );
+    if (!_controller.hasValue) {
+      yield [];
+    } else {
+      yield* _controller.map(
+        (entries) => entries.sortedByCompare(
+          (e) => e.createdAt,
+          (a, b) => b.compareTo(a),
+        ),
+      );
+    }
   }
 
   @override
