@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:moodify_app/src/repositories/diary_entry_repository.dart';
@@ -21,19 +23,25 @@ class DiaryDashboardNotifier extends ChangeNotifier {
   EpisodeEntry? get oldestEntry => _allEpisodes?.last;
   EpisodeEntry? get newestEntry => _allEpisodes?.first;
 
+  StreamSubscription? _subscription;
+
   Future<void> initialize() async {
-    final entries = await _repository.readAll();
-    final newest = entries.first.createdAt;
-    final oldest = entries.last.createdAt;
-    final episodes = DateTimeUtils.generateList(newest, oldest).map((date) {
-      final entryOrNull = entries.singleWhereOrNull(
-        (e) => DateTimeUtils.compareDayOfYear(e.createdAt, date),
-      );
-      return EpisodeEntry(date, entryOrNull);
-    }).toList();
-    _allEpisodes = episodes;
-    _state = Loaded(episodes);
-    selectEntry(episodes.first);
+    final completer = Completer();
+    _subscription = _repository.watchAll().listen((entries) {
+      final newest = entries.first.createdAt;
+      final oldest = entries.last.createdAt;
+      final episodes = DateTimeUtils.generateList(newest, oldest).map((date) {
+        final entryOrNull = entries.singleWhereOrNull(
+          (e) => DateTimeUtils.compareDayOfYear(e.createdAt, date),
+        );
+        return EpisodeEntry(date, entryOrNull);
+      }).toList();
+      _allEpisodes = episodes;
+      _state = Loaded(episodes);
+      selectEntry(episodes.first);
+      completer.complete();
+    });
+    return completer.future;
   }
 
   void selectEntry(EpisodeEntry entry) {
@@ -79,6 +87,12 @@ class DiaryDashboardNotifier extends ChangeNotifier {
     _indicatorIndex = 0;
     _indicatorShadowIndex = 0;
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    _subscription?.cancel();
+    super.dispose();
   }
 }
 

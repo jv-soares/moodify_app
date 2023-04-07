@@ -33,7 +33,7 @@ class _DiaryEntryFormPageState extends State<DiaryEntryFormPage> {
   void _navigateWhenSaved() {
     if (_notifier.value is Saved) {
       Navigator.of(context).push(
-        MaterialPageRoute(builder: (_) => DiaryDashboardPage()),
+        MaterialPageRoute(builder: (_) => const DiaryDashboardPage()),
       );
     }
   }
