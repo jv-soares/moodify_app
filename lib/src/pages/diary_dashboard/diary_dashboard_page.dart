@@ -38,23 +38,28 @@ class DiaryDashboardPage extends StatelessWidget {
                 .capitalize(),
           ),
         ),
-        leading: IconButton(
-          icon: const Icon(Icons.calendar_today),
-          onPressed: () async {
-            final selectedRange = await showDateRangePicker(
-              context: context,
-              firstDate: notifier.oldestEntry?.date ?? DateTime.now(),
-              lastDate: notifier.newestEntry?.date ?? DateTime.now(),
-              saveText: 'Salvar',
-              locale: Localizations.localeOf(context),
-            );
-            if (selectedRange != null) {
-              notifier.selectDateRange(
-                selectedRange.start,
-                selectedRange.end,
-              );
-            }
-          },
+        leading: Theme(
+          data: Theme.of(context).copyWith(useMaterial3: false),
+          child: Builder(
+            builder: (context) => IconButton(
+              icon: const Icon(Icons.calendar_today),
+              onPressed: () async {
+                final selectedRange = await showDateRangePicker(
+                  context: context,
+                  firstDate: notifier.oldestEntry?.date ?? DateTime.now(),
+                  lastDate: notifier.newestEntry?.date ?? DateTime.now(),
+                  saveText: 'Salvar',
+                  locale: Localizations.localeOf(context),
+                );
+                if (selectedRange != null) {
+                  notifier.selectDateRange(
+                    selectedRange.start,
+                    selectedRange.end,
+                  );
+                }
+              },
+            ),
+          ),
         ),
         actions: [
           IconButton(
