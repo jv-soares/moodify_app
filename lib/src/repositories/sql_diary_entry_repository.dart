@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:collection/collection.dart';
+import 'package:moodify_app/src/core/failures.dart';
 import 'package:moodify_app/src/diary_entries.dart';
 import 'package:moodify_app/src/repositories/dtos/diary_entry_dto.dart';
 import 'package:rxdart/subjects.dart';
@@ -23,6 +24,7 @@ class SqlDiaryEntryRepository implements DiaryEntryRepository {
   }
 
   final _controller = BehaviorSubject<List<DiaryEntry>>();
+  List<DiaryEntry>? get _cachedEntries => _controller.valueOrNull;
 
   Future<void> _init() async {
     // await sql.Sqflite.setDebugModeOn();
@@ -43,7 +45,12 @@ class SqlDiaryEntryRepository implements DiaryEntryRepository {
 
   @override
   Future<String> create(DiaryEntry entry) async {
-    _controller.add([..._controller.value, entry]);
+    if (_cachedEntries != null) {
+      if (_cachedEntries!.any((element) => element.isSameCreationDate(entry))) {
+        throw DuplicatedEntryFailure();
+      }
+      _controller.add([..._cachedEntries!, entry]);
+    }
     final batch = _db.batch();
     final dto = DiaryEntryDto.fromModel(entry);
     batch.insert(_Tables.diaryEntries, dto.toJson());

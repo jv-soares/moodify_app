@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:moodify_app/src/utils/date_time_utils.dart';
 
 import 'episode_severity.dart';
 import 'life_event.dart';
@@ -29,6 +30,10 @@ class DiaryEntry extends Equatable {
     this.lifeEvent,
     this.observations,
   });
+
+  bool isSameCreationDate(DiaryEntry other) {
+    return DateTimeUtils.compareDayOfYear(createdAt, other.createdAt);
+  }
 
   @override
   List<Object?> get props => [
