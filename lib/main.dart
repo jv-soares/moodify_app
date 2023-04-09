@@ -6,6 +6,7 @@ import 'package:moodify_app/src/app_container.dart';
 import 'src/app.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   Intl.defaultLocale = 'pt_BR';
   await initializeDateFormatting();
   await AppContainer.initialize();

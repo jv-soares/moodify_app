@@ -1,12 +1,13 @@
 import 'package:get_it/get_it.dart';
 import 'package:moodify_app/src/repositories/diary_entry_repository.dart';
+import 'package:moodify_app/src/repositories/sql_diary_entry_repository.dart';
 
 abstract class AppContainer {
   static final _getIt = GetIt.instance;
 
   static Future<void> initialize() async {
-    _getIt.registerLazySingleton<DiaryEntryRepository>(
-      () => TempDiaryEntryRepository(),
+    _getIt.registerSingletonAsync<DiaryEntryRepository>(
+      () => SqlDiaryEntryRepository.getInstance(),
     );
     return _getIt.allReady();
   }
