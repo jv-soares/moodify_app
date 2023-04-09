@@ -34,9 +34,9 @@ class SqlDiaryEntryRepository implements DiaryEntryRepository {
         await db.execute('PRAGMA foreign_keys = ON');
       },
       onCreate: (db, version) async {
-        await db.execute(CreateTableQuery.diaryEntries);
-        await db.execute(CreateTableQuery.lifeEvents);
-        await db.execute(CreateTableQuery.medications);
+        await db.execute(_CreateTableQuery.diaryEntries);
+        await db.execute(_CreateTableQuery.lifeEvents);
+        await db.execute(_CreateTableQuery.medications);
       },
     );
   }
@@ -46,13 +46,13 @@ class SqlDiaryEntryRepository implements DiaryEntryRepository {
     _controller.add([..._controller.value, entry]);
     final batch = _db.batch();
     final dto = DiaryEntryDto.fromModel(entry);
-    batch.insert('diary_entries', dto.toJson());
+    batch.insert(_Tables.diaryEntries, dto.toJson());
     if (dto.lifeEvent != null) {
-      batch.insert('diary_entries', dto.lifeEvent!.toJson());
+      batch.insert(_Tables.lifeEvents, dto.lifeEvent!.toJson());
     }
     if (dto.medications.isNotEmpty) {
       for (final medication in dto.medications) {
-        batch.insert('diary_entries', medication.toJson());
+        batch.insert(_Tables.medications, medication.toJson());
       }
     }
     final ids = await batch.commit();
@@ -81,9 +81,9 @@ class SqlDiaryEntryRepository implements DiaryEntryRepository {
   }
 }
 
-abstract class CreateTableQuery {
+abstract class _CreateTableQuery {
   static const diaryEntries = '''
-CREATE TABLE diary_entries (
+CREATE TABLE ${_Tables.diaryEntries} (
   diaryEntryId INTEGER PRIMARY KEY,
   createdAt INTEGER,
   episode TEXT,
@@ -95,7 +95,7 @@ CREATE TABLE diary_entries (
 ''';
 
   static const lifeEvents = '''
-CREATE TABLE life_events (
+CREATE TABLE ${_Tables.lifeEvents} (
   lifeEventId INTEGER PRIMARY KEY,
   impactRating INTEGER,
   description TEXT,
@@ -104,7 +104,7 @@ CREATE TABLE life_events (
 ''';
 
   static const medications = '''
-CREATE TABLE medications (
+CREATE TABLE ${_Tables.medications} (
   medicationId INTEGER PRIMARY KEY,
   name TEXT,
   tabletsTaken INTEGER,
@@ -115,11 +115,17 @@ CREATE TABLE medications (
 ''';
 }
 
+abstract class _Tables {
+  static const diaryEntries = 'diary_entries';
+  static const medications = 'medications';
+  static const lifeEvents = 'life_events';
+}
+
 extension on List<DiaryEntry> {
   List<DiaryEntry> sortedByCreationDate({bool ascending = false}) {
     return sortedByCompare(
       (e) => e.createdAt,
-      (a, b) => ascending ? b.compareTo(a) : a.compareTo(b),
+      (a, b) => ascending ? a.compareTo(b) : b.compareTo(a),
     );
   }
 }
