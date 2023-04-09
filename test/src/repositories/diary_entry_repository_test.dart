@@ -1,6 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:moodify_app/src/core/failures.dart';
 import 'package:moodify_app/src/diary_entries.dart';
 import 'package:moodify_app/src/repositories/diary_entry_repository.dart';
+import 'package:moodify_app/src/repositories/temp_diary_entry_repository.dart';
 
 void main() {
   late DiaryEntryRepository sut;
