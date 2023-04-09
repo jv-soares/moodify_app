@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:collection/collection.dart';
 import 'package:moodify_app/src/core/failures.dart';
-import 'package:moodify_app/src/diary_entries.dart';
 import 'package:moodify_app/src/repositories/dtos/diary_entry_dto.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:sqflite/sqflite.dart' as sql;
@@ -14,7 +13,7 @@ class SqlDiaryEntryRepository implements DiaryEntryRepository {
   late sql.Database _db;
 
   SqlDiaryEntryRepository._() {
-    _controller.add(diaryEntries);
+    // _controller.add(diaryEntries);
   }
 
   static Future<SqlDiaryEntryRepository> getInstance() async {
@@ -51,19 +50,25 @@ class SqlDiaryEntryRepository implements DiaryEntryRepository {
       }
       _controller.add([..._cachedEntries!, entry]);
     }
-    final batch = _db.batch();
-    final dto = DiaryEntryDto.fromModel(entry);
-    batch.insert(_Tables.diaryEntries, dto.toJson());
-    if (dto.lifeEvent != null) {
-      batch.insert(_Tables.lifeEvents, dto.lifeEvent!.toJson());
+    final diaryEntryId = await _db.insert(
+      _Tables.diaryEntries,
+      DiaryEntryDto.fromModel(entry).toJson(),
+    );
+    if (entry.lifeEvent != null) {
+      await _db.insert(
+        _Tables.lifeEvents,
+        LifeEventDto.fromModel(entry.lifeEvent!, diaryEntryId).toJson(),
+      );
     }
-    if (dto.medications.isNotEmpty) {
-      for (final medication in dto.medications) {
-        batch.insert(_Tables.medications, medication.toJson());
+    if (entry.medications.isNotEmpty) {
+      for (final medication in entry.medications) {
+        await _db.insert(
+          _Tables.medications,
+          MedicationDto.fromModel(medication, diaryEntryId).toJson(),
+        );
       }
     }
-    final ids = await batch.commit();
-    return (ids.first as int).toString();
+    return diaryEntryId.toString();
   }
 
   @override
@@ -73,9 +78,37 @@ class SqlDiaryEntryRepository implements DiaryEntryRepository {
   }
 
   @override
-  Future<List<DiaryEntry>> readAll() {
-    // TODO: implement read
-    throw UnimplementedError();
+  Future<List<DiaryEntry>> readAll() async {
+    List<DiaryEntry> list = [];
+    final results = await _db.query(_Tables.diaryEntries, orderBy: 'createdAt');
+    final entries = results.map(DiaryEntryDto.fromJson).toList();
+    for (final entry in entries) {
+      final medicationResults = await _db.query(
+        _Tables.medications,
+        where: 'diaryEntryId',
+        whereArgs: [entry.diaryEntryId],
+      );
+      final medications = medicationResults
+          .map(MedicationDto.fromJson)
+          .map((e) => e.toModel())
+          .toList();
+      final lifeEventResults = await _db.query(
+        _Tables.lifeEvents,
+        where: 'diaryEntryId',
+        whereArgs: [entry.diaryEntryId],
+      );
+      final lifeEvents = lifeEventResults
+          .map(LifeEventDto.fromJson)
+          .map((e) => e.toModel())
+          .toList();
+      list.add(
+        entry.toModel(
+          medications: medications,
+          lifeEvent: lifeEvents.firstOrNull,
+        ),
+      );
+    }
+    return list;
   }
 
   @override
@@ -83,7 +116,7 @@ class SqlDiaryEntryRepository implements DiaryEntryRepository {
     if (_controller.hasValue) {
       yield* _controller.map((entries) => entries.sortedByCreationDate());
     } else {
-      yield [];
+      yield* readAll().asStream();
     }
   }
 }
