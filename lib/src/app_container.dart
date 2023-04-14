@@ -1,6 +1,5 @@
 import 'package:get_it/get_it.dart';
 import 'package:moodify_app/src/repositories/diary_entry_repository.dart';
-import 'package:moodify_app/src/repositories/sql_diary_entry_repository.dart';
 import 'package:moodify_app/src/repositories/temp_diary_entry_repository.dart';
 
 abstract class AppContainer {
