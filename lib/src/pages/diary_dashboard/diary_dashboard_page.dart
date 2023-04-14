@@ -33,12 +33,18 @@ class DiaryDashboardPage extends StatelessWidget {
       appBar: AppBar(
         title: AnimatedBuilder(
           animation: notifier,
-          builder: (context, _) => Text(
-            DateFormat.yMMMM()
-                .format(notifier.selectedEntry?.diaryEntry?.createdAt ??
-                    DateTime.now())
-                .capitalize(),
-          ),
+          builder: (context, _) {
+            DateTime date = DateTime.now();
+            if (notifier.state is Loaded) {
+              date = (notifier.state as Loaded)
+                  .selectedEntry
+                  .diaryEntry!
+                  .createdAt;
+            }
+            return Text(
+              DateFormat.yMMMM().format(date).capitalize(),
+            );
+          },
         ),
         leading: Theme(
           data: Theme.of(context).copyWith(useMaterial3: false),

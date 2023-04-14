@@ -69,8 +69,9 @@ class _ContentState extends State<_Content> {
     final notifier = context.watch<DiaryDashboardNotifier>();
     _itemSize = _calculateItemSize();
     notifier.itemSize = _itemSize;
-    final entries = (notifier.state as Loaded).entries;
-    final selectedEntry = notifier.selectedEntry;
+    final state = notifier.state as Loaded;
+    final entries = state.entries;
+    final selectedEntry = state.selectedEntry;
     return Stack(
       children: [
         AnimatedPositioned(

@@ -12,9 +12,7 @@ import 'diary_entry_repository.dart';
 class SqlDiaryEntryRepository implements DiaryEntryRepository {
   late sql.Database _db;
 
-  SqlDiaryEntryRepository._() {
-    // _controller.add(diaryEntries);
-  }
+  SqlDiaryEntryRepository._();
 
   static Future<SqlDiaryEntryRepository> getInstance() async {
     final instance = SqlDiaryEntryRepository._();

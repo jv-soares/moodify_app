@@ -13,9 +13,6 @@ part 'diary_dashboard_state.dart';
 class DiaryDashboardNotifier extends ChangeNotifier {
   final _repository = AppContainer.get<DiaryEntryRepository>();
 
-  EpisodeEntry? get selectedEntry => _selectedEntry;
-  EpisodeEntry? _selectedEntry;
-
   DiaryDashboardState get state => _state;
   DiaryDashboardState _state = Initial();
 
@@ -52,7 +49,7 @@ class DiaryDashboardNotifier extends ChangeNotifier {
   }
 
   void selectEntry(EpisodeEntry entry) {
-    _selectedEntry = entry;
+    if (state is Loaded) (state as Loaded).selectedEntry = entry;
     notifyListeners();
   }
 

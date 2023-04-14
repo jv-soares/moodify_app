@@ -13,6 +13,10 @@ class Loaded extends DiaryDashboardState {
 
   EpisodeEntry get newestEntry => entries.first;
 
+  set selectedEntry(EpisodeEntry entry) => _selectedEntry = entry;
+  EpisodeEntry? _selectedEntry;
+  EpisodeEntry get selectedEntry => _selectedEntry ?? entries.first;
+
   Loaded(this.entries);
 }
 
