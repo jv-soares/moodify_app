@@ -1,5 +1,8 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+
+import '../../models/scheduled_notification.dart';
+import '../../utils/list_extension.dart';
+import '../../widgets/moodify_divider.dart';
 
 class NotificationsPage extends StatelessWidget {
   const NotificationsPage({super.key});
@@ -8,36 +11,58 @@ class NotificationsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Notificações')),
-      body: ListView.separated(
-        itemCount: notifications.length,
-        itemBuilder: (context, index) {
-          final item = notifications.sortedByTimeOfDay()[index];
-          return ListTile(
-            title: Text(
-              item.time.format(context),
-              style: Theme.of(context).textTheme.headlineMedium,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: Theme.of(context).colorScheme.primaryContainer,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Personalize suas notificações',
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          color:
+                              Theme.of(context).colorScheme.onPrimaryContainer,
+                        ),
+                  ),
+                  Text(
+                    'Aqui vc pode coisar',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color:
+                              Theme.of(context).colorScheme.onPrimaryContainer,
+                        ),
+                  ),
+                ],
+              ),
             ),
-            trailing: Switch(
-              value: true,
-              onChanged: (value) {},
-            ),
-          );
-        },
-        separatorBuilder: (_, __) => const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: Divider(),
+            ...notifications
+                .sortedByTimeOfDay()
+                .map<Widget>(
+                  (e) => ListTile(
+                    title: Text(
+                      e.time.format(context),
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
+                    trailing: Switch(
+                      value: true,
+                      onChanged: (value) {},
+                    ),
+                  ),
+                )
+                .toList()
+                .separatedBy(const MoodifyDivider()),
+          ],
         ),
       ),
     );
   }
-}
-
-class ScheduledNotification {
-  final String id;
-  final TimeOfDay time;
-  final bool isActive;
-
-  const ScheduledNotification(this.id, this.time, this.isActive);
 }
 
 const notifications = [
@@ -46,13 +71,3 @@ const notifications = [
   ScheduledNotification('3', TimeOfDay(hour: 10, minute: 5), false),
   ScheduledNotification('4', TimeOfDay(hour: 14, minute: 30), false),
 ];
-
-extension on List<ScheduledNotification> {
-  List<ScheduledNotification> sortedByTimeOfDay() {
-    return sortedByCompare((e) => e.time, (a, b) {
-      final result = a.hour.compareTo(b.hour);
-      if (result == 0) return a.minute.compareTo(b.minute);
-      return result;
-    });
-  }
-}
