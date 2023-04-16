@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moodify_app/src/pages/notifications/components/scheduled_notification_list_tile.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/scheduled_notification.dart';
 import '../../utils/list_extension.dart';
@@ -18,21 +19,23 @@ class _NotificationsPageState extends State<NotificationsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Notificações')),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            _ExplanationContainer(),
-            ValueListenableBuilder(
-              valueListenable: _notifier,
-              builder: (context, notifications, _) {
-                return Column(
+    return ChangeNotifierProvider.value(
+      value: _notifier,
+      child: Scaffold(
+        appBar: AppBar(title: const Text('Notificações')),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              _ExplanationContainer(),
+              ValueListenableBuilder(
+                valueListenable: _notifier,
+                builder: (context, notifications, _) => Column(
                   children: notifications
                       .sortedByTimeOfDay()
                       .map<Widget>(
                         (e) => ScheduledNotificationListTile(
                           e,
+                          key: ValueKey(e.id),
                           onChanged: (value) {
                             _notifier.toggleNotification(e.id, value);
                           },
@@ -40,10 +43,10 @@ class _NotificationsPageState extends State<NotificationsPage> {
                       )
                       .toList()
                       .separatedBy(const MoodifyDivider()),
-                );
-              },
-            ),
-          ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -90,12 +93,23 @@ class _ExplanationContainer extends StatelessWidget {
             color: Theme.of(context).colorScheme.primary.withOpacity(.3),
           ),
           Center(
-            child: Text(
-              'ADICIONAR NOTIFICAÇÃO',
-              style: Theme.of(context)
-                  .textTheme
-                  .labelLarge
-                  ?.copyWith(color: Theme.of(context).colorScheme.primary),
+            child: TextButton(
+              onPressed: () async {
+                showTimePicker(
+                  context: context,
+                  initialTime: TimeOfDay.now(),
+                ).then((pickedTime) {
+                  if (pickedTime != null) {
+                    context.read<NotificationsNotifier>().createAt(pickedTime);
+                  }
+                });
+              },
+              style: TextButton.styleFrom(
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                minimumSize: Size.zero,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+              ),
+              child: const Text('ADICIONAR NOTIFICAÇÃO'),
             ),
           ),
         ],

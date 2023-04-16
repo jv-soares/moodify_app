@@ -11,6 +11,11 @@ class NotificationsNotifier extends ValueNotifier<List<ScheduledNotification>> {
     list[index] = list[index].copyWith(isActive: isActive);
     value = list;
   }
+
+  Future<void> createAt(TimeOfDay time) async {
+    final notification = ScheduledNotification('example', time, true);
+    value = [...value, notification];
+  }
 }
 
 const notifications = [
