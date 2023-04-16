@@ -7,6 +7,18 @@ class ScheduledNotification {
   final bool isActive;
 
   const ScheduledNotification(this.id, this.time, this.isActive);
+
+  ScheduledNotification copyWith({
+    String? id,
+    TimeOfDay? time,
+    bool? isActive,
+  }) {
+    return ScheduledNotification(
+      id ?? this.id,
+      time ?? this.time,
+      isActive ?? this.isActive,
+    );
+  }
 }
 
 extension ScheduledNotificationListX on List<ScheduledNotification> {
