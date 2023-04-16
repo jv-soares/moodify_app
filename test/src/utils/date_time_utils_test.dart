@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moodify_app/src/utils/date_time_utils.dart';
 
@@ -72,5 +73,26 @@ void main() {
 
     date = DateTime(2022, 2, 16);
     expect(date.isBetween(from, to), isFalse);
+  });
+
+  test('should sort time of day', () {
+    const list = [
+      TimeOfDay(hour: 12, minute: 0),
+      TimeOfDay(hour: 21, minute: 10),
+      TimeOfDay(hour: 10, minute: 10),
+      TimeOfDay(hour: 10, minute: 5),
+    ];
+
+    final result = DateTimeUtils.sortTimeOfDayList(list);
+
+    expect(
+      result,
+      const [
+        TimeOfDay(hour: 10, minute: 5),
+        TimeOfDay(hour: 10, minute: 10),
+        TimeOfDay(hour: 12, minute: 0),
+        TimeOfDay(hour: 21, minute: 10),
+      ],
+    );
   });
 }

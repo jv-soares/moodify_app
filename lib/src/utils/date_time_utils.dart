@@ -1,3 +1,6 @@
+import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
+
 abstract class DateTimeUtils {
   static List<DateTime> fillListGaps(List<DateTime> list) {
     final resultList = <DateTime>[];
@@ -33,6 +36,14 @@ abstract class DateTimeUtils {
     final isMonthEqual = a.month == b.month;
     final isYearEqual = a.year == b.year;
     return isDayEqual && isMonthEqual && isYearEqual;
+  }
+
+  static List<TimeOfDay> sortTimeOfDayList(List<TimeOfDay> list) {
+    return list.sorted((a, b) {
+      final result = a.hour.compareTo(b.hour);
+      if (result == 0) return a.minute.compareTo(b.minute);
+      return result;
+    });
   }
 }
 
