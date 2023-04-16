@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:moodify_app/src/pages/diary_dashboard/components/episodes_chart.dart';
 import 'package:moodify_app/src/pages/diary_dashboard/notifiers/diary_dashboard_notifier.dart';
 import 'package:moodify_app/src/pages/diary_entry_form/diary_entry_form_page.dart';
+import 'package:moodify_app/src/pages/notifications/notifications_page.dart';
 import 'package:moodify_app/src/utils/string_x.dart';
 import 'package:provider/provider.dart';
 
@@ -71,8 +72,12 @@ class DiaryDashboardPage extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {},
+            icon: const Icon(Icons.notifications_outlined),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const NotificationsPage(),
+              ));
+            },
           ),
         ],
       ),
