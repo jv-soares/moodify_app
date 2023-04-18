@@ -12,6 +12,7 @@ class ScheduledNotificationListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       title: Text(
         notification.time.format(context),
         style: Theme.of(context).textTheme.headlineMedium,

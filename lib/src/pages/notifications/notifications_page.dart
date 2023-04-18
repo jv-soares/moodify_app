@@ -1,11 +1,8 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
-import 'package:moodify_app/src/pages/notifications/components/scheduled_notification_list_tile.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/scheduled_notification.dart';
 import '../../widgets/moodify_divider.dart';
+import 'components/scheduled_notification_list_tile.dart';
 import 'notifiers/notifications_notifier.dart';
 
 class NotificationsPage extends StatefulWidget {
@@ -33,36 +30,46 @@ class _NotificationsPageState extends State<NotificationsPage> {
               valueListenable: _notifier,
               builder: (context, notifications, _) => SliverAnimatedList(
                 key: _notifier.listKey,
-                initialItemCount: _computeActualChildCount(
-                  notifications.length,
-                ),
+                initialItemCount: notifications.length,
                 itemBuilder: (context, index, animation) {
-                  final itemIndex = index ~/ 2;
-                  if (index.isEven) {
-                    final item = notifications[itemIndex];
-                    return SlideTransition(
-                      position: animation.drive(Tween(
-                        begin: const Offset(1, 0),
-                        end: Offset.zero,
-                      )),
+                  bool isLastIndex() {
+                    return index < notifications.length - 1;
+                  }
+
+                  final item = notifications[index];
+                  return SlideTransition(
+                    position: animation.drive(Tween(
+                      begin: const Offset(1, 0),
+                      end: Offset.zero,
+                    )),
+                    child: Container(
+                      decoration: isLastIndex()
+                          ? BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  width: 1,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .outlineVariant,
+                                ),
+                              ),
+                            )
+                          : null,
                       child: ScheduledNotificationListTile(
                         key: ValueKey(item.id),
                         item,
                       ),
-                    );
-                  } else {
-                    return const MoodifyDivider();
-                  }
+                    ),
+                  );
                 },
               ),
             ),
+            const SliverToBoxAdapter(child: SizedBox(height: 48)),
           ],
         ),
       ),
     );
   }
-
-  int _computeActualChildCount(int itemCount) => math.max(0, itemCount * 2 - 1);
 }
 
 class _ExplanationContainer extends StatelessWidget {

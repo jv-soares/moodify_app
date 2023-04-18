@@ -7,7 +7,7 @@ class NotificationsNotifier extends ValueNotifier<List<ScheduledNotification>> {
 
   NotificationsNotifier({
     required this.listKey,
-  }) : super(_notifications);
+  }) : super(_notifications.sortedByTimeOfDay());
 
   void toggleNotification(String id, bool isActive) {
     final list = [...value];
@@ -17,9 +17,9 @@ class NotificationsNotifier extends ValueNotifier<List<ScheduledNotification>> {
   }
 
   Future<void> createAt(TimeOfDay time) async {
-    final notification = ScheduledNotification('example', time, true);
-    value = [...value, notification];
-    final index = value.indexWhere((element) => element.id == 'example');
+    final notification = ScheduledNotification(time.toString(), time, true);
+    value = [...value, notification].sortedByTimeOfDay();
+    final index = value.indexWhere((element) => element.id == time.toString());
     listKey.currentState?.insertItem(index);
   }
 }
