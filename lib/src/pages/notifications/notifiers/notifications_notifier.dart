@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 import '../../../models/scheduled_notification.dart';
 
 class NotificationsNotifier extends ValueNotifier<List<ScheduledNotification>> {
-  NotificationsNotifier() : super(notifications);
+  final GlobalKey<SliverAnimatedListState> listKey;
+
+  NotificationsNotifier({
+    required this.listKey,
+  }) : super(_notifications);
 
   void toggleNotification(String id, bool isActive) {
     final list = [...value];
@@ -15,10 +19,12 @@ class NotificationsNotifier extends ValueNotifier<List<ScheduledNotification>> {
   Future<void> createAt(TimeOfDay time) async {
     final notification = ScheduledNotification('example', time, true);
     value = [...value, notification];
+    final index = value.indexWhere((element) => element.id == 'example');
+    listKey.currentState?.insertItem(index);
   }
 }
 
-const notifications = [
+const _notifications = [
   ScheduledNotification('1', TimeOfDay(hour: 12, minute: 0), true),
   ScheduledNotification('2', TimeOfDay(hour: 23, minute: 10), true),
   ScheduledNotification('3', TimeOfDay(hour: 10, minute: 5), false),

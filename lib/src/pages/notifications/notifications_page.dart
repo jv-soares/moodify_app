@@ -1,9 +1,10 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:moodify_app/src/pages/notifications/components/scheduled_notification_list_tile.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/scheduled_notification.dart';
-import '../../utils/list_extension.dart';
 import '../../widgets/moodify_divider.dart';
 import 'notifiers/notifications_notifier.dart';
 
@@ -15,7 +16,9 @@ class NotificationsPage extends StatefulWidget {
 }
 
 class _NotificationsPageState extends State<NotificationsPage> {
-  final _notifier = NotificationsNotifier();
+  final _notifier = NotificationsNotifier(
+    listKey: GlobalKey<SliverAnimatedListState>(),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -23,34 +26,43 @@ class _NotificationsPageState extends State<NotificationsPage> {
       value: _notifier,
       child: Scaffold(
         appBar: AppBar(title: const Text('Notificações')),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              _ExplanationContainer(),
-              ValueListenableBuilder(
-                valueListenable: _notifier,
-                builder: (context, notifications, _) => Column(
-                  children: notifications
-                      .sortedByTimeOfDay()
-                      .map<Widget>(
-                        (e) => ScheduledNotificationListTile(
-                          e,
-                          key: ValueKey(e.id),
-                          onChanged: (value) {
-                            _notifier.toggleNotification(e.id, value);
-                          },
-                        ),
-                      )
-                      .toList()
-                      .separatedBy(const MoodifyDivider()),
+        body: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(child: _ExplanationContainer()),
+            ValueListenableBuilder(
+              valueListenable: _notifier,
+              builder: (context, notifications, _) => SliverAnimatedList(
+                key: _notifier.listKey,
+                initialItemCount: _computeActualChildCount(
+                  notifications.length,
                 ),
+                itemBuilder: (context, index, animation) {
+                  final itemIndex = index ~/ 2;
+                  if (index.isEven) {
+                    final item = notifications[itemIndex];
+                    return SlideTransition(
+                      position: animation.drive(Tween(
+                        begin: const Offset(1, 0),
+                        end: Offset.zero,
+                      )),
+                      child: ScheduledNotificationListTile(
+                        key: ValueKey(item.id),
+                        item,
+                      ),
+                    );
+                  } else {
+                    return const MoodifyDivider();
+                  }
+                },
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
+
+  int _computeActualChildCount(int itemCount) => math.max(0, itemCount * 2 - 1);
 }
 
 class _ExplanationContainer extends StatelessWidget {
@@ -94,7 +106,7 @@ class _ExplanationContainer extends StatelessWidget {
           ),
           Center(
             child: TextButton(
-              onPressed: () async {
+              onPressed: () {
                 showTimePicker(
                   context: context,
                   initialTime: TimeOfDay.now(),
