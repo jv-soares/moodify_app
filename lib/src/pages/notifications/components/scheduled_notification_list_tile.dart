@@ -6,8 +6,13 @@ import '../../../models/scheduled_notification.dart';
 
 class ScheduledNotificationListTile extends StatelessWidget {
   final ScheduledNotification notification;
+  final bool isEditing;
 
-  const ScheduledNotificationListTile(this.notification, {super.key});
+  const ScheduledNotificationListTile(
+    this.notification, {
+    super.key,
+    this.isEditing = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,12 +22,19 @@ class ScheduledNotificationListTile extends StatelessWidget {
         notification.time.format(context),
         style: Theme.of(context).textTheme.headlineMedium,
       ),
-      trailing: Switch(
-        value: notification.isActive,
-        onChanged: (value) => context
-            .read<NotificationsNotifier>()
-            .toggleNotification(notification.id, value),
-      ),
+      trailing: isEditing
+          ? IconButton(
+              onPressed: () {
+                context.read<NotificationsNotifier>().delete(notification.id);
+              },
+              icon: const Icon(Icons.delete_outline),
+            )
+          : Switch(
+              value: notification.isActive,
+              onChanged: (value) => context
+                  .read<NotificationsNotifier>()
+                  .toggleNotification(notification.id, value),
+            ),
     );
   }
 }

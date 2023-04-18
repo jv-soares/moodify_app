@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moodify_app/src/pages/notifications/components/scheduled_notification_list_tile.dart';
 
 import '../../../models/scheduled_notification.dart';
 
@@ -21,6 +22,19 @@ class NotificationsNotifier extends ValueNotifier<List<ScheduledNotification>> {
     value = [...value, notification].sortedByTimeOfDay();
     final index = value.indexWhere((element) => element.id == time.toString());
     listKey.currentState?.insertItem(index);
+  }
+
+  void delete(String id) {
+    final list = [...value];
+    final index = list.indexWhere((element) => element.id == id);
+    final removedItem = list.removeAt(index);
+    value = list;
+    listKey.currentState?.removeItem(index, (context, animation) {
+      return ScheduledNotificationListTile(
+        key: ValueKey(id),
+        removedItem,
+      );
+    });
   }
 }
 

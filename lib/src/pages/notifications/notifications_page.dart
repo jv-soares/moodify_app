@@ -13,6 +13,7 @@ class NotificationsPage extends StatefulWidget {
 }
 
 class _NotificationsPageState extends State<NotificationsPage> {
+  bool _editMode = false;
   final _notifier = NotificationsNotifier(
     listKey: GlobalKey<SliverAnimatedListState>(),
   );
@@ -22,7 +23,17 @@ class _NotificationsPageState extends State<NotificationsPage> {
     return ChangeNotifierProvider.value(
       value: _notifier,
       child: Scaffold(
-        appBar: AppBar(title: const Text('Notificações')),
+        appBar: AppBar(
+          title: const Text('Notificações'),
+          actions: [
+            IconButton(
+              onPressed: () {
+                setState(() => _editMode = !_editMode);
+              },
+              icon: Icon(_editMode ? Icons.check : Icons.edit),
+            )
+          ],
+        ),
         body: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(child: _ExplanationContainer()),
@@ -57,6 +68,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                           : null,
                       child: ScheduledNotificationListTile(
                         key: ValueKey(item.id),
+                        isEditing: _editMode,
                         item,
                       ),
                     ),
