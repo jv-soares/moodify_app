@@ -17,6 +17,8 @@ class NotificationsNotifier extends ValueNotifier<List<ScheduledNotification>> {
     required this.removedItemBuilder,
   }) : super(_notifications.sortedByTimeOfDay());
 
+  bool get isEmpty => value.isEmpty;
+
   void toggleNotification(String id, bool isActive) {
     final list = [...value];
     final index = list.indexWhere((e) => e.id == id);

@@ -30,24 +30,25 @@ class _NotificationsPageState extends State<NotificationsPage> {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
       value: _notifier,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Notificações'),
-          actions: [
-            IconButton(
-              onPressed: () {
-                setState(() => _editMode = !_editMode);
-              },
-              icon: Icon(_editMode ? Icons.check : Icons.edit),
-            )
-          ],
-        ),
-        body: CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(child: _ExplanationContainer()),
-            ValueListenableBuilder(
-              valueListenable: _notifier,
-              builder: (context, notifications, _) => SliverAnimatedList(
+      child: ValueListenableBuilder(
+        valueListenable: _notifier,
+        builder: (context, notifications, _) => Scaffold(
+          appBar: AppBar(
+            title: const Text('Notificações'),
+            actions: [
+              if (!_notifier.isEmpty)
+                IconButton(
+                  onPressed: () {
+                    setState(() => _editMode = !_editMode);
+                  },
+                  icon: Icon(_editMode ? Icons.check : Icons.edit),
+                ),
+            ],
+          ),
+          body: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(child: _ExplanationContainer()),
+              SliverAnimatedList(
                 key: _notifier.listKey,
                 initialItemCount: notifications.length,
                 itemBuilder: (context, index, animation) {
@@ -80,9 +81,9 @@ class _NotificationsPageState extends State<NotificationsPage> {
                   );
                 },
               ),
-            ),
-            const SliverToBoxAdapter(child: SizedBox(height: 48)),
-          ],
+              const SliverToBoxAdapter(child: SizedBox(height: 48)),
+            ],
+          ),
         ),
       ),
     );
