@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moodify_app/src/models/scheduled_notification.dart';
 import 'package:provider/provider.dart';
 
 import '../../widgets/moodify_divider.dart';
@@ -13,10 +14,17 @@ class NotificationsPage extends StatefulWidget {
 }
 
 class _NotificationsPageState extends State<NotificationsPage> {
+  late final NotificationsNotifier _notifier;
   bool _editMode = false;
-  final _notifier = NotificationsNotifier(
-    listKey: GlobalKey<SliverAnimatedListState>(),
-  );
+
+  @override
+  void initState() {
+    super.initState();
+    _notifier = NotificationsNotifier(
+      listKey: GlobalKey<SliverAnimatedListState>(),
+      removedItemBuilder: removedItemBuilder,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,12 +56,8 @@ class _NotificationsPageState extends State<NotificationsPage> {
                   }
 
                   final item = notifications[index];
-                  return SlideTransition(
-                    position: animation.drive(Tween(
-                      begin: const Offset(1, 0),
-                      end: Offset.zero,
-                    )),
-                    child: Container(
+                  return _buildWithSlideTransition(
+                    Container(
                       decoration: isLastIndex()
                           ? BoxDecoration(
                               border: Border(
@@ -72,6 +76,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                         item,
                       ),
                     ),
+                    animation,
                   );
                 },
               ),
@@ -80,6 +85,32 @@ class _NotificationsPageState extends State<NotificationsPage> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget removedItemBuilder(
+    BuildContext context,
+    ScheduledNotification item,
+    Animation<double> animation,
+  ) {
+    return _buildWithSlideTransition(
+      ScheduledNotificationListTile(
+        key: ValueKey(item.id),
+        isEditing: _editMode,
+        item,
+      ),
+      animation,
+    );
+  }
+
+  Widget _buildWithSlideTransition(Widget child, Animation<double> animation) {
+    return SlideTransition(
+      position: animation.drive(
+        Tween(begin: const Offset(1, 0), end: Offset.zero).chain(
+          CurveTween(curve: Curves.easeInOutQuad),
+        ),
+      ),
+      child: child,
     );
   }
 }

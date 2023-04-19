@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:moodify_app/src/pages/notifications/components/scheduled_notification_list_tile.dart';
 
 import '../../../models/scheduled_notification.dart';
 
+typedef RemovedItemBuilder = Widget Function(
+  BuildContext,
+  ScheduledNotification,
+  Animation<double>,
+);
+
 class NotificationsNotifier extends ValueNotifier<List<ScheduledNotification>> {
   final GlobalKey<SliverAnimatedListState> listKey;
+  final RemovedItemBuilder removedItemBuilder;
 
   NotificationsNotifier({
     required this.listKey,
+    required this.removedItemBuilder,
   }) : super(_notifications.sortedByTimeOfDay());
 
   void toggleNotification(String id, bool isActive) {
@@ -29,12 +36,14 @@ class NotificationsNotifier extends ValueNotifier<List<ScheduledNotification>> {
     final index = list.indexWhere((element) => element.id == id);
     final removedItem = list.removeAt(index);
     value = list;
-    listKey.currentState?.removeItem(index, (context, animation) {
-      return ScheduledNotificationListTile(
-        key: ValueKey(id),
+    listKey.currentState?.removeItem(
+      index,
+      (context, animation) => removedItemBuilder(
+        context,
         removedItem,
-      );
-    });
+        animation,
+      ),
+    );
   }
 }
 
