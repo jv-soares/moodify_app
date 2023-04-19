@@ -27,7 +27,10 @@ class ScheduledNotificationListTile extends StatelessWidget {
               onPressed: () {
                 context.read<NotificationsNotifier>().delete(notification.id);
               },
-              icon: const Icon(Icons.delete_outline),
+              icon: Icon(
+                Icons.delete_outline,
+                color: Theme.of(context).colorScheme.error,
+              ),
             )
           : Switch(
               value: notification.isActive,
