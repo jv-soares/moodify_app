@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:moodify_app/src/models/scheduled_notification.dart';
 import 'package:provider/provider.dart';
 
+import '../../widgets/fetch_notifier_builder.dart';
 import '../../widgets/moodify_divider.dart';
 import 'components/scheduled_notification_list_tile.dart';
 import 'notifiers/notifications_notifier.dart';
@@ -30,33 +31,38 @@ class _NotificationsPageState extends State<NotificationsPage> {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
       value: _notifier,
-      child: ValueListenableBuilder(
-        valueListenable: _notifier,
-        builder: (context, notifications, _) => Scaffold(
-          appBar: AppBar(
-            title: const Text('Notificações'),
-            actions: [
-              if (!_notifier.isEmpty)
-                IconButton(
-                  onPressed: () {
-                    setState(() => _editMode = !_editMode);
-                  },
-                  icon: Icon(_editMode ? Icons.check : Icons.edit),
-                ),
-            ],
-          ),
-          body: CustomScrollView(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Notificações'),
+          actions: [
+            FetchNotifierBuilder(
+              notifier: _notifier,
+              onSuccess: (data) => data.isNotEmpty
+                  ? IconButton(
+                      onPressed: () {
+                        setState(() => _editMode = !_editMode);
+                      },
+                      icon: Icon(_editMode ? Icons.check : Icons.edit),
+                    )
+                  : const SizedBox.shrink(),
+            ),
+          ],
+        ),
+        body: FetchNotifierBuilder(
+          notifier: _notifier,
+          onLoading: () => const Center(child: CircularProgressIndicator()),
+          onSuccess: (data) => CustomScrollView(
             slivers: [
               SliverToBoxAdapter(child: _ExplanationContainer()),
               SliverAnimatedList(
                 key: _notifier.listKey,
-                initialItemCount: notifications.length,
+                initialItemCount: data.length,
                 itemBuilder: (context, index, animation) {
                   bool isLastIndex() {
-                    return index < notifications.length - 1;
+                    return index < data.length - 1;
                   }
 
-                  final item = notifications[index];
+                  final item = data[index];
                   return _buildWithSlideTransition(
                     Container(
                       decoration: isLastIndex()

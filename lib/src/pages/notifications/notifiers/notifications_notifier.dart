@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:moodify_app/src/app_container.dart';
+import 'package:moodify_app/src/repositories/scheduled_notifications_repository.dart';
 
+import '../../../models/fetch_notifier.dart';
 import '../../../models/scheduled_notification.dart';
 
 typedef RemovedItemBuilder = Widget Function(
@@ -8,36 +11,45 @@ typedef RemovedItemBuilder = Widget Function(
   Animation<double>,
 );
 
-class NotificationsNotifier extends ValueNotifier<List<ScheduledNotification>> {
+class NotificationsNotifier extends FetchNotifier<List<ScheduledNotification>> {
+  final _repository = AppContainer.get<ScheduledNotificationsRepository>();
+
   final GlobalKey<SliverAnimatedListState> listKey;
   final RemovedItemBuilder removedItemBuilder;
 
   NotificationsNotifier({
     required this.listKey,
     required this.removedItemBuilder,
-  }) : super(_notifications.sortedByTimeOfDay());
+  }) {
+    _initialize();
+  }
 
-  bool get isEmpty => value.isEmpty;
+  List<ScheduledNotification> get _values => data ?? [];
+
+  Future<void> _initialize() => fetch(_repository.readAll);
 
   void toggleNotification(String id, bool isActive) {
-    final list = [...value];
+    final list = [..._values];
     final index = list.indexWhere((e) => e.id == id);
     list[index] = list[index].copyWith(isActive: isActive);
-    value = list;
+    data = list;
+    _repository.toggle(id, isActive);
   }
 
   Future<void> createAt(TimeOfDay time) async {
     final notification = ScheduledNotification(time.toString(), time, true);
-    value = [...value, notification].sortedByTimeOfDay();
-    final index = value.indexWhere((element) => element.id == time.toString());
+    final list = [..._values, notification].sortedByTimeOfDay();
+    data = list;
+    final id = await _repository.create(notification);
+    final index = list.indexWhere((element) => element.id == id);
     listKey.currentState?.insertItem(index);
   }
 
   void delete(String id) {
-    final list = [...value];
+    final list = [..._values];
     final index = list.indexWhere((element) => element.id == id);
     final removedItem = list.removeAt(index);
-    value = list;
+    data = list;
     listKey.currentState?.removeItem(
       index,
       (context, animation) => removedItemBuilder(
@@ -46,12 +58,6 @@ class NotificationsNotifier extends ValueNotifier<List<ScheduledNotification>> {
         animation,
       ),
     );
+    _repository.delete(id);
   }
 }
-
-const _notifications = [
-  ScheduledNotification('1', TimeOfDay(hour: 12, minute: 0), true),
-  ScheduledNotification('2', TimeOfDay(hour: 23, minute: 10), true),
-  ScheduledNotification('3', TimeOfDay(hour: 10, minute: 5), false),
-  ScheduledNotification('4', TimeOfDay(hour: 14, minute: 30), false),
-];
