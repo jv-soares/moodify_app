@@ -26,7 +26,11 @@ class NotificationsNotifier extends FetchNotifier<List<ScheduledNotification>> {
 
   List<ScheduledNotification> get _values => data ?? [];
 
-  Future<void> _initialize() => fetch(_repository.readAll);
+  Future<void> _initialize() {
+    return fetch(
+      () => _repository.readAll().then((items) => items.sortedByTimeOfDay()),
+    );
+  }
 
   void toggleNotification(String id, bool isActive) {
     final list = [..._values];
@@ -37,12 +41,13 @@ class NotificationsNotifier extends FetchNotifier<List<ScheduledNotification>> {
   }
 
   Future<void> createAt(TimeOfDay time) async {
-    final notification = ScheduledNotification(time.toString(), time, true);
+    var notification = ScheduledNotification(time.toString(), time, true);
+    final id = await _repository.create(notification);
+    notification = notification.copyWith(id: id);
     final list = [..._values, notification].sortedByTimeOfDay();
     data = list;
     final index = list.indexWhere((element) => element.time == time);
     listKey.currentState?.insertItem(index);
-    _repository.create(notification);
   }
 
   void delete(String id) {

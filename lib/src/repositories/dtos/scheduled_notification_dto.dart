@@ -20,6 +20,15 @@ class ScheduledNotificationDto {
   factory ScheduledNotificationDto.fromJson(Map<String, dynamic> json) =>
       _$ScheduledNotificationDtoFromJson(json);
 
+  factory ScheduledNotificationDto.fromModel(ScheduledNotification model) {
+    return ScheduledNotificationDto(
+      time: '${model.time.hour}:${model.time.minute}',
+      active: model.isActive ? 1 : 0,
+    );
+  }
+
+  Map<String, dynamic> toJson() => _$ScheduledNotificationDtoToJson(this);
+
   ScheduledNotification toModel() {
     return ScheduledNotification(
       notificationId!.toString(),

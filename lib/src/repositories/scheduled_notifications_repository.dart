@@ -77,13 +77,8 @@ class SqlScheduledNotificationRepository
 
   @override
   Future<String> create(ScheduledNotification notification) async {
-    final id = await _db.insert(
-      _Tables.notifications,
-      {
-        'time': '${notification.time.hour}:${notification.time.minute}',
-        'active': notification.isActive ? 1 : 0,
-      },
-    );
+    final dto = ScheduledNotificationDto.fromModel(notification);
+    final id = await _db.insert(_Tables.notifications, dto.toJson());
     return id.toString();
   }
 
