@@ -24,11 +24,10 @@ class SqlDiaryEntryRepository implements DiaryEntryRepository {
   List<DiaryEntry>? get _cachedEntries => _controller.valueOrNull;
 
   Future<void> _init() async {
-    // await sql.Sqflite.setDebugModeOn();
     _db = await sql.openDatabase(
       'moodify.db',
       version: 1,
-      onOpen: (_) => log('opened database'),
+      onOpen: (_) => log('opened $runtimeType'),
       onConfigure: (db) async {
         await db.execute('PRAGMA foreign_keys = ON');
       },

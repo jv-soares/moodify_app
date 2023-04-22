@@ -10,8 +10,8 @@ abstract class AppContainer {
     _getIt.registerSingletonAsync<DiaryEntryRepository>(
       () async => TempDiaryEntryRepository(),
     );
-    _getIt.registerLazySingleton<ScheduledNotificationsRepository>(
-      () => TempScheduledNotificationRepository(),
+    _getIt.registerSingletonAsync<ScheduledNotificationsRepository>(
+      () => SqlScheduledNotificationRepository.getInstance(),
     );
     return _getIt.allReady();
   }

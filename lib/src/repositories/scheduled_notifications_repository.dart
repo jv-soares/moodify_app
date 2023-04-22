@@ -1,7 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:moodify_app/src/models/scheduled_notification.dart';
+import 'package:moodify_app/src/repositories/dtos/scheduled_notification_dto.dart';
+import 'package:sqflite/sqflite.dart' as sql;
 
 abstract class ScheduledNotificationsRepository {
   Future<List<ScheduledNotification>> readAll();
@@ -46,4 +50,80 @@ class TempScheduledNotificationRepository
     final index = _notifications.indexWhere((element) => element.id == id);
     _notifications[index] = _notifications[index].copyWith(isActive: isActive);
   }
+}
+
+class SqlScheduledNotificationRepository
+    implements ScheduledNotificationsRepository {
+  late sql.Database _db;
+
+  SqlScheduledNotificationRepository._();
+
+  static Future<SqlScheduledNotificationRepository> getInstance() async {
+    final instance = SqlScheduledNotificationRepository._();
+    await instance._init();
+    return instance;
+  }
+
+  Future<void> _init() async {
+    _db = await sql.openDatabase(
+      'notifications.db',
+      version: 1,
+      onOpen: (_) => log('opened $runtimeType'),
+      onCreate: (db, version) async {
+        await db.execute(_CreateTableQuery.notifications);
+      },
+    );
+  }
+
+  @override
+  Future<String> create(ScheduledNotification notification) async {
+    final id = await _db.insert(
+      _Tables.notifications,
+      {
+        'time': '${notification.time.hour}:${notification.time.minute}',
+        'active': notification.isActive ? 1 : 0,
+      },
+    );
+    return id.toString();
+  }
+
+  @override
+  Future<void> delete(String id) async {
+    await _db.delete(
+      _Tables.notifications,
+      where: 'notificationId = ?',
+      whereArgs: [int.parse(id)],
+    );
+  }
+
+  @override
+  Future<List<ScheduledNotification>> readAll() async {
+    final items = await _db.query(_Tables.notifications);
+    return items
+        .map((e) => ScheduledNotificationDto.fromJson(e).toModel())
+        .toList();
+  }
+
+  @override
+  Future<void> toggle(String id, bool isActive) async {
+    await _db.update(
+      _Tables.notifications,
+      {'active': isActive ? 1 : 0},
+      where: 'notificationId = ?',
+      whereArgs: [int.parse(id)],
+    );
+  }
+}
+
+abstract class _CreateTableQuery {
+  static const notifications = '''
+CREATE TABLE ${_Tables.notifications} (
+  notificationId INTEGER PRIMARY KEY,
+  time TEXT NOT NULL,
+  active INTEGER NOT NULL
+)''';
+}
+
+abstract class _Tables {
+  static const notifications = 'notifications';
 }

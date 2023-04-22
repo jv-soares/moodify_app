@@ -40,9 +40,9 @@ class NotificationsNotifier extends FetchNotifier<List<ScheduledNotification>> {
     final notification = ScheduledNotification(time.toString(), time, true);
     final list = [..._values, notification].sortedByTimeOfDay();
     data = list;
-    final id = await _repository.create(notification);
-    final index = list.indexWhere((element) => element.id == id);
+    final index = list.indexWhere((element) => element.time == time);
     listKey.currentState?.insertItem(index);
+    _repository.create(notification);
   }
 
   void delete(String id) {
