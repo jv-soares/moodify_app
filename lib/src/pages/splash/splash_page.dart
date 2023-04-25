@@ -26,14 +26,23 @@ class _SplashPageState extends State<SplashPage> {
   void _onDashboardStateChanged() {
     final state = _dashboardNotifier.state;
     if (state is Loaded) {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) => const DiaryDashboardPage()),
-      );
+      if (state.entries.isEmpty) _pushFormPage();
+      _pushDashboardPage();
     } else {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) => const DiaryEntryFormPage()),
-      );
+      _pushFormPage();
     }
+  }
+
+  void _pushFormPage() {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (_) => const DiaryEntryFormPage()),
+    );
+  }
+
+  void _pushDashboardPage() {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (_) => const DiaryDashboardPage()),
+    );
   }
 
   @override
