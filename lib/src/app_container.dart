@@ -2,6 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:moodify_app/src/repositories/diary_entry_repository.dart';
 import 'package:moodify_app/src/repositories/scheduled_notifications_repository.dart';
 import 'package:moodify_app/src/repositories/temp_diary_entry_repository.dart';
+import 'package:moodify_app/src/services/local_notification_service.dart';
 
 abstract class AppContainer {
   static final _getIt = GetIt.instance;
@@ -13,6 +14,7 @@ abstract class AppContainer {
     _getIt.registerSingletonAsync<ScheduledNotificationsRepository>(
       () => SqlScheduledNotificationRepository.getInstance(),
     );
+    _getIt.registerSingletonAsync(() => LocalNotificationService.getInstance());
     return _getIt.allReady();
   }
 
