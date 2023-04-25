@@ -33,6 +33,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
       value: _notifier,
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           title: const Text('Notificações'),
           actions: [
             FetchNotifierBuilder(

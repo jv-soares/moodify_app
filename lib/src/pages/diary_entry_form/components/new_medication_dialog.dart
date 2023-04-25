@@ -34,6 +34,7 @@ class NewMedicationDialogState extends State<_NewMedicationDialog> {
       child: Dialog.fullscreen(
         child: Scaffold(
           appBar: AppBar(
+            centerTitle: true,
             title: const Text('Novo medicamento'),
             automaticallyImplyLeading: false,
             leading: IconButton(

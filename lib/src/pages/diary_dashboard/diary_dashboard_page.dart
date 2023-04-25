@@ -32,6 +32,7 @@ class DiaryDashboardPage extends StatelessWidget {
             )
           : null,
       appBar: AppBar(
+        centerTitle: true,
         title: AnimatedBuilder(
           animation: notifier,
           builder: (context, _) {

@@ -42,6 +42,7 @@ class _DiaryEntryFormPageState extends State<DiaryEntryFormPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Registro diário'),
+        centerTitle: true,
       ),
       floatingActionButton: ValueListenableBuilder(
           valueListenable: _notifier,
