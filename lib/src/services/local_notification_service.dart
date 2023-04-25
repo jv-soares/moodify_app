@@ -32,6 +32,8 @@ class LocalNotificationService {
           builder: (context) => const DiaryEntryFormPage(),
         ));
       },
+      onDidReceiveBackgroundNotificationResponse:
+          _onDidReceiveBackgroundNotificationResponse,
     );
   }
 
@@ -77,4 +79,11 @@ class LocalNotificationService {
   }
 
   Future<void> cancel(int id) => _plugin.cancel(id);
+}
+
+void _onDidReceiveBackgroundNotificationResponse(NotificationResponse details) {
+  final navigator = AppContainer.get<AppNavigator>();
+  navigator.state.push(MaterialPageRoute(
+    builder: (context) => const DiaryEntryFormPage(),
+  ));
 }
