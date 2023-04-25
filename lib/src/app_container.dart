@@ -1,8 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:moodify_app/src/repositories/diary_entry_repository.dart';
-import 'package:moodify_app/src/repositories/scheduled_notifications_repository.dart';
-import 'package:moodify_app/src/repositories/temp_diary_entry_repository.dart';
-import 'package:moodify_app/src/services/local_notification_service.dart';
+
+import 'core/app_navigator.dart';
+import 'repositories/diary_entry_repository.dart';
+import 'repositories/scheduled_notifications_repository.dart';
+import 'repositories/temp_diary_entry_repository.dart';
+import 'services/local_notification_service.dart';
 
 abstract class AppContainer {
   static final _getIt = GetIt.instance;
@@ -15,6 +18,7 @@ abstract class AppContainer {
       () => SqlScheduledNotificationRepository.getInstance(),
     );
     _getIt.registerSingletonAsync(() => LocalNotificationService.getInstance());
+    _getIt.registerLazySingleton(() => AppNavigator(GlobalKey()));
     return _getIt.allReady();
   }
 
