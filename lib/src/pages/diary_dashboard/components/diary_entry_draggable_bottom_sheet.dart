@@ -18,8 +18,8 @@ class DiaryEntryDraggableBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
-      initialChildSize: .65,
-      minChildSize: .65,
+      initialChildSize: .6,
+      minChildSize: .6,
       builder: (context, scrollController) => Container(
         decoration: const BoxDecoration(
           color: Colors.white,
