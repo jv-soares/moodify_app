@@ -1,9 +1,15 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 class LocalNotificationService {
   final _plugin = FlutterLocalNotificationsPlugin();
 
-  LocalNotificationService._();
+  LocalNotificationService._() {
+    tz.initializeTimeZones();
+    tz.setLocalLocation(tz.getLocation('America/Sao_Paulo'));
+  }
 
   static Future<LocalNotificationService> getInstance() async {
     final instance = LocalNotificationService._();
@@ -21,8 +27,8 @@ class LocalNotificationService {
 
   Future<void> show({required int id, String? title, String? body}) async {
     const androidNotificationDetails = AndroidNotificationDetails(
-      'diary_entry',
-      'Diary entry channel',
+      'default-notification-channel',
+      'Default channel',
       importance: Importance.max,
       priority: Priority.high,
     );
@@ -30,5 +36,33 @@ class LocalNotificationService {
       android: androidNotificationDetails,
     );
     await _plugin.show(id, title, body, notificationDetails);
+  }
+
+  Future<void> scheduleDaily({
+    required int id,
+    required TimeOfDay timeOfDay,
+    String? title,
+    String? body,
+  }) async {
+    final scheduledDate = DateTime.now().copyWith(
+      hour: timeOfDay.hour,
+      minute: timeOfDay.minute,
+    );
+    await _plugin.zonedSchedule(
+      id,
+      title,
+      body,
+      tz.TZDateTime.from(scheduledDate, tz.local),
+      const NotificationDetails(
+        android: AndroidNotificationDetails(
+          'scheduled-notification-channel',
+          'Scheduled channel',
+        ),
+      ),
+      androidAllowWhileIdle: true,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+      matchDateTimeComponents: DateTimeComponents.time,
+    );
   }
 }
