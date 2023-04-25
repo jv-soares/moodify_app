@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:moodify_app/src/app_container.dart';
 import 'package:moodify_app/src/repositories/scheduled_notifications_repository.dart';
+import 'package:moodify_app/src/services/local_notification_service.dart';
 
 import '../../../models/fetch_notifier.dart';
 import '../../../models/scheduled_notification.dart';
@@ -13,6 +14,7 @@ typedef RemovedItemBuilder = Widget Function(
 
 class NotificationsNotifier extends FetchNotifier<List<ScheduledNotification>> {
   final _repository = AppContainer.get<ScheduledNotificationsRepository>();
+  final _service = AppContainer.get<LocalNotificationService>();
 
   final GlobalKey<SliverAnimatedListState> listKey;
   final RemovedItemBuilder removedItemBuilder;
@@ -38,6 +40,7 @@ class NotificationsNotifier extends FetchNotifier<List<ScheduledNotification>> {
     list[index] = list[index].copyWith(isActive: isActive);
     data = list;
     _repository.toggle(id, isActive);
+    _service.scheduleDaily(id: int.parse(id), timeOfDay: list[index].time);
   }
 
   Future<void> createAt(TimeOfDay time) async {
@@ -46,6 +49,7 @@ class NotificationsNotifier extends FetchNotifier<List<ScheduledNotification>> {
     notification = notification.copyWith(id: id);
     final list = [..._values, notification].sortedByTimeOfDay();
     data = list;
+    await _service.scheduleDaily(id: int.parse(id), timeOfDay: time);
     final index = list.indexWhere((element) => element.time == time);
     listKey.currentState?.insertItem(index);
   }
@@ -64,5 +68,6 @@ class NotificationsNotifier extends FetchNotifier<List<ScheduledNotification>> {
       ),
     );
     _repository.delete(id);
+    _service.cancel(int.parse(id));
   }
 }
