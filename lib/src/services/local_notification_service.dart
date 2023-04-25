@@ -65,4 +65,6 @@ class LocalNotificationService {
       matchDateTimeComponents: DateTimeComponents.time,
     );
   }
+
+  Future<void> cancel(int id) => _plugin.cancel(id);
 }
