@@ -20,7 +20,7 @@ class DiaryEntryViewModel {
     return DiaryEntry(
       id: const Uuid().v1(),
       createdAt: DateTime.now(),
-      episode: Mania(Level.moderateHigh),
+      episode: EpisodeSeverity.fromInteger(functionalImpairment),
       moodRating: moodRating,
       symptoms: symptoms ?? [],
       medications: medications ?? [],

@@ -89,7 +89,6 @@ class _StatisticsAverageCard extends StatelessWidget {
   final IconData icon;
 
   const _StatisticsAverageCard({
-    super.key,
     required this.label,
     required this.value,
     required this.icon,
@@ -148,7 +147,6 @@ class _EpisodeSeverityFractionCard extends StatelessWidget {
   final double value;
 
   const _EpisodeSeverityFractionCard({
-    super.key,
     required this.label,
     required this.value,
   });

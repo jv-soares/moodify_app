@@ -31,7 +31,7 @@ class _DiaryEntryFormPageState extends State<DiaryEntryFormPage> {
 
   void _navigateWhenSaved() {
     if (_notifier.value is Saved) {
-      Navigator.of(context).pushNamed(AppRoutes.diaryDashboard);
+      Navigator.of(context).pushNamed(AppRoutes.home);
     }
   }
 
@@ -43,24 +43,25 @@ class _DiaryEntryFormPageState extends State<DiaryEntryFormPage> {
         centerTitle: true,
       ),
       floatingActionButton: ValueListenableBuilder(
-          valueListenable: _notifier,
-          builder: (context, value, _) {
-            if (value is Loading) {
-              return const FloatingActionButton(
-                onPressed: null,
-                child: Padding(
-                  padding: EdgeInsets.all(16),
-                  child: CircularProgressIndicator(strokeWidth: 2.5),
-                ),
-              );
-            } else {
-              return FloatingActionButton.extended(
-                onPressed: () => _notifier.save(_viewModel),
-                label: const Text('Salvar'),
-                icon: const Icon(Icons.check),
-              );
-            }
-          }),
+        valueListenable: _notifier,
+        builder: (context, value, _) {
+          if (value is Loading) {
+            return const FloatingActionButton(
+              onPressed: null,
+              child: Padding(
+                padding: EdgeInsets.all(16),
+                child: CircularProgressIndicator(strokeWidth: 2.5),
+              ),
+            );
+          } else {
+            return FloatingActionButton.extended(
+              onPressed: () => _notifier.save(_viewModel),
+              label: const Text('Salvar'),
+              icon: const Icon(Icons.check),
+            );
+          }
+        },
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
