@@ -15,7 +15,7 @@ class DiaryAnalyzer {
         entries.length;
   }
 
-  double get averageSleepHours {
+  double get averageHoursOfSleep {
     return entries
             .map((e) => e.hoursOfSleep)
             .whereNotNull()
@@ -23,7 +23,7 @@ class DiaryAnalyzer {
         entries.length;
   }
 
-  EpisodeSeverityDistribution get episodeDistribution {
+  EpisodeSeverityDistribution calculateEpisodeDistribution() {
     int depressionCount = 0;
     int balancedCount = 0;
     int maniaCount = 0;

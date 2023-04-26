@@ -29,7 +29,15 @@ class MoodifyDraggableBottomSheet extends StatelessWidget {
           controller: scrollController,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Column(children: [_buildHandle(context), content]),
+            child: Column(
+              children: [
+                _buildHandle(context),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  child: content,
+                )
+              ],
+            ),
           ),
         ),
       ),

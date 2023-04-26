@@ -15,11 +15,11 @@ void main() {
   });
 
   test('should return average sleep hours', () {
-    expect(sut.averageSleepHours, 4.5);
+    expect(sut.averageHoursOfSleep, 4.5);
   });
 
   test('should return episode distribution', () {
-    final distribution = sut.episodeDistribution;
+    final distribution = sut.calculateEpisodeDistribution();
     expect(distribution.depression, .5);
     expect(distribution.balanced, .2);
     expect(distribution.mania, .3);
