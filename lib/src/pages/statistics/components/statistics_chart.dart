@@ -22,12 +22,10 @@ class StatisticsChart extends StatelessWidget {
         lineBarsData: [
           LineChartBarData(
             spots: entries
-                .map(
-                  (e) => FlSpot(
-                    e.createdAt.millisecondsSinceEpoch.toDouble(),
-                    e.moodRating.toDouble(),
-                  ),
-                )
+                .map((e) => FlSpot(
+                      e.createdAt.millisecondsSinceEpoch.toDouble(),
+                      e.moodRating.toDouble(),
+                    ))
                 .toList(),
             isStrokeCapRound: true,
             isCurved: true,
@@ -38,12 +36,10 @@ class StatisticsChart extends StatelessWidget {
           LineChartBarData(
             spots: entries
                 .where((entry) => entry.hoursOfSleep != null)
-                .map(
-                  (e) => FlSpot(
-                    e.createdAt.millisecondsSinceEpoch.toDouble(),
-                    e.hoursOfSleep! * 10,
-                  ),
-                )
+                .map((e) => FlSpot(
+                      e.createdAt.millisecondsSinceEpoch.toDouble(),
+                      e.hoursOfSleep! * 10,
+                    ))
                 .toList(),
             isStrokeCapRound: true,
             isCurved: true,
@@ -52,14 +48,12 @@ class StatisticsChart extends StatelessWidget {
             dotData: FlDotData(show: false),
           ),
           LineChartBarData(
-            spots: entries.map(
-              (e) {
-                return FlSpot(
-                  e.createdAt.millisecondsSinceEpoch.toDouble(),
-                  _calculateEpisodeSeverityValue(e.episode),
-                );
-              },
-            ).toList(),
+            spots: entries
+                .map((e) => FlSpot(
+                      e.createdAt.millisecondsSinceEpoch.toDouble(),
+                      _calculateEpisodeSeverityValue(e.episode),
+                    ))
+                .toList(),
             isStrokeCapRound: true,
             isCurved: true,
             barWidth: 4,
@@ -72,19 +66,16 @@ class StatisticsChart extends StatelessWidget {
               begin: Alignment.bottomCenter,
               end: Alignment.topCenter,
             ),
-            // color: Theme.of(context).colorScheme.secondaryContainer,
             dotData: FlDotData(show: false),
           ),
         ],
         gridData: FlGridData(
           drawVerticalLine: false,
           horizontalInterval: 50,
-          getDrawingHorizontalLine: (value) {
-            return FlLine(
-              color: Theme.of(context).colorScheme.onBackground,
-              dashArray: [5, 10],
-            );
-          },
+          getDrawingHorizontalLine: (value) => FlLine(
+            color: Theme.of(context).colorScheme.onBackground,
+            dashArray: [5, 10],
+          ),
         ),
         borderData: FlBorderData(show: false),
         titlesData: FlTitlesData(show: false),
