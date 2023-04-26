@@ -4,6 +4,7 @@ import 'package:moodify_app/src/models/life_event.dart';
 import 'package:moodify_app/src/models/symptom.dart';
 import 'package:moodify_app/src/pages/diary_dashboard/notifiers/diary_dashboard_notifier.dart';
 import 'package:moodify_app/src/utils/string_x.dart';
+import 'package:moodify_app/src/widgets/moodify_draggable_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
 import '../../../models/diary_entry.dart';
@@ -17,44 +18,10 @@ class DiaryEntryDraggableBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DraggableScrollableSheet(
+    return MoodifyDraggableBottomSheet(
       initialChildSize: .6,
       minChildSize: .6,
-      builder: (context, scrollController) => Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(24),
-            topRight: Radius.circular(24),
-          ),
-        ),
-        child: SingleChildScrollView(
-          controller: scrollController,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              children: [
-                _buildHandle(context),
-                _buildContent(context),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildHandle(BuildContext context) {
-    return Center(
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 16),
-        width: 32,
-        height: 4,
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surfaceVariant,
-          borderRadius: BorderRadius.circular(24),
-        ),
-      ),
+      content: _buildContent(context),
     );
   }
 
