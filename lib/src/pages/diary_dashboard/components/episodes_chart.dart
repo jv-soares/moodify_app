@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:moodify_app/src/pages/diary_dashboard/notifiers/diary_dashboard_notifier.dart';
+import 'package:moodify_app/src/utils/episodes_chart_helper.dart';
+import 'package:moodify_app/src/utils/list_extension.dart';
 import 'package:provider/provider.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
 
@@ -17,22 +19,17 @@ class EpisodesChart extends StatelessWidget {
   Widget build(BuildContext context) {
     final notifier = context.watch<DiaryDashboardNotifier>();
     return SizedBox(
-      height: rowHeight * 9,
+      height: rowHeight * 11,
       child: Stack(
         children: [
           Padding(
-            padding: EdgeInsets.symmetric(vertical: rowHeight / 2),
+            padding: EdgeInsets.symmetric(vertical: rowHeight),
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              children: List.generate(
-                4,
-                (index) => Container(
-                  margin: EdgeInsets.symmetric(vertical: rowHeight / 2),
-                  color: Theme.of(context).colorScheme.surfaceVariant,
-                  height: rowHeight,
-                  width: double.infinity,
-                ),
-              ),
+              children: List<Widget>.generate(
+                5,
+                (index) => _buildHorizontalBar(context),
+              ).separatedBy(SizedBox(height: rowHeight)),
             ),
           ),
           if (notifier.state is Loading)
@@ -43,6 +40,14 @@ class EpisodesChart extends StatelessWidget {
           if (notifier.state is Loaded) _Content(rowHeight),
         ],
       ),
+    );
+  }
+
+  Container _buildHorizontalBar(BuildContext context) {
+    return Container(
+      color: Theme.of(context).colorScheme.surfaceVariant,
+      height: rowHeight,
+      width: double.infinity,
     );
   }
 }
@@ -78,7 +83,7 @@ class _ContentState extends State<_Content> {
           duration: const Duration(milliseconds: 100),
           right: notifier.indicatorPosition,
           child: Container(
-            height: widget.rowHeight * 9,
+            height: widget.rowHeight * 11,
             width: _itemSize,
             margin: const EdgeInsets.symmetric(horizontal: 16),
             decoration: BoxDecoration(
@@ -128,7 +133,6 @@ class _ContentState extends State<_Content> {
                             _calculateMarkerPosition(entry.diaryEntry!.episode),
                       ),
                     ],
-                    SizedBox(height: widget.rowHeight),
                     _buildMarkerFrame(
                       index: index,
                       child: Text(
@@ -173,12 +177,7 @@ class _ContentState extends State<_Content> {
   }
 
   double _calculateMarkerPosition(EpisodeSeverity episode) {
-    if (episode is Mania) {
-      return episode.level.value * widget.rowHeight;
-    } else if (episode is Depression) {
-      return episode.level.value * widget.rowHeight;
-    }
-    return 0;
+    return EpisodesChartHelper.calculateHeight(episode, widget.rowHeight);
   }
 
   @override
