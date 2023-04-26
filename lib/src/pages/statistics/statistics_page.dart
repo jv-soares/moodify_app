@@ -28,7 +28,7 @@ class StatisticsPage extends StatelessWidget {
           children: [
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 48),
-              height: 200,
+              height: MediaQuery.of(context).size.height / 3.5,
               child: LineChart(
                 LineChartData(
                   lineBarsData: [
