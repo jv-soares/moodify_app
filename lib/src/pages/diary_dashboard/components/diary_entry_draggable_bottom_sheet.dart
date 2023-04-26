@@ -63,7 +63,7 @@ class _Header extends StatelessWidget {
       name += 'Depressão';
       return _getLevel(episode.level, name);
     } else {
-      return 'Normal';
+      return 'Equilibrado';
     }
   }
 
