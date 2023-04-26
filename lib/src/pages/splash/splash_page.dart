@@ -37,7 +37,7 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   void _pushDashboardPage() {
-    Navigator.of(context).pushReplacementNamed(AppRoutes.diaryDashboard);
+    Navigator.of(context).pushReplacementNamed(AppRoutes.home);
   }
 
   @override
