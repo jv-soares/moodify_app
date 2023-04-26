@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:moodify_app/src/app.dart';
 import 'package:provider/provider.dart';
 
-import '../diary_dashboard/diary_dashboard_page.dart';
 import '../diary_dashboard/notifiers/diary_dashboard_notifier.dart';
-import '../diary_entry_form/diary_entry_form_page.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -34,15 +33,11 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   void _pushFormPage() {
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => const DiaryEntryFormPage()),
-    );
+    Navigator.of(context).pushReplacementNamed(AppRoutes.diaryForm);
   }
 
   void _pushDashboardPage() {
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => const DiaryDashboardPage()),
-    );
+    Navigator.of(context).pushReplacementNamed(AppRoutes.diaryDashboard);
   }
 
   @override

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:moodify_app/src/app_container.dart';
+import 'package:moodify_app/src/pages/diary_dashboard/diary_dashboard_page.dart';
 import 'package:moodify_app/src/pages/diary_dashboard/notifiers/diary_dashboard_notifier.dart';
+import 'package:moodify_app/src/pages/diary_entry_form/diary_entry_form_page.dart';
+import 'package:moodify_app/src/pages/notifications/notifications_page.dart';
 import 'package:moodify_app/src/pages/splash/splash_page.dart';
 import 'package:provider/provider.dart';
 
@@ -19,7 +22,8 @@ class App extends StatelessWidget {
         title: 'Moodify',
         theme: _buildTheme(),
         navigatorKey: AppContainer.get<AppNavigator>().key,
-        home: const SplashPage(),
+        initialRoute: '/',
+        routes: _buildRoutes(),
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
@@ -35,4 +39,20 @@ ThemeData _buildTheme() {
     useMaterial3: true,
     colorScheme: lightColorScheme,
   );
+}
+
+Map<String, WidgetBuilder> _buildRoutes() {
+  return {
+    AppRoutes.splash: (context) => const SplashPage(),
+    AppRoutes.diaryForm: (context) => const DiaryEntryFormPage(),
+    AppRoutes.diaryDashboard: (context) => const DiaryDashboardPage(),
+    AppRoutes.notifications: (context) => const NotificationsPage(),
+  };
+}
+
+abstract class AppRoutes {
+  static const splash = '/';
+  static const diaryForm = '/diary-form';
+  static const diaryDashboard = '/diary-dashboard';
+  static const notifications = '/notifications';
 }

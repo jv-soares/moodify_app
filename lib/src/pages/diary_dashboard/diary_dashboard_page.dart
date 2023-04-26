@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:moodify_app/src/app.dart';
 import 'package:moodify_app/src/pages/diary_dashboard/components/episodes_chart.dart';
 import 'package:moodify_app/src/pages/diary_dashboard/notifiers/diary_dashboard_notifier.dart';
 import 'package:moodify_app/src/pages/diary_entry_form/diary_entry_form_page.dart';
@@ -25,9 +26,7 @@ class DiaryDashboardPage extends StatelessWidget {
                 color: Theme.of(context).colorScheme.onPrimary,
               ),
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const DiaryEntryFormPage(),
-                ));
+                Navigator.of(context).pushNamed(AppRoutes.diaryForm);
               },
             )
           : null,
@@ -75,9 +74,7 @@ class DiaryDashboardPage extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.notifications_outlined),
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const NotificationsPage(),
-              ));
+              Navigator.of(context).pushNamed(AppRoutes.notifications);
             },
           ),
         ],

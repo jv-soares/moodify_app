@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moodify_app/src/app.dart';
 import 'package:moodify_app/src/pages/diary_entry_form/components/form_slider.dart';
 
 import '../../models/symptom.dart';
@@ -31,9 +32,7 @@ class _DiaryEntryFormPageState extends State<DiaryEntryFormPage> {
 
   void _navigateWhenSaved() {
     if (_notifier.value is Saved) {
-      Navigator.of(context).push(
-        MaterialPageRoute(builder: (_) => const DiaryDashboardPage()),
-      );
+      Navigator.of(context).pushNamed(AppRoutes.diaryDashboard);
     }
   }
 
