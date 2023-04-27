@@ -4,7 +4,7 @@ abstract class DiaryDashboardState {}
 
 class Initial extends DiaryDashboardState {}
 
-class Loading extends DiaryDashboardState {}
+class LoadingDiary extends DiaryDashboardState {}
 
 class Loaded extends DiaryDashboardState {
   final List<EpisodeEntry> entries;

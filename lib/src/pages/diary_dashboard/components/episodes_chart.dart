@@ -32,7 +32,7 @@ class EpisodesChart extends StatelessWidget {
               ).separatedBy(SizedBox(height: rowHeight)),
             ),
           ),
-          if (notifier.state is Loading)
+          if (notifier.state is LoadingDiary)
             const Align(
               alignment: Alignment.center,
               child: CircularProgressIndicator(),

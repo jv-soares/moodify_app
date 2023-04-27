@@ -15,11 +15,12 @@ class DiaryEntryViewModel {
   LifeEvent? lifeEvent;
   String? observations;
   int? moodSwitchesPerDay;
+  DateTime createdAt = DateTime.now();
 
   DiaryEntry toModel() {
     return DiaryEntry(
       id: const Uuid().v1(),
-      createdAt: DateTime.now(),
+      createdAt: createdAt,
       episode: EpisodeSeverity.fromInteger(functionalImpairment),
       moodRating: moodRating,
       symptoms: symptoms ?? [],

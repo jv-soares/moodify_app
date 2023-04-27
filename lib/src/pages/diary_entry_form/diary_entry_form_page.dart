@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:moodify_app/src/app.dart';
+import 'package:moodify_app/src/pages/diary_dashboard/notifiers/diary_dashboard_notifier.dart';
 import 'package:moodify_app/src/pages/diary_entry_form/components/form_slider.dart';
+import 'package:moodify_app/src/utils/date_time_utils.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/symptom.dart';
 import 'components/descriptive_form_slider.dart';
@@ -20,8 +24,11 @@ class DiaryEntryFormPage extends StatefulWidget {
 }
 
 class _DiaryEntryFormPageState extends State<DiaryEntryFormPage> {
+  DateTime _selectedDate = DateTime.now();
   final _notifier = DiaryEntryFormNotifier();
   final _viewModel = DiaryEntryViewModel();
+
+  DateTime get _today => DateTime.now();
 
   @override
   void initState() {
@@ -35,12 +42,43 @@ class _DiaryEntryFormPageState extends State<DiaryEntryFormPage> {
     }
   }
 
+  String _getFormattedDate() {
+    final yesterday = _today.subtract(const Duration(days: 1));
+    if (DateTimeUtils.compareDayOfYear(_selectedDate, _today)) {
+      return 'Hoje';
+    } else if (DateTimeUtils.compareDayOfYear(_selectedDate, yesterday)) {
+      return 'Ontem';
+    }
+    return DateFormat.MMMMd().format(_selectedDate);
+  }
+
+  void _selectDate() async {
+    final notifier = context.read<DiaryDashboardNotifier>();
+    final date = await showDatePicker(
+      context: context,
+      initialDate: _selectedDate,
+      firstDate: _today.subtract(const Duration(days: 7)),
+      lastDate: _today,
+      selectableDayPredicate: notifier.canAddEntryAt,
+    );
+    if (date != null) {
+      setState(() => _selectedDate = date);
+      _viewModel.createdAt = _selectedDate;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Registro diário'),
+        title: Text(_getFormattedDate()),
         centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: _selectDate,
+            icon: const Icon(Icons.edit_calendar),
+          ),
+        ],
       ),
       floatingActionButton: ValueListenableBuilder(
         valueListenable: _notifier,

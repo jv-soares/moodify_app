@@ -23,13 +23,16 @@ class DiaryDashboardNotifier extends ChangeNotifier {
 
   StreamSubscription? _subscription;
 
-  bool get canAddEntry {
-    if (newestEntry == null) return true;
-    final isEntryToday = DateTimeUtils.compareDayOfYear(
-      DateTime.now(),
-      newestEntry!.date,
-    );
-    return !isEntryToday;
+  bool canAddEntryAt(DateTime date) {
+    if (_allEpisodes == null) return true;
+    final dateExistsInEntries = _allEpisodes!.any((element) {
+      if (element.diaryEntry == null) return false;
+      return DateTimeUtils.compareDayOfYear(
+        element.diaryEntry!.createdAt,
+        date,
+      );
+    });
+    return !dateExistsInEntries;
   }
 
   Future<void> initialize() async {

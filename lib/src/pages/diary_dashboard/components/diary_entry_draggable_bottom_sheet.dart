@@ -28,7 +28,7 @@ class DiaryEntryDraggableBottomSheet extends StatelessWidget {
 
   Widget _buildContent(BuildContext context) {
     final notifier = context.watch<DiaryDashboardNotifier>();
-    if (notifier.state is Loading) {
+    if (notifier.state is LoadingDiary) {
       return Container(
         margin: const EdgeInsets.only(top: 100),
         child: const CircularProgressIndicator(),
