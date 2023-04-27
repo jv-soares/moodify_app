@@ -3,8 +3,14 @@ import 'package:flutter/material.dart';
 class MoodifyInfoChip extends StatelessWidget {
   final IconData icon;
   final String label;
+  final Color? foregroundColor;
 
-  const MoodifyInfoChip(this.icon, this.label, {super.key});
+  const MoodifyInfoChip(
+    this.icon,
+    this.label, {
+    super.key,
+    this.foregroundColor,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +24,7 @@ class MoodifyInfoChip extends StatelessWidget {
         vertical: 4,
       ),
       decoration: BoxDecoration(
-        border: Border.all(width: 1.5, color: primaryColor),
+        border: Border.all(width: 1.5, color: foregroundColor ?? primaryColor),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
@@ -26,11 +32,11 @@ class MoodifyInfoChip extends StatelessWidget {
         children: [
           Icon(
             icon,
-            color: primaryColor,
+            color: foregroundColor ?? primaryColor,
             size: labelStyle!.fontSize! * labelStyle.height!,
           ),
           const SizedBox(width: 4),
-          Text(label, style: labelStyle),
+          Text(label, style: labelStyle.copyWith(color: foregroundColor)),
         ],
       ),
     );

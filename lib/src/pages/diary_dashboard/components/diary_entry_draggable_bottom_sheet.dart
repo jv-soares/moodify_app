@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:moodify_app/src/models/life_event.dart';
 import 'package:moodify_app/src/models/symptom.dart';
 import 'package:moodify_app/src/pages/diary_dashboard/notifiers/diary_dashboard_notifier.dart';
+import 'package:moodify_app/src/utils/episodes_chart_helper.dart';
 import 'package:moodify_app/src/utils/string_x.dart';
 import 'package:moodify_app/src/widgets/moodify_draggable_bottom_sheet.dart';
 import 'package:provider/provider.dart';
@@ -55,29 +56,7 @@ class _Header extends StatelessWidget {
   const _Header(this.entry);
 
   String _getName(EpisodeSeverity episode) {
-    var name = '';
-    if (episode is Mania) {
-      name += 'Mania';
-      return _getLevel(episode.level, name);
-    } else if (episode is Depression) {
-      name += 'Depressão';
-      return _getLevel(episode.level, name);
-    } else {
-      return 'Equilibrado';
-    }
-  }
-
-  String _getLevel(Level level, String name) {
-    switch (level) {
-      case Level.mild:
-        return name += ' leve';
-      case Level.moderateLow:
-        return name += ' moderada-baixa';
-      case Level.moderateHigh:
-        return name += ' moderada-alta';
-      case Level.severe:
-        return name += ' severa';
-    }
+    return EpisodesChartHelper.resolveName(episode);
   }
 
   @override
