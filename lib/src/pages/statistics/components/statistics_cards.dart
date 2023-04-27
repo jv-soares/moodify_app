@@ -83,7 +83,7 @@ class _StatisticsCardsState extends State<StatisticsCards> {
   }
 }
 
-class _StatisticsAverageCard extends StatelessWidget {
+class _StatisticsAverageCard extends StatefulWidget {
   final String label;
   final double value;
   final IconData icon;
@@ -93,6 +93,40 @@ class _StatisticsAverageCard extends StatelessWidget {
     required this.value,
     required this.icon,
   });
+
+  @override
+  State<_StatisticsAverageCard> createState() => _StatisticsAverageCardState();
+}
+
+class _StatisticsAverageCardState extends State<_StatisticsAverageCard>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _numberAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 600),
+    );
+    _numberAnimation = _controller.drive(_buildTween());
+    _controller.forward();
+  }
+
+  @override
+  void didUpdateWidget(_StatisticsAverageCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _controller.reset();
+    _numberAnimation = _controller.drive(_buildTween());
+    _controller.forward();
+  }
+
+  Animatable<double> _buildTween() {
+    return Tween(begin: 0.0, end: widget.value).chain(
+      CurveTween(curve: Curves.easeInOutCubic),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -114,17 +148,23 @@ class _StatisticsAverageCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                label,
+                widget.label,
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
                       color: onPrimaryContainerColor,
                     ),
               ),
               const SizedBox(height: 4),
-              Text(
-                value.toStringAsFixed(0),
-                style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                      color: onPrimaryContainerColor,
-                    ),
+              AnimatedBuilder(
+                animation: _numberAnimation,
+                builder: (context, _) {
+                  return Text(
+                    _numberAnimation.value.toStringAsFixed(0),
+                    style: Theme.of(context)
+                        .textTheme
+                        .displaySmall
+                        ?.copyWith(color: onPrimaryContainerColor),
+                  );
+                },
               ),
             ],
           ),
@@ -134,15 +174,21 @@ class _StatisticsAverageCard extends StatelessWidget {
               shape: BoxShape.circle,
               color: onPrimaryContainerColor,
             ),
-            child: Icon(icon, color: primaryContainerColor, size: 18),
+            child: Icon(widget.icon, color: primaryContainerColor, size: 18),
           ),
         ],
       ),
     );
   }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 }
 
-class _EpisodeSeverityFractionCard extends StatelessWidget {
+class _EpisodeSeverityFractionCard extends StatefulWidget {
   final String label;
   final double value;
 
@@ -150,6 +196,42 @@ class _EpisodeSeverityFractionCard extends StatelessWidget {
     required this.label,
     required this.value,
   });
+
+  @override
+  State<_EpisodeSeverityFractionCard> createState() =>
+      _EpisodeSeverityFractionCardState();
+}
+
+class _EpisodeSeverityFractionCardState
+    extends State<_EpisodeSeverityFractionCard>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _numberAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 600),
+    );
+    _numberAnimation = _controller.drive(_buildTween());
+    _controller.forward();
+  }
+
+  @override
+  void didUpdateWidget(_EpisodeSeverityFractionCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _controller.reset();
+    _numberAnimation = _controller.drive(_buildTween());
+    _controller.forward();
+  }
+
+  Animatable<double> _buildTween() {
+    return Tween(begin: 0.0, end: widget.value).chain(
+      CurveTween(curve: Curves.easeInOutCubic),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -165,27 +247,32 @@ class _EpisodeSeverityFractionCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          RichText(
-            text: TextSpan(
-              children: [
-                TextSpan(
-                  text: (value * 100).toStringAsFixed(0),
-                  style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                        color: onPrimaryContainerColor,
-                      ),
+          AnimatedBuilder(
+            animation: _numberAnimation,
+            builder: (context, _) {
+              return RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: (_numberAnimation.value * 100).toStringAsFixed(0),
+                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                            color: onPrimaryContainerColor,
+                          ),
+                    ),
+                    TextSpan(
+                      text: '%',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            color: onPrimaryContainerColor,
+                          ),
+                    ),
+                  ],
                 ),
-                TextSpan(
-                  text: '%',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: onPrimaryContainerColor,
-                      ),
-                ),
-              ],
-            ),
+              );
+            },
           ),
           const SizedBox(height: 4),
           Text(
-            label,
+            widget.label,
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
                   color: onPrimaryContainerColor,
                 ),
