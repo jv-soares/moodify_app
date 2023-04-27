@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:moodify_app/src/pages/statistics/components/statistics_draggable_bottom_sheet.dart';
+import 'package:moodify_app/src/widgets/home_app_bar.dart';
 import 'package:provider/provider.dart';
 
 import '../diary_dashboard/notifiers/diary_dashboard_notifier.dart';
@@ -14,10 +15,7 @@ class StatisticsPage extends StatelessWidget {
     final notifier = context.watch<DiaryDashboardNotifier>();
     if (notifier.state is Loaded) {
       return Scaffold(
-        appBar: AppBar(
-          title: const Text('Estatísticas'),
-          centerTitle: true,
-        ),
+        appBar: const HomeAppBar(),
         body: Stack(
           children: [
             if (notifier.state is Loaded) ...[

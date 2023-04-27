@@ -80,6 +80,8 @@ class StatisticsChart extends StatelessWidget {
         borderData: FlBorderData(show: false),
         titlesData: FlTitlesData(show: false),
       ),
+      swapAnimationCurve: Curves.easeInOutCubic,
+      swapAnimationDuration: const Duration(milliseconds: 400),
     );
   }
 

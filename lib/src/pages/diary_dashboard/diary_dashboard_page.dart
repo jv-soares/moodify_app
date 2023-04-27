@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:moodify_app/src/app.dart';
-import 'package:moodify_app/src/pages/diary_dashboard/components/episodes_chart.dart';
-import 'package:moodify_app/src/pages/diary_dashboard/notifiers/diary_dashboard_notifier.dart';
-import 'package:moodify_app/src/utils/string_x.dart';
 import 'package:provider/provider.dart';
 
+import '../../app.dart';
+import '../../widgets/home_app_bar.dart';
 import 'components/diary_entry_draggable_bottom_sheet.dart';
+import 'components/episodes_chart.dart';
+import 'notifiers/diary_dashboard_notifier.dart';
 
 class DiaryDashboardPage extends StatelessWidget {
   const DiaryDashboardPage({super.key});
@@ -28,55 +27,7 @@ class DiaryDashboardPage extends StatelessWidget {
               },
             )
           : null,
-      appBar: AppBar(
-        centerTitle: true,
-        title: AnimatedBuilder(
-          animation: notifier,
-          builder: (context, _) {
-            DateTime date = DateTime.now();
-            if (notifier.state is Loaded) {
-              date = (notifier.state as Loaded)
-                  .selectedEntry
-                  .diaryEntry!
-                  .createdAt;
-            }
-            return Text(
-              DateFormat.yMMMM().format(date).capitalize(),
-            );
-          },
-        ),
-        leading: Theme(
-          data: Theme.of(context).copyWith(useMaterial3: false),
-          child: Builder(
-            builder: (context) => IconButton(
-              icon: const Icon(Icons.calendar_today),
-              onPressed: () async {
-                final selectedRange = await showDateRangePicker(
-                  context: context,
-                  firstDate: notifier.oldestEntry?.date ?? DateTime.now(),
-                  lastDate: notifier.newestEntry?.date ?? DateTime.now(),
-                  saveText: 'Salvar',
-                  locale: Localizations.localeOf(context),
-                );
-                if (selectedRange != null) {
-                  notifier.selectDateRange(
-                    selectedRange.start,
-                    selectedRange.end,
-                  );
-                }
-              },
-            ),
-          ),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.notifications_outlined),
-            onPressed: () {
-              Navigator.of(context).pushNamed(AppRoutes.notifications);
-            },
-          ),
-        ],
-      ),
+      appBar: const HomeAppBar(),
       body: Stack(
         children: const [
           EpisodesChart(),
