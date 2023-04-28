@@ -25,14 +25,22 @@ class DiaryDashboardNotifier extends ChangeNotifier {
 
   bool canAddEntryAt(DateTime date) {
     if (_allEpisodes == null) return true;
-    final dateExistsInEntries = _allEpisodes!.any((element) {
-      if (element.diaryEntry == null) return false;
-      return DateTimeUtils.compareDayOfYear(
-        element.diaryEntry!.createdAt,
-        date,
-      );
+    return addableDays.any((element) {
+      return DateTimeUtils.compareDayOfYear(element, date);
     });
-    return !dateExistsInEntries;
+  }
+
+  List<DateTime> get addableDays {
+    final now = DateTime.now();
+    final lastWeek = DateTimeUtils.generateList(
+      now,
+      now.subtract(const Duration(days: 7)),
+    );
+    final takeable = lastWeek
+        .takeWhile(
+            (date) => !DateTimeUtils.compareDayOfYear(date, newestEntry!.date))
+        .toList();
+    return takeable;
   }
 
   Future<void> initialize() async {

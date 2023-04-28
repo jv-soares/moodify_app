@@ -56,7 +56,7 @@ class _DiaryEntryFormPageState extends State<DiaryEntryFormPage> {
     final notifier = context.read<DiaryDashboardNotifier>();
     final date = await showDatePicker(
       context: context,
-      initialDate: _selectedDate,
+      initialDate: notifier.addableDays.first,
       firstDate: _today.subtract(const Duration(days: 7)),
       lastDate: _today,
       selectableDayPredicate: notifier.canAddEntryAt,
