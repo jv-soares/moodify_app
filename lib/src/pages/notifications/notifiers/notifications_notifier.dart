@@ -40,7 +40,12 @@ class NotificationsNotifier extends FetchNotifier<List<ScheduledNotification>> {
     list[index] = list[index].copyWith(isActive: isActive);
     data = list;
     _repository.toggle(id, isActive);
-    _service.scheduleDaily(id: int.parse(id), timeOfDay: list[index].time);
+    _service.scheduleDaily(
+      id: int.parse(id),
+      timeOfDay: list[index].time,
+      title: 'Como vocé se sente?',
+      body: 'Pressione para registrar seu humor',
+    );
   }
 
   Future<void> createAt(TimeOfDay time) async {
