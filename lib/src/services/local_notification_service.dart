@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:moodify_app/src/app.dart';
 import 'package:moodify_app/src/app_container.dart';
-import 'package:moodify_app/src/pages/diary_entry_form/diary_entry_form_page.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
@@ -28,9 +28,7 @@ class LocalNotificationService {
         android: AndroidInitializationSettings('@mipmap/ic_launcher'),
       ),
       onDidReceiveNotificationResponse: (_) {
-        _navigator.state.push(MaterialPageRoute(
-          builder: (context) => const DiaryEntryFormPage(),
-        ));
+        _navigator.state.pushNamed(AppRoutes.diaryForm);
       },
       onDidReceiveBackgroundNotificationResponse:
           _onDidReceiveBackgroundNotificationResponse,
@@ -83,7 +81,5 @@ class LocalNotificationService {
 
 void _onDidReceiveBackgroundNotificationResponse(NotificationResponse details) {
   final navigator = AppContainer.get<AppNavigator>();
-  navigator.state.push(MaterialPageRoute(
-    builder: (context) => const DiaryEntryFormPage(),
-  ));
+  navigator.state.pushNamed(AppRoutes.diaryForm);
 }
