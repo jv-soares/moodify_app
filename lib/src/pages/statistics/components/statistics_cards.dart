@@ -281,4 +281,10 @@ class _EpisodeSeverityFractionCardState
       ),
     );
   }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 }
