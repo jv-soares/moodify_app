@@ -39,6 +39,9 @@ ThemeData _buildTheme() {
   return ThemeData(
     useMaterial3: true,
     colorScheme: lightColorScheme,
+    pageTransitionsTheme: const PageTransitionsTheme(
+      builders: {TargetPlatform.android: CupertinoPageTransitionsBuilder()},
+    ),
   );
 }
 
