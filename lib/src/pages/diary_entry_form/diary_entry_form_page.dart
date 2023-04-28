@@ -37,9 +37,7 @@ class _DiaryEntryFormPageState extends State<DiaryEntryFormPage> {
   }
 
   void _navigateWhenSaved() {
-    if (_notifier.value is Saved) {
-      Navigator.of(context).pushNamed(AppRoutes.home);
-    }
+    if (_notifier.value is Saved) Navigator.of(context).pop();
   }
 
   String _getFormattedDate() {
