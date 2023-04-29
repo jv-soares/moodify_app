@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../models/medication.dart';
-import 'medication_section.dart';
+import '../notifiers/medication_notifier.dart';
 
 class TakenMedicationsCard extends StatelessWidget {
   final List<Medication> medications;

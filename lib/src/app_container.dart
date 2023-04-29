@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:moodify_app/src/repositories/medication_repository.dart';
 
 import 'core/app_navigator.dart';
 import 'repositories/diary_entry_repository.dart';
@@ -11,14 +12,17 @@ abstract class AppContainer {
   static final _getIt = GetIt.instance;
 
   static Future<void> initialize() async {
+    _getIt.registerLazySingleton(() => AppNavigator(GlobalKey()));
     _getIt.registerSingletonAsync<DiaryEntryRepository>(
       () async => TempDiaryEntryRepository(),
     );
     _getIt.registerSingletonAsync<ScheduledNotificationsRepository>(
       () => SqlScheduledNotificationRepository.getInstance(),
     );
+    _getIt.registerSingletonAsync<MedicationRepository>(
+      () async => TempMedicationRepository(),
+    );
     _getIt.registerSingletonAsync(() => LocalNotificationService.getInstance());
-    _getIt.registerLazySingleton(() => AppNavigator(GlobalKey()));
     return _getIt.allReady();
   }
 

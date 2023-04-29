@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:moodify_app/src/widgets/fetch_notifier_builder.dart';
 import 'package:provider/provider.dart';
 
 import '../../../models/medication.dart';
 import '../../../widgets/moodify_button.dart';
+import '../notifiers/medication_notifier.dart';
 import 'new_medication_dialog.dart';
 import 'taken_medication_card.dart';
 
@@ -24,31 +26,43 @@ class _MedicationSectionState extends State<MedicationSection> {
     _medicationsNotifier.addListener(_notifyOnChanged);
   }
 
-  void _notifyOnChanged() => widget.onChanged(_medicationsNotifier.value);
+  void _notifyOnChanged() => widget.onChanged(_medicationsNotifier.data!);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
       value: _medicationsNotifier,
-      child: ValueListenableBuilder(
-          valueListenable: _medicationsNotifier,
-          builder: (context, medications, _) {
-            return Column(
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'MEDICAÇÃO',
+                style: Theme.of(context).textTheme.labelLarge,
+              ),
+              FetchNotifierBuilder(
+                notifier: _medicationsNotifier,
+                onSuccess: (medications) {
+                  if (medications.isNotEmpty) {
+                    TextButton(
+                      onPressed: _maybeAddMedication,
+                      child: const Text('ADICIONAR'),
+                    );
+                  }
+                  return const SizedBox.shrink();
+                },
+              ),
+            ],
+          ),
+          FetchNotifierBuilder(
+            notifier: _medicationsNotifier,
+            onLoading: () => const Padding(
+              padding: EdgeInsets.symmetric(vertical: 24),
+              child: CircularProgressIndicator(),
+            ),
+            onSuccess: (medications) => Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'MEDICAÇÃO',
-                      style: Theme.of(context).textTheme.labelLarge,
-                    ),
-                    if (medications.isNotEmpty)
-                      TextButton(
-                        onPressed: _maybeAddMedication,
-                        child: const Text('ADICIONAR'),
-                      ),
-                  ],
-                ),
                 medications.isNotEmpty
                     ? const SizedBox(height: 8)
                     : const SizedBox(height: 16),
@@ -60,8 +74,10 @@ class _MedicationSectionState extends State<MedicationSection> {
                       )
                     : TakenMedicationsCard(medications),
               ],
-            );
-          }),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -76,40 +92,4 @@ class _MedicationSectionState extends State<MedicationSection> {
     _medicationsNotifier.dispose();
     super.dispose();
   }
-}
-
-class MedicationsNotifier extends ValueNotifier<List<Medication>> {
-  MedicationsNotifier() : super([]);
-
-  void add(Medication medication) {
-    value = [...value, medication];
-  }
-
-  void remove(Medication medication) {
-    value = value..remove(medication);
-  }
-
-  void incrementTabletsTaken(String medicationId) {
-    final index = value.indexWhere((e) => e.id == medicationId);
-    final medication = value[index];
-    if (medication.tabletsTaken >= 10) return;
-    _updateMedicationAt(index, medication.incrementedTablets());
-  }
-
-  void decrementTabletsTaken(String medicationId) {
-    final index = value.indexWhere((e) => e.id == medicationId);
-    final medication = value[index];
-    if (medication.tabletsTaken <= 0) return;
-    _updateMedicationAt(index, medication.decrementedTablets());
-  }
-
-  void _updateMedicationAt(int index, Medication medication) {
-    value = [
-      ...value
-        ..removeAt(index)
-        ..insert(index, medication)
-    ];
-  }
-
-  bool get isEmpty => value.isEmpty;
 }
