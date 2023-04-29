@@ -35,10 +35,9 @@ class StatisticsChart extends StatelessWidget {
           ),
           LineChartBarData(
             spots: entries
-                .where((entry) => entry.hoursOfSleep != null)
                 .map((e) => FlSpot(
                       e.createdAt.millisecondsSinceEpoch.toDouble(),
-                      e.hoursOfSleep! * 10,
+                      e.hoursOfSleep * 10,
                     ))
                 .toList(),
             isStrokeCapRound: true,
