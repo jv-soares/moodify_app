@@ -19,8 +19,8 @@ class StatisticsDraggableBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MoodifyDraggableBottomSheet(
-      initialChildSize: .6,
-      minChildSize: .6,
+      initialChildSize: .5,
+      minChildSize: .5,
       content: Column(
         children: [
           StatisticsCards(entries: entries),
