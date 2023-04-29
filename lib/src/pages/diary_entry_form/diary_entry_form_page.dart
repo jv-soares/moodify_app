@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:moodify_app/src/app.dart';
 import 'package:moodify_app/src/pages/diary_dashboard/notifiers/diary_dashboard_notifier.dart';
 import 'package:moodify_app/src/pages/diary_entry_form/components/form_slider.dart';
 import 'package:moodify_app/src/utils/date_time_utils.dart';
