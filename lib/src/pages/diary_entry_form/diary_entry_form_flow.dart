@@ -16,8 +16,8 @@ class DiaryEntryFormFlow extends StatefulWidget {
 }
 
 class _DiaryEntryFormFlowState extends State<DiaryEntryFormFlow> {
-  DateTime _selectedDate = DateTime.now();
   final _navigatorKey = GlobalKey<NavigatorState>();
+  DateTime _selectedDate = DateTime.now();
 
   DateTime get _today => DateTime.now();
 
@@ -55,6 +55,10 @@ class _DiaryEntryFormFlowState extends State<DiaryEntryFormFlow> {
         appBar: AppBar(
           title: Text(_getFormattedDate()),
           centerTitle: true,
+          leading: IconButton(
+            onPressed: Navigator.of(context).pop,
+            icon: const Icon(Icons.close),
+          ),
           actions: [
             IconButton(
               onPressed: _selectDate,
