@@ -68,16 +68,6 @@ class _DiaryEntryFormPageState extends State<DiaryEntryFormPage> {
   Widget build(BuildContext context) {
     final viewModel = context.read<DiaryEntryViewModel>();
     return Scaffold(
-      appBar: AppBar(
-        title: Text(_getFormattedDate()),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: _selectDate,
-            icon: const Icon(Icons.edit_calendar),
-          ),
-        ],
-      ),
       floatingActionButton: ValueListenableBuilder(
         valueListenable: _notifier,
         builder: (context, value, _) {

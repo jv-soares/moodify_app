@@ -14,14 +14,6 @@ class _EpisodeSeverityFormPageState extends State<EpisodeSeverityFormPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Hoje'),
-        centerTitle: true,
-        leading: IconButton(
-          onPressed: Navigator.of(context, rootNavigator: true).pop,
-          icon: const Icon(Icons.arrow_back),
-        ),
-      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).pushNamed('diary-form/optional');
