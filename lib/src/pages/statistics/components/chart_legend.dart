@@ -11,7 +11,12 @@ class ChartLegend extends StatelessWidget {
         Expanded(
           child: _LegendItem(
             label: 'Episódio',
-            indicatorColor: Theme.of(context).colorScheme.primary,
+            indicatorGradient: LinearGradient(
+              colors: [
+                Theme.of(context).colorScheme.primary,
+                Theme.of(context).colorScheme.error,
+              ],
+            ),
           ),
         ),
         Expanded(
@@ -33,11 +38,13 @@ class ChartLegend extends StatelessWidget {
 
 class _LegendItem extends StatelessWidget {
   final String label;
-  final Color indicatorColor;
+  final Color? indicatorColor;
+  final Gradient? indicatorGradient;
 
   const _LegendItem({
     required this.label,
-    required this.indicatorColor,
+    this.indicatorColor,
+    this.indicatorGradient,
   });
 
   @override
@@ -46,11 +53,12 @@ class _LegendItem extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          width: 8,
+          width: 16,
           height: 8,
           decoration: BoxDecoration(
-            shape: BoxShape.circle,
+            gradient: indicatorGradient,
             color: indicatorColor,
+            borderRadius: BorderRadius.circular(8),
           ),
         ),
         const SizedBox(width: 8),
