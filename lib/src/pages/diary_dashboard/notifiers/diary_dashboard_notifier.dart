@@ -45,6 +45,11 @@ class DiaryDashboardNotifier extends ChangeNotifier {
 
   Future<void> initialize() async {
     _subscription = _repository.watchAll().listen((entries) {
+      if (entries.isEmpty) {
+        _state = Loaded([]);
+        notifyListeners();
+        return;
+      }
       final newest = entries.first.createdAt;
       final oldest = entries.last.createdAt;
       final episodes = DateTimeUtils.generateList(newest, oldest).map((date) {
