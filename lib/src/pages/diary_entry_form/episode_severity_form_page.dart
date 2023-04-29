@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:moodify_app/src/app.dart';
 
 class EpisodeSeverityFormPage extends StatefulWidget {
   const EpisodeSeverityFormPage({super.key});
@@ -16,41 +15,54 @@ class _EpisodeSeverityFormPageState extends State<EpisodeSeverityFormPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Como você se sente?'),
+        title: const Text('Hoje'),
         centerTitle: true,
+        leading: IconButton(
+          onPressed: Navigator.of(context, rootNavigator: true).pop,
+          icon: const Icon(Icons.arrow_back),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).pushNamed(AppRoutes.diaryForm);
+          Navigator.of(context).pushNamed('diary-form/optional');
         },
         child: const Icon(Icons.arrow_forward),
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 24),
+          padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
           child: Column(
-            children: _options
-                .map(
-                  (e) => RadioListTile<EpisodeSeverity2>(
-                    value: e.value,
-                    groupValue: _selectedValue,
-                    isThreeLine: true,
-                    title: Text(
-                      e.name,
-                      style: Theme.of(context).textTheme.bodyLarge,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'COMO VOCÊ SE SENTE?',
+                style: Theme.of(context).textTheme.labelLarge,
+              ),
+              const SizedBox(height: 16),
+              ..._options
+                  .map(
+                    (e) => RadioListTile<EpisodeSeverity2>(
+                      value: e.value,
+                      groupValue: _selectedValue,
+                      isThreeLine: true,
+                      contentPadding: EdgeInsets.zero,
+                      title: Text(
+                        e.name,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                      subtitle: Text(
+                        e.description,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: Theme.of(context).colorScheme.outline,
+                            ),
+                      ),
+                      onChanged: (value) {
+                        setState(() => _selectedValue = value);
+                      },
                     ),
-                    subtitle: Text(
-                      e.description,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Theme.of(context).colorScheme.outline,
-                          ),
-                    ),
-                    onChanged: (value) {
-                      setState(() => _selectedValue = value);
-                    },
-                  ),
-                )
-                .toList(),
+                  )
+                  .toList(),
+            ],
           ),
         ),
       ),

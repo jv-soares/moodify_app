@@ -3,6 +3,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:moodify_app/src/app_container.dart';
 import 'package:moodify_app/src/pages/diary_dashboard/diary_dashboard_page.dart';
 import 'package:moodify_app/src/pages/diary_dashboard/notifiers/diary_dashboard_notifier.dart';
+import 'package:moodify_app/src/pages/diary_entry_form/diary_entry_form_flow.dart';
+import 'package:moodify_app/src/pages/diary_entry_form/diary_entry_form_page.dart';
 import 'package:moodify_app/src/pages/diary_entry_form/episode_severity_form_page.dart';
 import 'package:moodify_app/src/pages/home_page.dart';
 import 'package:moodify_app/src/pages/notifications/notifications_page.dart';
@@ -49,7 +51,7 @@ Map<String, WidgetBuilder> _buildRoutes() {
   return {
     AppRoutes.splash: (context) => const SplashPage(),
     AppRoutes.home: (context) => const HomePage(),
-    AppRoutes.diaryForm: (context) => const EpisodeSeverityFormPage(),
+    AppRoutes.diaryForm: (context) => const DiaryEntryFormFlow(),
     AppRoutes.diaryDashboard: (context) => const DiaryDashboardPage(),
     AppRoutes.notifications: (context) => const NotificationsPage(),
   };

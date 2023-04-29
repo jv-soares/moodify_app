@@ -6,8 +6,6 @@ import 'package:moodify_app/src/utils/date_time_utils.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/symptom.dart';
-import 'components/descriptive_form_slider.dart';
-import 'components/descriptive_values.dart';
 import 'components/life_event_section.dart';
 import 'components/medication_section.dart';
 import 'components/observation_section.dart';
@@ -16,7 +14,9 @@ import 'notifiers/diary_entry_form_notifier.dart';
 import 'view_models/diary_entry_view_model.dart';
 
 class DiaryEntryFormPage extends StatefulWidget {
-  const DiaryEntryFormPage({super.key});
+  final VoidCallback onFormSaved;
+
+  const DiaryEntryFormPage({super.key, required this.onFormSaved});
 
   @override
   State<DiaryEntryFormPage> createState() => _DiaryEntryFormPageState();
@@ -25,7 +25,6 @@ class DiaryEntryFormPage extends StatefulWidget {
 class _DiaryEntryFormPageState extends State<DiaryEntryFormPage> {
   DateTime _selectedDate = DateTime.now();
   final _notifier = DiaryEntryFormNotifier();
-  final _viewModel = DiaryEntryViewModel();
 
   DateTime get _today => DateTime.now();
 
@@ -36,7 +35,7 @@ class _DiaryEntryFormPageState extends State<DiaryEntryFormPage> {
   }
 
   void _navigateWhenSaved() {
-    if (_notifier.value is Saved) Navigator.of(context).pop();
+    if (_notifier.value is Saved) widget.onFormSaved();
   }
 
   String _getFormattedDate() {
@@ -49,23 +48,25 @@ class _DiaryEntryFormPageState extends State<DiaryEntryFormPage> {
     return DateFormat.MMMMd().format(_selectedDate);
   }
 
-  void _selectDate() async {
+  void _selectDate() {
     final notifier = context.read<DiaryDashboardNotifier>();
-    final date = await showDatePicker(
+    showDatePicker(
       context: context,
       initialDate: notifier.addableDays.first,
       firstDate: _today.subtract(const Duration(days: 7)),
       lastDate: _today,
       selectableDayPredicate: notifier.canAddEntryAt,
-    );
-    if (date != null) {
-      setState(() => _selectedDate = date);
-      _viewModel.createdAt = _selectedDate;
-    }
+    ).then((date) {
+      if (date != null) {
+        setState(() => _selectedDate = date);
+        context.read<DiaryEntryViewModel>().createdAt = _selectedDate;
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.read<DiaryEntryViewModel>();
     return Scaffold(
       appBar: AppBar(
         title: Text(_getFormattedDate()),
@@ -90,7 +91,7 @@ class _DiaryEntryFormPageState extends State<DiaryEntryFormPage> {
             );
           } else {
             return FloatingActionButton.extended(
-              onPressed: () => _notifier.save(_viewModel),
+              onPressed: () => _notifier.save(viewModel),
               label: const Text('Salvar'),
               icon: const Icon(Icons.check),
             );
@@ -102,23 +103,14 @@ class _DiaryEntryFormPageState extends State<DiaryEntryFormPage> {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
           child: Column(
             children: [
-              DescriptiveFormSlider(
-                label: 'Como você se sente?',
-                values: functionalImpairment,
-                initialValue: _viewModel.functionalImpairment.toDouble(),
-                onChanged: (value) {
-                  _viewModel.functionalImpairment = value;
-                },
-              ),
-              _formSpacing,
               FormSlider(
                 label: 'Como está seu humor?',
                 min: 0,
                 max: 100,
-                initialValue: _viewModel.moodRating.toDouble(),
+                initialValue: viewModel.moodRating.toDouble(),
                 showLabel: true,
                 onChanged: (value) {
-                  _viewModel.moodRating = value;
+                  viewModel.moodRating = value;
                 },
               ),
               _formSpacing,
@@ -127,7 +119,7 @@ class _DiaryEntryFormPageState extends State<DiaryEntryFormPage> {
                 min: 0,
                 max: 10,
                 onChanged: (value) {
-                  _viewModel.hoursOfSleep = value;
+                  viewModel.hoursOfSleep = value;
                 },
                 showLabel: true,
               ),
@@ -135,25 +127,25 @@ class _DiaryEntryFormPageState extends State<DiaryEntryFormPage> {
               SymptomChecker(
                 symptoms: Symptom.values,
                 onSymptomsChanged: (symptoms) {
-                  _viewModel.symptoms = symptoms;
+                  viewModel.symptoms = symptoms;
                 },
               ),
               _formSpacing,
               MedicationSection(
                 onChanged: (value) {
-                  _viewModel.medications = value;
+                  viewModel.medications = value;
                 },
               ),
               _formSpacing,
               LifeEventSection(
                 onChanged: (value) {
-                  _viewModel.lifeEvent = value;
+                  viewModel.lifeEvent = value;
                 },
               ),
               _formSpacing,
               ObservationSection(
                 onChanged: (value) {
-                  _viewModel.observations = value;
+                  viewModel.observations = value;
                 },
               ),
               _formSpacing,
