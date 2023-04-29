@@ -7,6 +7,7 @@ class FormSlider extends StatefulWidget {
   final double? initialValue;
   final void Function(int)? onChanged;
   final bool showLabel;
+  final bool showDivisions;
 
   const FormSlider({
     super.key,
@@ -16,6 +17,7 @@ class FormSlider extends StatefulWidget {
     this.initialValue,
     this.onChanged,
     this.showLabel = false,
+    this.showDivisions = false,
   });
 
   @override
@@ -23,7 +25,7 @@ class FormSlider extends StatefulWidget {
 }
 
 class _FormSliderState extends State<FormSlider> {
-  double _value = 0;
+  double _value = 8;
 
   @override
   void initState() {
@@ -60,6 +62,8 @@ class _FormSliderState extends State<FormSlider> {
             value: _value,
             min: widget.min,
             max: widget.max,
+            divisions:
+                widget.showDivisions ? (widget.max - widget.min).toInt() : null,
             label: widget.showLabel ? _value.toInt().toString() : null,
             onChanged: (newValue) {
               setState(() => _value = newValue);

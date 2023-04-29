@@ -76,6 +76,7 @@ class _DiaryEntryFormPageState extends State<DiaryEntryFormPage> {
                 label: 'Quantas horas você dormiu?',
                 min: 0,
                 max: 10,
+                showDivisions: true,
                 onChanged: (value) {
                   viewModel.hoursOfSleep = value;
                 },

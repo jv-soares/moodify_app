@@ -14,8 +14,8 @@ class DiaryEntryDto {
   final int createdAt;
   final String episode;
   final int moodRating;
+  final int hoursOfSleep;
   final String symptoms;
-  final int? hoursOfSleep;
   final int? moodSwitchesPerDay;
   final String? observations;
 
@@ -24,8 +24,8 @@ class DiaryEntryDto {
     required this.createdAt,
     required this.episode,
     required this.moodRating,
+    required this.hoursOfSleep,
     required this.symptoms,
-    this.hoursOfSleep,
     this.moodSwitchesPerDay,
     this.observations,
   });

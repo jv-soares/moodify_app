@@ -10,7 +10,7 @@ import '../../../models/symptom.dart';
 class DiaryEntryViewModel {
   EpisodeSeverity2 episodeSeverity = EpisodeSeverity2.balanced;
   int moodRating = 50;
-  int? hoursOfSleep;
+  int hoursOfSleep = 8;
   List<Symptom>? symptoms;
   List<Medication>? medications;
   LifeEvent? lifeEvent;

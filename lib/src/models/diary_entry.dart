@@ -11,9 +11,9 @@ class DiaryEntry extends Equatable {
   final DateTime createdAt;
   final EpisodeSeverity episode;
   final int moodRating;
+  final int hoursOfSleep;
   final List<Symptom> symptoms;
   final List<Medication> medications;
-  final int? hoursOfSleep;
   final int? moodSwitchesPerDay;
   final LifeEvent? lifeEvent;
   final String? observations;
@@ -23,9 +23,9 @@ class DiaryEntry extends Equatable {
     required this.createdAt,
     required this.episode,
     required this.moodRating,
+    required this.hoursOfSleep,
     required this.symptoms,
     required this.medications,
-    this.hoursOfSleep,
     this.moodSwitchesPerDay,
     this.lifeEvent,
     this.observations,

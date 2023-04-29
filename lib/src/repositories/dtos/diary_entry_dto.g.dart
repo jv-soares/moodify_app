@@ -12,8 +12,8 @@ DiaryEntryDto _$DiaryEntryDtoFromJson(Map<String, dynamic> json) =>
       createdAt: json['createdAt'] as int,
       episode: json['episode'] as String,
       moodRating: json['moodRating'] as int,
+      hoursOfSleep: json['hoursOfSleep'] as int,
       symptoms: json['symptoms'] as String,
-      hoursOfSleep: json['hoursOfSleep'] as int?,
       moodSwitchesPerDay: json['moodSwitchesPerDay'] as int?,
       observations: json['observations'] as String?,
     );
@@ -23,8 +23,8 @@ Map<String, dynamic> _$DiaryEntryDtoToJson(DiaryEntryDto instance) =>
       'createdAt': instance.createdAt,
       'episode': instance.episode,
       'moodRating': instance.moodRating,
-      'symptoms': instance.symptoms,
       'hoursOfSleep': instance.hoursOfSleep,
+      'symptoms': instance.symptoms,
       'moodSwitchesPerDay': instance.moodSwitchesPerDay,
       'observations': instance.observations,
     };
