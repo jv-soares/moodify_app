@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:moodify_app/src/core/failures.dart';
 
 import 'diary_entry.dart';
 import 'episode_severity.dart';
@@ -6,7 +7,9 @@ import 'episode_severity.dart';
 class DiaryAnalyzer {
   final List<DiaryEntry> entries;
 
-  DiaryAnalyzer(this.entries);
+  DiaryAnalyzer(this.entries) {
+    if (entries.isEmpty) throw EmptyEntriesFailure();
+  }
 
   double get averageMood {
     return entries
@@ -56,3 +59,5 @@ class EpisodeSeverityDistribution {
     required this.mania,
   }) : assert(depression + balanced + mania == 1);
 }
+
+class EmptyEntriesFailure extends Failure {}

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/failures.dart';
 import '../../../models/diary_analyzer.dart';
 import '../../../models/diary_entry.dart';
 
@@ -13,25 +14,37 @@ class StatisticsCards extends StatefulWidget {
 }
 
 class _StatisticsCardsState extends State<StatisticsCards> {
-  late DiaryAnalyzer _analyzer;
-  late EpisodeSeverityDistribution _distribution;
+  DiaryAnalyzer? _analyzer;
+  EpisodeSeverityDistribution? _distribution;
+  Failure? failure;
 
   @override
   void initState() {
     super.initState();
-    _analyzer = DiaryAnalyzer(widget.entries);
-    _distribution = _analyzer.calculateEpisodeDistribution();
+    try {
+      _analyzer = DiaryAnalyzer(widget.entries);
+      _distribution = _analyzer?.calculateEpisodeDistribution();
+    } on EmptyEntriesFailure catch (e) {
+      failure = e;
+    }
   }
 
   @override
   void didUpdateWidget(StatisticsCards oldWidget) {
     super.didUpdateWidget(oldWidget);
-    _analyzer = DiaryAnalyzer(widget.entries);
-    _distribution = _analyzer.calculateEpisodeDistribution();
+    try {
+      _analyzer = DiaryAnalyzer(widget.entries);
+      _distribution = _analyzer?.calculateEpisodeDistribution();
+    } on EmptyEntriesFailure catch (e) {
+      failure = e;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (failure is EmptyEntriesFailure) {
+      return const Text('error');
+    }
     return Column(
       children: [
         Row(
@@ -39,7 +52,7 @@ class _StatisticsCardsState extends State<StatisticsCards> {
             Expanded(
               child: _StatisticsAverageCard(
                 label: 'Humor médio',
-                value: _analyzer.averageMood,
+                value: _analyzer!.averageMood,
                 icon: Icons.mood,
               ),
             ),
@@ -47,7 +60,7 @@ class _StatisticsCardsState extends State<StatisticsCards> {
             Expanded(
               child: _StatisticsAverageCard(
                 label: 'Sono médio',
-                value: _analyzer.averageHoursOfSleep,
+                value: _analyzer!.averageHoursOfSleep,
                 icon: Icons.bedtime_outlined,
               ),
             ),
@@ -59,21 +72,21 @@ class _StatisticsCardsState extends State<StatisticsCards> {
             Expanded(
               child: _EpisodeSeverityFractionCard(
                 label: 'Depressão',
-                value: _distribution.depression,
+                value: _distribution!.depression,
               ),
             ),
             const SizedBox(width: 8),
             Expanded(
               child: _EpisodeSeverityFractionCard(
                 label: 'Equilíbrio',
-                value: _distribution.balanced,
+                value: _distribution!.balanced,
               ),
             ),
             const SizedBox(width: 8),
             Expanded(
               child: _EpisodeSeverityFractionCard(
                 label: 'Mania',
-                value: _distribution.mania,
+                value: _distribution!.mania,
               ),
             ),
           ],
