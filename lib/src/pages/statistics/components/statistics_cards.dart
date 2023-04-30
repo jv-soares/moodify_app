@@ -43,7 +43,7 @@ class _StatisticsCardsState extends State<StatisticsCards> {
   @override
   Widget build(BuildContext context) {
     if (failure is EmptyEntriesFailure) {
-      return const Text('error');
+      return Text(failure.toString());
     }
     return Column(
       children: [
