@@ -82,7 +82,7 @@ class SqlDiaryEntryRepository implements DiaryEntryRepository {
     for (final entry in entries) {
       final medicationResults = await _db.query(
         _Tables.medications,
-        where: 'diaryEntryId',
+        where: 'diaryEntryId = ?',
         whereArgs: [entry.diaryEntryId],
       );
       final medications = medicationResults
@@ -91,7 +91,7 @@ class SqlDiaryEntryRepository implements DiaryEntryRepository {
           .toList();
       final lifeEventResults = await _db.query(
         _Tables.lifeEvents,
-        where: 'diaryEntryId',
+        where: 'diaryEntryId = ?',
         whereArgs: [entry.diaryEntryId],
       );
       final lifeEvents = lifeEventResults

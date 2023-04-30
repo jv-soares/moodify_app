@@ -25,7 +25,7 @@ class _SplashPageState extends State<SplashPage> {
   void _onDashboardStateChanged() {
     final state = _dashboardNotifier.state;
     if (state is Loaded) {
-      if (state.entries.isEmpty) _pushFormPage();
+      // if (state.entries.isEmpty) return _pushFormPage();
       _pushDashboardPage();
     } else {
       _pushFormPage();

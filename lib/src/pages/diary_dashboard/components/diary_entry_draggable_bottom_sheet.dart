@@ -34,17 +34,21 @@ class DiaryEntryDraggableBottomSheet extends StatelessWidget {
         child: const CircularProgressIndicator(),
       );
     } else if (notifier.state is Loaded) {
-      final entry = (notifier.state as Loaded).selectedEntry.diaryEntry!;
-      return Column(
-        children: [
-          _Header(entry),
-          if (entry.lifeEvent != null) _LifeEventSection(entry.lifeEvent!),
-          if (entry.medications.isNotEmpty)
-            _MedicationsSection(entry.medications),
-          if (entry.observations != '' && entry.observations != null)
-            _ObservationsSection(entry.observations!),
-        ],
-      );
+      if ((notifier.state as Loaded).selectedEntry != null) {
+        final entry = (notifier.state as Loaded).selectedEntry!.diaryEntry!;
+        return Column(
+          children: [
+            _Header(entry),
+            if (entry.lifeEvent != null) _LifeEventSection(entry.lifeEvent!),
+            if (entry.medications.isNotEmpty)
+              _MedicationsSection(entry.medications),
+            if (entry.observations != '' && entry.observations != null)
+              _ObservationsSection(entry.observations!),
+          ],
+        );
+      } else {
+        return const Text('Nenhum dado');
+      }
     }
     return const SizedBox.shrink();
   }

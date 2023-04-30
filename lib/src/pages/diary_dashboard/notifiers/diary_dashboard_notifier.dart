@@ -21,6 +21,8 @@ class DiaryDashboardNotifier extends ChangeNotifier {
   EpisodeEntry? get oldestEntry => _allEpisodes?.last;
   EpisodeEntry? get newestEntry => _allEpisodes?.first;
 
+  bool get isEmpty => _state is! Loaded || _allEpisodes == null;
+
   StreamSubscription? _subscription;
 
   bool canAddEntryAt(DateTime date) {

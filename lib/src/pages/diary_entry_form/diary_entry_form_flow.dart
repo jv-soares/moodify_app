@@ -49,16 +49,19 @@ class _DiaryEntryFormFlowState extends State<DiaryEntryFormFlow> {
 
   @override
   Widget build(BuildContext context) {
+    final notifier = context.read<DiaryDashboardNotifier>();
     return Provider(
       create: (_) => DiaryEntryViewModel(),
       child: Scaffold(
         appBar: AppBar(
           title: Text(_getFormattedDate()),
           centerTitle: true,
-          leading: IconButton(
-            onPressed: Navigator.of(context).pop,
-            icon: const Icon(Icons.close),
-          ),
+          leading: notifier.isEmpty
+              ? null
+              : IconButton(
+                  onPressed: Navigator.of(context).pop,
+                  icon: const Icon(Icons.close),
+                ),
           actions: [
             IconButton(
               onPressed: _selectDate,
