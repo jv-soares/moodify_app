@@ -18,15 +18,16 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         elevation: 0,
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        selectedFontSize: Theme.of(context).textTheme.bodySmall!.fontSize!,
-        unselectedFontSize: Theme.of(context).textTheme.bodySmall!.fontSize!,
-        selectedItemColor: Theme.of(context).colorScheme.onPrimary,
-        unselectedItemColor: Theme.of(context).colorScheme.onPrimaryContainer,
+        backgroundColor: theme.colorScheme.primary,
+        selectedFontSize: theme.textTheme.bodySmall!.fontSize!,
+        unselectedFontSize: theme.textTheme.bodySmall!.fontSize!,
+        selectedItemColor: theme.colorScheme.onPrimary,
+        unselectedItemColor: theme.colorScheme.onPrimaryContainer,
         onTap: (value) {
           setState(() => _selectedIndex = value);
         },
