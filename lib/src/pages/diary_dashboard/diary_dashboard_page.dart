@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:moodify_app/src/pages/diary_dashboard/notifiers/diary_dashboard_notifier.dart';
+import 'package:moodify_app/src/widgets/full_screen_info.dart';
+import 'package:provider/provider.dart';
 
 import '../../app.dart';
 import '../../widgets/home_app_bar.dart';
@@ -10,6 +13,7 @@ class DiaryDashboardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final notifier = context.watch<DiaryDashboardNotifier>();
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       floatingActionButton: FloatingActionButton(
@@ -23,12 +27,19 @@ class DiaryDashboardPage extends StatelessWidget {
         },
       ),
       appBar: const HomeAppBar(),
-      body: Stack(
-        children: const [
-          EpisodesChart(),
-          DiaryEntryDraggableBottomSheet(),
-        ],
-      ),
+      body: notifier.isEmpty
+          ? const FullScreenInfo(
+              svgAsset: 'assets/illustrations/undraw_add_notes.svg',
+              title: 'Nenhum registro por aqui!',
+              description:
+                  'Comece adicionando o seu primeiro registro. Eles poderão ser vistos aqui.',
+            )
+          : Stack(
+              children: const [
+                EpisodesChart(),
+                DiaryEntryDraggableBottomSheet(),
+              ],
+            ),
     );
   }
 }

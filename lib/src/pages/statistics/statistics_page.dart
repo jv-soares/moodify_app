@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:moodify_app/src/pages/statistics/components/statistics_draggable_bottom_sheet.dart';
+import 'package:moodify_app/src/widgets/full_screen_info.dart';
 import 'package:moodify_app/src/widgets/home_app_bar.dart';
 import 'package:provider/provider.dart';
 
@@ -17,35 +18,43 @@ class StatisticsPage extends StatelessWidget {
     if (notifier.state is Loaded) {
       return Scaffold(
         appBar: const HomeAppBar(),
-        body: Stack(
-          children: [
-            if (notifier.state is Loaded) ...[
-              Column(
+        body: notifier.isEmpty
+            ? const FullScreenInfo(
+                svgAsset: 'assets/illustrations/undraw_visual_data.svg',
+                title: 'Nada por aqui também...',
+                description:
+                    'Comece adicionando alguns registros para visualizar suas estatísticas.',
+              )
+            : Stack(
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 36, vertical: 16),
-                    child: ChartLegend(),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 48,
+                  if (notifier.state is Loaded) ...[
+                    Column(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 36, vertical: 16),
+                          child: ChartLegend(),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 48,
+                          ),
+                          height: MediaQuery.of(context).size.height / 3.5,
+                          child: const StatisticsChart(),
+                        ),
+                      ],
                     ),
-                    height: MediaQuery.of(context).size.height / 3.5,
-                    child: const StatisticsChart(),
-                  ),
+                    StatisticsDraggableBottomSheet(
+                      entries: (notifier.state as Loaded)
+                          .entries
+                          .map((e) => e.diaryEntry)
+                          .whereNotNull()
+                          .toList(),
+                    ),
+                  ]
                 ],
               ),
-              StatisticsDraggableBottomSheet(
-                entries: (notifier.state as Loaded)
-                    .entries
-                    .map((e) => e.diaryEntry)
-                    .whereNotNull()
-                    .toList(),
-              ),
-            ]
-          ],
-        ),
       );
     } else {
       return const SizedBox.shrink();
