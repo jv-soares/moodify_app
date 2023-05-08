@@ -21,5 +21,5 @@ final diaryEntries = List.generate(
 EpisodeSeverity _getEpisode(int index) {
   final randomInt = _random.nextInt(Level.values.length);
   final level = Level.values[randomInt];
-  return index.isEven ? Depression(level) : Mania(level);
+  return index > 7 ? Depression(level) : Mania(level);
 }
