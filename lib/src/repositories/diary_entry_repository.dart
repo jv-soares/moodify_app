@@ -5,6 +5,5 @@ import '../models/diary_entry.dart';
 abstract class DiaryEntryRepository {
   Stream<List<DiaryEntry>> watchAll();
   Future<List<DiaryEntry>> readAll();
-  Future<DiaryEntry> read(String id);
   Future<String> create(DiaryEntry entry);
 }

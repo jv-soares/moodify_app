@@ -50,14 +50,5 @@ class TempDiaryEntryRepository implements DiaryEntryRepository {
     return entry.id;
   }
 
-  @override
-  Future<DiaryEntry> read(String id) async {
-    await _delay;
-    return _controller.value.singleWhere(
-      (element) => element.id == id,
-      orElse: () => throw DiaryEntryNotFoundFailure(),
-    );
-  }
-
   Future<void> get _delay => Future.delayed(const Duration(seconds: 1));
 }

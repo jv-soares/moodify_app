@@ -65,13 +65,14 @@ class SqlDiaryEntryRepository implements DiaryEntryRepository {
         );
       }
     }
+    _logAllTables();
     return diaryEntryId.toString();
   }
 
-  @override
-  Future<DiaryEntry> read(String id) {
-    // TODO: implement read
-    throw UnimplementedError();
+  Future<void> _logAllTables() async {
+    log('DIARY ENTRIES\n${await _db.query(_Tables.diaryEntries)}');
+    log('LIFE EVENTS\n${await _db.query(_Tables.lifeEvents)}');
+    log('MEDICATION\n${await _db.query(_Tables.medications)}');
   }
 
   @override

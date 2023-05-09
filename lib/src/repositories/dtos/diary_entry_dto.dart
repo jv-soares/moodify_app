@@ -31,7 +31,6 @@ class DiaryEntryDto {
   });
 
   factory DiaryEntryDto.fromModel(DiaryEntry model) {
-    print(model.symptoms.map((e) => e.name).toString());
     return DiaryEntryDto(
       createdAt: model.createdAt.millisecondsSinceEpoch,
       episode: model.episode.toString(),
