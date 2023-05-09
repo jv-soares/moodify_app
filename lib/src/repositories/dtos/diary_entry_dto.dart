@@ -52,7 +52,7 @@ class DiaryEntryDto {
     return DiaryEntry(
       id: diaryEntryId!.toString(),
       createdAt: DateTime.fromMillisecondsSinceEpoch(createdAt),
-      episode: Mania(Level.mild),
+      episode: EpisodeSeverity.fromString(episode),
       moodRating: moodRating,
       symptoms: [],
       medications: medications,

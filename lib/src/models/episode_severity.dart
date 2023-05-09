@@ -23,20 +23,41 @@ abstract class EpisodeSeverity {
         return Depression(Level.severe);
     }
   }
+
+  factory EpisodeSeverity.fromString(String episode) {
+    if (episode == 'Balanced') return Balanced();
+    final level = int.parse(episode.split(':').last);
+    if (episode.startsWith('Depression')) {
+      return Depression(Level.fromValue(level));
+    }
+    if (episode.startsWith('Mania')) {
+      return Mania(Level.fromValue(level));
+    }
+    throw Exception('unsupported episode string');
+  }
 }
 
-class Balanced implements EpisodeSeverity {}
+class Balanced implements EpisodeSeverity {
+  @override
+  String toString() => 'Balanced';
+}
 
 class Depression implements EpisodeSeverity {
   final Level level;
 
   Depression(this.level);
+
+  @override
+  String toString() => 'Depression:${level.value}';
 }
 
 class Mania implements EpisodeSeverity {
   final Level level;
 
   Mania(this.level);
+
+  @override
+  String toString() => 'Mania:${level.value}';
 }
 
 enum Level {
@@ -48,4 +69,19 @@ enum Level {
   final int value;
 
   const Level(this.value);
+
+  static Level fromValue(int value) {
+    switch (value) {
+      case 1:
+        return Level.mild;
+      case 2:
+        return Level.moderateLow;
+      case 3:
+        return Level.moderateHigh;
+      case 4:
+        return Level.severe;
+      default:
+        throw Exception('unsupported value');
+    }
+  }
 }
