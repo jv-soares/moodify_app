@@ -139,17 +139,18 @@ class _ExplanationContainer extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Personalize suas notificações',
+                'Crie notificações personalizadas',
                 style: Theme.of(context)
                     .textTheme
                     .labelLarge
                     ?.copyWith(color: onPrimaryContainer),
               ),
+              const SizedBox(height: 4),
               Text(
-                'Defina os horários dos lembretes diários',
+                'Você pode definir um horário para não se esquecer de preencher o diário',
+                textAlign: TextAlign.center,
                 style: Theme.of(context)
                     .textTheme
                     .bodyMedium
@@ -179,7 +180,7 @@ class _ExplanationContainer extends StatelessWidget {
                 minimumSize: Size.zero,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
               ),
-              child: const Text('ADICIONAR NOTIFICAÇÃO'),
+              child: const Text('CRIAR NOTIFICAÇÃO'),
             ),
           ),
         ],
