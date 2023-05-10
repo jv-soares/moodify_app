@@ -16,6 +16,7 @@ class ScheduledNotificationListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       title: Text(
@@ -24,12 +25,15 @@ class ScheduledNotificationListTile extends StatelessWidget {
       ),
       trailing: isEditing
           ? IconButton(
+              style: IconButton.styleFrom(
+                backgroundColor: theme.colorScheme.errorContainer,
+              ),
               onPressed: () {
                 context.read<NotificationsNotifier>().delete(notification.id);
               },
               icon: Icon(
                 Icons.delete_outline,
-                color: Theme.of(context).colorScheme.error,
+                color: theme.colorScheme.onErrorContainer,
               ),
             )
           : Switch(
