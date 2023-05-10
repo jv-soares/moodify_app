@@ -20,7 +20,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).colorScheme.primary,
@@ -33,23 +32,18 @@ class _HomePageState extends State<HomePage> {
         },
       ),
       body: _pages[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        elevation: 0,
-        backgroundColor: theme.colorScheme.primary,
-        selectedFontSize: theme.textTheme.bodySmall!.fontSize!,
-        unselectedFontSize: theme.textTheme.bodySmall!.fontSize!,
-        selectedItemColor: theme.colorScheme.onPrimary,
-        unselectedItemColor: theme.colorScheme.onPrimaryContainer,
-        onTap: (value) {
+      bottomNavigationBar: NavigationBar(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        onDestinationSelected: (value) {
           setState(() => _selectedIndex = value);
         },
-        currentIndex: _selectedIndex,
-        items: const [
-          BottomNavigationBarItem(
+        selectedIndex: _selectedIndex,
+        destinations: const [
+          NavigationDestination(
             icon: Icon(Icons.mood),
             label: 'Diário',
           ),
-          BottomNavigationBarItem(
+          NavigationDestination(
             icon: Icon(Icons.bar_chart),
             label: 'Estatísticas',
           ),
