@@ -1,27 +1,18 @@
 import 'package:moodify_app/src/pages/diary_entry_form/episode_severity_form_page.dart';
 
-abstract class EpisodeSeverity {
+interface class EpisodeSeverity {
   factory EpisodeSeverity.fromEnum(EpisodeSeverity2 episode) {
-    switch (episode) {
-      case EpisodeSeverity2.maniaSevere:
-        return Mania(Level.severe);
-      case EpisodeSeverity2.maniaModerateHigh:
-        return Mania(Level.moderateHigh);
-      case EpisodeSeverity2.maniaModerateLow:
-        return Mania(Level.moderateLow);
-      case EpisodeSeverity2.maniaMild:
-        return Mania(Level.mild);
-      case EpisodeSeverity2.balanced:
-        return Balanced();
-      case EpisodeSeverity2.depressionMild:
-        return Depression(Level.mild);
-      case EpisodeSeverity2.depressionModerateLow:
-        return Depression(Level.moderateLow);
-      case EpisodeSeverity2.depressionModerateHigh:
-        return Depression(Level.moderateHigh);
-      case EpisodeSeverity2.depressionSevere:
-        return Depression(Level.severe);
-    }
+    return switch (episode) {
+      EpisodeSeverity2.maniaSevere => Mania(Level.severe),
+      EpisodeSeverity2.maniaModerateHigh => Mania(Level.moderateHigh),
+      EpisodeSeverity2.maniaModerateLow => Mania(Level.moderateLow),
+      EpisodeSeverity2.maniaMild => Mania(Level.mild),
+      EpisodeSeverity2.balanced => Balanced(),
+      EpisodeSeverity2.depressionMild => Depression(Level.mild),
+      EpisodeSeverity2.depressionModerateLow => Depression(Level.moderateLow),
+      EpisodeSeverity2.depressionModerateHigh => Depression(Level.moderateHigh),
+      EpisodeSeverity2.depressionSevere => Depression(Level.severe),
+    };
   }
 
   factory EpisodeSeverity.fromString(String episode) {
@@ -71,17 +62,12 @@ enum Level {
   const Level(this.value);
 
   static Level fromValue(int value) {
-    switch (value) {
-      case 1:
-        return Level.mild;
-      case 2:
-        return Level.moderateLow;
-      case 3:
-        return Level.moderateHigh;
-      case 4:
-        return Level.severe;
-      default:
-        throw Exception('unsupported value');
-    }
+    return switch (value) {
+      1 => Level.mild,
+      2 => Level.moderateLow,
+      3 => Level.moderateHigh,
+      4 => Level.severe,
+      _ => throw Exception('unsupported value'),
+    };
   }
 }
