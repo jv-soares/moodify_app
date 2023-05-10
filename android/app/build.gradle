@@ -50,7 +50,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.jvsoares.moodify_app"
+        applicationId "com.jvsoares.moodify"
         minSdkVersion flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
