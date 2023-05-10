@@ -26,7 +26,7 @@ class NewMedicationFormState extends State<NewMedicationForm> {
     return Medication(
       id: const Uuid().v1(),
       name: _name,
-      tabletsTaken: 0,
+      tabletsTaken: 1,
       dose: Dose(_dose, _unitOfMeasurement),
     );
   }

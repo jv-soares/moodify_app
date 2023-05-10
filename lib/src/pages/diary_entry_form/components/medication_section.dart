@@ -45,7 +45,7 @@ class _MedicationSectionState extends State<MedicationSection> {
                 notifier: _medicationsNotifier,
                 onSuccess: (medications) {
                   if (medications.isNotEmpty) {
-                    TextButton(
+                    return TextButton(
                       onPressed: _maybeAddMedication,
                       child: const Text('ADICIONAR'),
                     );
