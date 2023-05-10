@@ -28,7 +28,7 @@ class ChartLegend extends StatelessWidget {
         Expanded(
           child: _LegendItem(
             label: 'Humor',
-            indicatorColor: Theme.of(context).colorScheme.secondaryContainer,
+            indicatorColor: Theme.of(context).colorScheme.tertiaryContainer,
           ),
         ),
       ],

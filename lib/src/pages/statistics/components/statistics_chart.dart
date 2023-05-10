@@ -30,7 +30,7 @@ class StatisticsChart extends StatelessWidget {
             isStrokeCapRound: true,
             isCurved: true,
             barWidth: 4,
-            color: Theme.of(context).colorScheme.secondaryContainer,
+            color: Theme.of(context).colorScheme.tertiaryContainer,
             dotData: FlDotData(show: false),
           ),
           LineChartBarData(
