@@ -71,15 +71,15 @@ class _Header extends StatelessWidget {
               _getName(entry.episode),
               style: Theme.of(context).textTheme.titleLarge,
             ),
-            TextButton(
-              onPressed: () {},
-              style: TextButton.styleFrom(
-                padding: EdgeInsets.zero,
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                visualDensity: VisualDensity.compact,
-              ),
-              child: const Text('EDITAR'),
-            ),
+            // TextButton(
+            //   onPressed: () {},
+            //   style: TextButton.styleFrom(
+            //     padding: EdgeInsets.zero,
+            //     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            //     visualDensity: VisualDensity.compact,
+            //   ),
+            //   child: const Text('EDITAR'),
+            // ),
           ],
         ),
         const SizedBox(height: 2),
