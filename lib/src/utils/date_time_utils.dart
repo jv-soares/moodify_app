@@ -55,4 +55,8 @@ extension DateTimeX on DateTime {
     return microsecondsSinceEpoch >= startMicroseconds &&
         microsecondsSinceEpoch <= endMicroseconds;
   }
+
+  bool isSameDayMonthAndYear(DateTime other) {
+    return DateTimeUtils.compareDayOfYear(this, other);
+  }
 }

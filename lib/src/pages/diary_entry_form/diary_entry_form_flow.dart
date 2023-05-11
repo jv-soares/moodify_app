@@ -16,10 +16,18 @@ class DiaryEntryFormFlow extends StatefulWidget {
 }
 
 class _DiaryEntryFormFlowState extends State<DiaryEntryFormFlow> {
+  final _viewModel = DiaryEntryViewModel();
   final _navigatorKey = GlobalKey<NavigatorState>();
-  DateTime _selectedDate = DateTime.now();
+  late DateTime _selectedDate;
 
   DateTime get _today => DateTime.now();
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final notifier = context.read<DiaryDashboardNotifier>();
+    _selectedDate = notifier.addableDays.first;
+  }
 
   String _getFormattedDate() {
     final yesterday = _today.subtract(const Duration(days: 1));
@@ -35,14 +43,14 @@ class _DiaryEntryFormFlowState extends State<DiaryEntryFormFlow> {
     final notifier = context.read<DiaryDashboardNotifier>();
     showDatePicker(
       context: context,
-      initialDate: notifier.addableDays.first,
+      initialDate: _selectedDate,
       firstDate: _today.subtract(const Duration(days: 7)),
       lastDate: _today,
       selectableDayPredicate: notifier.canAddEntryAt,
     ).then((date) {
       if (date != null) {
         setState(() => _selectedDate = date);
-        context.read<DiaryEntryViewModel>().createdAt = _selectedDate;
+        _viewModel.createdAt = _selectedDate;
       }
     });
   }
@@ -50,8 +58,8 @@ class _DiaryEntryFormFlowState extends State<DiaryEntryFormFlow> {
   @override
   Widget build(BuildContext context) {
     final notifier = context.read<DiaryDashboardNotifier>();
-    return Provider(
-      create: (_) => DiaryEntryViewModel(),
+    return Provider.value(
+      value: _viewModel,
       child: Scaffold(
         appBar: AppBar(
           title: Text(_getFormattedDate()),
@@ -77,12 +85,10 @@ class _DiaryEntryFormFlowState extends State<DiaryEntryFormFlow> {
             switch (settings.name) {
               case 'diary-form/episode-severity':
                 builder = (_) => const EpisodeSeverityFormPage();
-                break;
               case 'diary-form/optional':
                 builder = (_) => DiaryEntryFormPage(
                       onFormSaved: Navigator.of(context).pop,
                     );
-                break;
               default:
                 throw Exception('invalid route ${settings.name}');
             }

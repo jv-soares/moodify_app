@@ -40,11 +40,18 @@ class DiaryDashboardNotifier extends ChangeNotifier {
       now,
       now.subtract(const Duration(days: 7)),
     );
-    final takeable = lastWeek
-        .takeWhile(
-            (date) => !DateTimeUtils.compareDayOfYear(date, newestEntry!.date))
+    if (_allEpisodes == null) return lastWeek;
+    final allDates = _allEpisodes!
+        .map((e) => e.diaryEntry?.createdAt)
+        .whereNotNull()
         .toList();
-    return takeable;
+    final addable = <DateTime>[];
+    for (final day in lastWeek) {
+      if (allDates.none((element) => element.isSameDayMonthAndYear(day))) {
+        addable.add(day);
+      }
+    }
+    return addable;
   }
 
   Future<void> initialize() async {
