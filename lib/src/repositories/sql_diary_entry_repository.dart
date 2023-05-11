@@ -108,15 +108,6 @@ class SqlDiaryEntryRepository implements DiaryEntryRepository {
     }
     return list;
   }
-
-  @override
-  Stream<List<DiaryEntry>> watchAll() async* {
-    if (_controller.hasValue) {
-      yield* _controller.map((entries) => entries.sortedByCreationDate());
-    } else {
-      yield* readAll().asStream();
-    }
-  }
 }
 
 abstract class _CreateTableQuery {
@@ -157,13 +148,4 @@ abstract class _Tables {
   static const diaryEntries = 'diary_entries';
   static const medications = 'medications';
   static const lifeEvents = 'life_events';
-}
-
-extension on List<DiaryEntry> {
-  List<DiaryEntry> sortedByCreationDate({bool ascending = false}) {
-    return sortedByCompare(
-      (e) => e.createdAt,
-      (a, b) => ascending ? a.compareTo(b) : b.compareTo(a),
-    );
-  }
 }

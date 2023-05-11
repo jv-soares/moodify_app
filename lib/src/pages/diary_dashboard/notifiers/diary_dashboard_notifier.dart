@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:moodify_app/src/repositories/diary_entry_repository.dart';
+import 'package:moodify_app/src/services/diary_entry_service.dart';
 import 'package:moodify_app/src/utils/date_time_utils.dart';
 
 import '../../../app_container.dart';
@@ -11,7 +11,7 @@ import '../../../models/diary_entry.dart';
 part 'diary_dashboard_state.dart';
 
 class DiaryDashboardNotifier extends ChangeNotifier {
-  final _repository = AppContainer.get<DiaryEntryRepository>();
+  final _repository = AppContainer.get<DiaryEntryService>();
 
   DiaryDashboardState get state => _state;
   DiaryDashboardState _state = Initial();

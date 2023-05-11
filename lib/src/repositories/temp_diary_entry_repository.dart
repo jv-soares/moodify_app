@@ -15,20 +15,6 @@ class TempDiaryEntryRepository implements DiaryEntryRepository {
   final _controller = BehaviorSubject<List<DiaryEntry>>();
 
   @override
-  Stream<List<DiaryEntry>> watchAll() async* {
-    if (!_controller.hasValue) {
-      yield [];
-    } else {
-      yield* _controller.map(
-        (entries) => entries.sortedByCompare(
-          (e) => e.createdAt,
-          (a, b) => b.compareTo(a),
-        ),
-      );
-    }
-  }
-
-  @override
   Future<List<DiaryEntry>> readAll() async {
     await _delay;
     return _controller.value

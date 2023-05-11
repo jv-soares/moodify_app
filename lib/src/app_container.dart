@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:moodify_app/src/repositories/medication_repository.dart';
 import 'package:moodify_app/src/repositories/sql_diary_entry_repository.dart';
+import 'package:moodify_app/src/services/diary_entry_service.dart';
 
 import 'core/app_navigator.dart';
 import 'repositories/diary_entry_repository.dart';
@@ -13,6 +14,7 @@ abstract class AppContainer {
 
   static Future<void> initialize() async {
     _getIt.registerLazySingleton(() => AppNavigator(GlobalKey()));
+    _getIt.registerLazySingleton(() => DiaryEntryService());
     _getIt.registerSingletonAsync<DiaryEntryRepository>(
       () async => SqlDiaryEntryRepository.getInstance(),
     );
