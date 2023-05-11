@@ -19,9 +19,11 @@ class DiaryEntryDraggableBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const chartHeight = 28 * 13;
+    final screenHeight = MediaQuery.of(context).size.height;
     return MoodifyDraggableBottomSheet(
-      initialChildSize: .5,
-      minChildSize: .5,
+      initialChildSize: chartHeight / screenHeight,
+      minChildSize: chartHeight / screenHeight,
       content: _buildContent(context),
     );
   }

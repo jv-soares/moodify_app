@@ -22,8 +22,8 @@ class DiaryDashboardPage extends StatelessWidget {
               description:
                   'Comece adicionando o seu primeiro registro. Eles poderão ser vistos aqui.',
             )
-          : Stack(
-              children: const [
+          : const Stack(
+              children: [
                 EpisodesChart(),
                 DiaryEntryDraggableBottomSheet(),
               ],
