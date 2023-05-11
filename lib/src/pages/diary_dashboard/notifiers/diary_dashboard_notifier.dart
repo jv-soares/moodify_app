@@ -23,6 +23,8 @@ class DiaryDashboardNotifier extends ChangeNotifier {
 
   bool get isEmpty => _state is! Loaded || _allEpisodes == null;
 
+  bool get notEnoughData => isEmpty || _allEpisodes!.length < 2;
+
   StreamSubscription? _subscription;
 
   bool canAddEntryAt(DateTime date) {

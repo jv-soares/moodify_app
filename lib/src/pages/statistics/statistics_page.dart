@@ -18,12 +18,12 @@ class StatisticsPage extends StatelessWidget {
     if (notifier.state is Loaded) {
       return Scaffold(
         appBar: const HomeAppBar(),
-        body: notifier.isEmpty
+        body: notifier.notEnoughData
             ? const FullScreenInfo(
                 svgAsset: 'assets/illustrations/undraw_visual_data.svg',
-                title: 'Nada por aqui também...',
+                title: 'Sem registros suficientes...',
                 description:
-                    'Comece adicionando alguns registros para visualizar suas estatísticas.',
+                    'Adicione pelo menos dois registros para visualizar suas estatísticas.',
               )
             : Stack(
                 children: [
