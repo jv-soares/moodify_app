@@ -8,6 +8,8 @@ class FormSlider extends StatefulWidget {
   final void Function(int)? onChanged;
   final bool showLabel;
   final bool showDivisions;
+  final String? minLabel;
+  final String? maxLabel;
 
   const FormSlider({
     super.key,
@@ -18,6 +20,8 @@ class FormSlider extends StatefulWidget {
     this.onChanged,
     this.showLabel = false,
     this.showDivisions = false,
+    this.minLabel,
+    this.maxLabel,
   });
 
   @override
@@ -45,10 +49,10 @@ class _FormSliderState extends State<FormSlider> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Theme(
-      data: Theme.of(context).copyWith(
-        sliderTheme: Theme.of(context)
-            .sliderTheme
+      data: theme.copyWith(
+        sliderTheme: theme.sliderTheme
             .copyWith(showValueIndicator: ShowValueIndicator.always),
       ),
       child: Column(
@@ -56,7 +60,7 @@ class _FormSliderState extends State<FormSlider> {
         children: [
           Text(
             widget.label.toUpperCase(),
-            style: Theme.of(context).textTheme.labelLarge,
+            style: theme.textTheme.labelLarge,
           ),
           Slider(
             value: _value,
@@ -70,6 +74,23 @@ class _FormSliderState extends State<FormSlider> {
               widget.onChanged?.call(_value.toInt());
             },
           ),
+          if (widget.minLabel != null && widget.maxLabel != null)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  widget.minLabel!,
+                  style: theme.textTheme.labelSmall
+                      ?.copyWith(color: theme.colorScheme.outline),
+                ),
+                Text(
+                  widget.maxLabel!,
+                  textAlign: TextAlign.end,
+                  style: theme.textTheme.labelSmall
+                      ?.copyWith(color: theme.colorScheme.outline),
+                ),
+              ],
+            ),
         ],
       ),
     );

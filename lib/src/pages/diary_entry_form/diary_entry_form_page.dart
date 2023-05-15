@@ -70,6 +70,8 @@ class _DiaryEntryFormPageState extends State<DiaryEntryFormPage> {
                 onChanged: (value) {
                   viewModel.moodRating = value;
                 },
+                minLabel: 'Mais depressivo\nque nunca',
+                maxLabel: 'Mais energizado\nque nunca',
               ),
               _formSpacing,
               FormSlider(
