@@ -17,7 +17,9 @@ abstract class DateTimeUtils {
   }
 
   static List<DateTime> generateList(DateTime from, DateTime to) {
-    final length = to.difference(from).inDays.abs() + 1;
+    final adjustedFrom = DateTime(from.year, from.month, from.day);
+    final adjustedTo = DateTime(to.year, to.month, to.day);
+    final length = adjustedTo.difference(adjustedFrom).inDays.abs() + 1;
     if (to.isAfter(from)) {
       return List.generate(
         length,

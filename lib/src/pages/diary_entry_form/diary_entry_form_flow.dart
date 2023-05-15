@@ -27,6 +27,7 @@ class _DiaryEntryFormFlowState extends State<DiaryEntryFormFlow> {
     super.didChangeDependencies();
     final notifier = context.read<DiaryDashboardNotifier>();
     _selectedDate = notifier.addableDays.first;
+    _viewModel.createdAt = _selectedDate;
   }
 
   String _getFormattedDate() {
