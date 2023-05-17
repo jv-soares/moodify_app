@@ -40,6 +40,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
             lastDate: notifier.newestEntry?.date ?? DateTime.now(),
             saveText: 'Salvar',
             locale: Localizations.localeOf(context),
+            selectableDayPredicate: (day) => !notifier.canAddEntryAt(day),
           );
           if (selectedRange != null) {
             notifier.selectDateRange(

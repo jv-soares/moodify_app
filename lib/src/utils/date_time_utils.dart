@@ -34,10 +34,7 @@ abstract class DateTimeUtils {
   }
 
   static bool compareDayOfYear(DateTime a, DateTime b) {
-    final isDayEqual = a.day == b.day;
-    final isMonthEqual = a.month == b.month;
-    final isYearEqual = a.year == b.year;
-    return isDayEqual && isMonthEqual && isYearEqual;
+    return DateUtils.isSameDay(a, b);
   }
 
   static List<TimeOfDay> sortTimeOfDayList(List<TimeOfDay> list) {
