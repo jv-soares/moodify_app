@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../models/medication.dart';
+import '../../../models/taken_medication.dart';
 import 'new_medication_form.dart';
 
-Future<Medication?> showNewMedicationDialog(BuildContext context) {
-  return showDialog<Medication>(
+Future<TakenMedication?> showNewMedicationDialog(BuildContext context) {
+  return showDialog<TakenMedication>(
     context: context,
     builder: (_) => const _NewMedicationDialog(),
   );
@@ -23,7 +23,7 @@ class NewMedicationDialogState extends State<_NewMedicationDialog> {
 
   NewMedicationFormState get _formState => _formKey.currentState!;
 
-  void closeWithMedication(Medication medication) {
+  void closeWithMedication(TakenMedication medication) {
     return Navigator.of(context).pop(medication);
   }
 

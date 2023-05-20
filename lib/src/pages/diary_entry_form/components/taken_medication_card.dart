@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../models/medication.dart';
+import '../../../models/taken_medication.dart';
 import '../notifiers/medication_notifier.dart';
 
 class TakenMedicationsCard extends StatelessWidget {
-  final List<Medication> medications;
+  final List<TakenMedication> medications;
 
   const TakenMedicationsCard(this.medications, {super.key});
 
@@ -24,7 +24,7 @@ class TakenMedicationsCard extends StatelessWidget {
 }
 
 class _MedicationListItem extends StatefulWidget {
-  final Medication medication;
+  final TakenMedication medication;
 
   const _MedicationListItem(this.medication);
 

@@ -3,7 +3,7 @@ import 'package:moodify_app/src/models/episode_severity.dart';
 
 import '../../models/diary_entry.dart';
 import '../../models/life_event.dart';
-import '../../models/medication.dart';
+import '../../models/taken_medication.dart';
 
 part 'diary_entry_dto.g.dart';
 
@@ -46,7 +46,7 @@ class DiaryEntryDto {
       _$DiaryEntryDtoFromJson(json);
 
   DiaryEntry toModel({
-    required List<Medication> medications,
+    required List<TakenMedication> medications,
     LifeEvent? lifeEvent,
   }) {
     return DiaryEntry(
@@ -85,7 +85,7 @@ class MedicationDto {
     required this.diaryEntryId,
   });
 
-  factory MedicationDto.fromModel(Medication model, int diaryEntryId) {
+  factory MedicationDto.fromModel(TakenMedication model, int diaryEntryId) {
     return MedicationDto(
       name: model.name,
       tabletsTaken: model.tabletsTaken,
@@ -98,8 +98,8 @@ class MedicationDto {
   factory MedicationDto.fromJson(Map<String, dynamic> json) =>
       _$MedicationDtoFromJson(json);
 
-  Medication toModel() {
-    return Medication(
+  TakenMedication toModel() {
+    return TakenMedication(
       id: medicationId!.toString(),
       name: name,
       tabletsTaken: tabletsTaken,

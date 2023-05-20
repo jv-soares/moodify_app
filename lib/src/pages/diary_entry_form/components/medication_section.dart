@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:moodify_app/src/widgets/fetch_notifier_builder.dart';
 import 'package:provider/provider.dart';
 
-import '../../../models/medication.dart';
+import '../../../models/taken_medication.dart';
 import '../../../widgets/moodify_button.dart';
 import '../notifiers/medication_notifier.dart';
 import 'new_medication_dialog.dart';
 import 'taken_medication_card.dart';
 
 class MedicationSection extends StatefulWidget {
-  final ValueChanged<List<Medication>> onChanged;
+  final ValueChanged<List<TakenMedication>> onChanged;
 
   const MedicationSection({super.key, required this.onChanged});
 

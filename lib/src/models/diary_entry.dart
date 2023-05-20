@@ -3,7 +3,7 @@ import 'package:moodify_app/src/utils/date_time_utils.dart';
 
 import 'episode_severity.dart';
 import 'life_event.dart';
-import 'medication.dart';
+import 'taken_medication.dart';
 import 'symptom.dart';
 
 class DiaryEntry extends Equatable {
@@ -13,7 +13,7 @@ class DiaryEntry extends Equatable {
   final int moodRating;
   final int hoursOfSleep;
   final List<Symptom> symptoms;
-  final List<Medication> medications;
+  final List<TakenMedication> medications;
   final int? moodSwitchesPerDay;
   final LifeEvent? lifeEvent;
   final String? observations;

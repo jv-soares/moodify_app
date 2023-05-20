@@ -1,10 +1,10 @@
-import 'package:moodify_app/src/models/medication.dart';
+import 'package:moodify_app/src/models/taken_medication.dart';
 
 import '../../../app_container.dart';
 import '../../../models/fetch_notifier.dart';
 import '../../../repositories/medication_repository.dart';
 
-class MedicationsNotifier extends FetchNotifier<List<Medication>> {
+class MedicationsNotifier extends FetchNotifier<List<TakenMedication>> {
   final _repository = AppContainer.get<MedicationRepository>();
 
   MedicationsNotifier() {
@@ -16,11 +16,11 @@ class MedicationsNotifier extends FetchNotifier<List<Medication>> {
     data = medications;
   }
 
-  void add(Medication medication) {
+  void add(TakenMedication medication) {
     data = [...?data, medication];
   }
 
-  void remove(Medication medication) {
+  void remove(TakenMedication medication) {
     data = data?..remove(medication);
   }
 
@@ -38,7 +38,7 @@ class MedicationsNotifier extends FetchNotifier<List<Medication>> {
     _updateMedicationAt(index, medication.decrementedTablets());
   }
 
-  void _updateMedicationAt(int index, Medication medication) {
+  void _updateMedicationAt(int index, TakenMedication medication) {
     data = [
       ...data!
         ..removeAt(index)

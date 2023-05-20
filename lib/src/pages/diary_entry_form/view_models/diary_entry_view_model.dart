@@ -4,7 +4,7 @@ import 'package:uuid/uuid.dart';
 import '../../../models/diary_entry.dart';
 import '../../../models/episode_severity.dart';
 import '../../../models/life_event.dart';
-import '../../../models/medication.dart';
+import '../../../models/taken_medication.dart';
 import '../../../models/symptom.dart';
 
 class DiaryEntryViewModel {
@@ -12,7 +12,7 @@ class DiaryEntryViewModel {
   int moodRating = 50;
   int hoursOfSleep = 8;
   List<Symptom>? symptoms;
-  List<Medication>? medications;
+  List<TakenMedication>? medications;
   LifeEvent? lifeEvent;
   String? observations;
   int? moodSwitchesPerDay;

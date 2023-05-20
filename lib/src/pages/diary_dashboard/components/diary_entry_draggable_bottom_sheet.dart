@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 
 import '../../../models/diary_entry.dart';
 import '../../../models/episode_severity.dart';
-import '../../../models/medication.dart';
+import '../../../models/taken_medication.dart';
 import '../../../widgets/moodify_info_chip.dart';
 import '../../../widgets/moodify_primary_container.dart';
 
@@ -159,7 +159,7 @@ class _LifeEventSection extends StatelessWidget {
 }
 
 class _MedicationsSection extends StatelessWidget {
-  final List<Medication> medications;
+  final List<TakenMedication> medications;
 
   const _MedicationsSection(this.medications);
 
@@ -178,7 +178,7 @@ class _MedicationsSection extends StatelessWidget {
 }
 
 class _MedicationListItem extends StatelessWidget {
-  final Medication medication;
+  final TakenMedication medication;
 
   const _MedicationListItem(this.medication, {super.key});
 

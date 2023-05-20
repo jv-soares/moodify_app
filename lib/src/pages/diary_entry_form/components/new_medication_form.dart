@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../models/medication.dart';
+import '../../../models/taken_medication.dart';
 import '../../../widgets/moodify_dropdown_form_field.dart';
 import '../../../widgets/moodify_text_form_field.dart';
 
@@ -22,8 +22,8 @@ class NewMedicationFormState extends State<NewMedicationForm> {
 
   bool get isValid => _formKey.currentState!.validate();
 
-  Medication save() {
-    return Medication(
+  TakenMedication save() {
+    return TakenMedication(
       id: const Uuid().v1(),
       name: _name,
       tabletsTaken: 1,

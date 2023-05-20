@@ -1,16 +1,16 @@
-import 'package:moodify_app/src/models/medication.dart';
+import 'package:moodify_app/src/models/taken_medication.dart';
 
 abstract class MedicationRepository {
-  Future<List<Medication>> readAll();
-  Future<String> create(Medication medication);
+  Future<List<TakenMedication>> readAll();
+  Future<String> create(TakenMedication medication);
   Future<void> delete(String id);
 }
 
 class TempMedicationRepository implements MedicationRepository {
-  final _medications = <Medication>[];
+  final _medications = <TakenMedication>[];
 
   @override
-  Future<String> create(Medication medication) async {
+  Future<String> create(TakenMedication medication) async {
     await _delay;
     _medications.add(medication);
     return medication.id;
@@ -23,7 +23,7 @@ class TempMedicationRepository implements MedicationRepository {
   }
 
   @override
-  Future<List<Medication>> readAll() async {
+  Future<List<TakenMedication>> readAll() async {
     await _delay;
     return _medications;
   }

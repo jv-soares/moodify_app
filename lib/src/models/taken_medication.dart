@@ -1,29 +1,31 @@
 import 'package:equatable/equatable.dart';
 
-class Medication extends Equatable {
+class TakenMedication extends Equatable {
   final String id;
   final String name;
   final int tabletsTaken;
   final Dose dose;
 
-  const Medication({
+  const TakenMedication({
     required this.id,
     required this.name,
     required this.tabletsTaken,
     required this.dose,
   });
 
-  Medication incrementedTablets() => copyWith(tabletsTaken: tabletsTaken + 1);
+  TakenMedication incrementedTablets() =>
+      copyWith(tabletsTaken: tabletsTaken + 1);
 
-  Medication decrementedTablets() => copyWith(tabletsTaken: tabletsTaken - 1);
+  TakenMedication decrementedTablets() =>
+      copyWith(tabletsTaken: tabletsTaken - 1);
 
-  Medication copyWith({
+  TakenMedication copyWith({
     String? id,
     String? name,
     int? tabletsTaken,
     Dose? dose,
   }) {
-    return Medication(
+    return TakenMedication(
       id: id ?? this.id,
       name: name ?? this.name,
       tabletsTaken: tabletsTaken ?? this.tabletsTaken,
