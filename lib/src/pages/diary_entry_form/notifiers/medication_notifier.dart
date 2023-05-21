@@ -1,18 +1,21 @@
 import 'package:moodify_app/src/models/taken_medication.dart';
+import 'package:moodify_app/src/services/diary_entry_service.dart';
 
 import '../../../app_container.dart';
 import '../../../models/fetch_notifier.dart';
-import '../../../repositories/medication_repository.dart';
 
 class MedicationsNotifier extends FetchNotifier<List<TakenMedication>> {
-  final _repository = AppContainer.get<MedicationRepository>();
+  final _service = AppContainer.get<DiaryEntryService>();
 
   MedicationsNotifier() {
     _initialize();
   }
 
   Future<void> _initialize() async {
-    final medications = await _repository.readAll();
+    final entries = await _service.readAll();
+    final medications = entries
+        .firstWhere((element) => element.medications.isNotEmpty)
+        .medications;
     data = medications;
   }
 
