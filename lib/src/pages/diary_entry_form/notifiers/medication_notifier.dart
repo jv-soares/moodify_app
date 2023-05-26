@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:moodify_app/src/models/taken_medication.dart';
 import 'package:moodify_app/src/services/diary_entry_service.dart';
 
@@ -17,9 +18,9 @@ class MedicationsNotifier extends FetchNotifier<List<TakenMedication>> {
       data = [];
     } else {
       final medications = entries
-          .firstWhere((element) => element.medications.isNotEmpty)
-          .medications;
-      data = medications;
+          .firstWhereOrNull((element) => element.medications.isNotEmpty)
+          ?.medications;
+      data = medications ?? [];
     }
   }
 
