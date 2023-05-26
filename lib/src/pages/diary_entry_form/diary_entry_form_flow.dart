@@ -56,6 +56,16 @@ class _DiaryEntryFormFlowState extends State<DiaryEntryFormFlow> {
     });
   }
 
+  void _showSnackBar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Registro adicionado'),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final notifier = context.read<DiaryDashboardNotifier>();
@@ -88,7 +98,10 @@ class _DiaryEntryFormFlowState extends State<DiaryEntryFormFlow> {
                 builder = (_) => const EpisodeSeverityFormPage();
               case 'diary-form/optional':
                 builder = (_) => DiaryEntryFormPage(
-                      onFormSaved: Navigator.of(context).pop,
+                      onFormSaved: () {
+                        Navigator.of(context).pop();
+                        _showSnackBar();
+                      },
                     );
               default:
                 throw Exception('invalid route ${settings.name}');
