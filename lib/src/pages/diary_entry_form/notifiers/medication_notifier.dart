@@ -13,10 +13,14 @@ class MedicationsNotifier extends FetchNotifier<List<TakenMedication>> {
 
   Future<void> _initialize() async {
     final entries = await _service.readAll();
-    final medications = entries
-        .firstWhere((element) => element.medications.isNotEmpty)
-        .medications;
-    data = medications;
+    if (entries.isEmpty) {
+      data = [];
+    } else {
+      final medications = entries
+          .firstWhere((element) => element.medications.isNotEmpty)
+          .medications;
+      data = medications;
+    }
   }
 
   void add(TakenMedication medication) {
