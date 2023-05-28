@@ -6,6 +6,7 @@ import 'package:moodify_app/src/pages/diary_dashboard/notifiers/diary_dashboard_
 import 'package:moodify_app/src/pages/diary_entry_form/diary_entry_form_flow.dart';
 import 'package:moodify_app/src/pages/home_page.dart';
 import 'package:moodify_app/src/pages/notifications/notifications_page.dart';
+import 'package:moodify_app/src/pages/onboarding/onboarding_page.dart';
 import 'package:moodify_app/src/pages/splash/splash_page.dart';
 import 'package:provider/provider.dart';
 
@@ -48,6 +49,7 @@ ThemeData _buildTheme() {
 Map<String, WidgetBuilder> _buildRoutes() {
   return {
     AppRoutes.splash: (context) => const SplashPage(),
+    AppRoutes.onboarding: (context) => const OnboardingPage(),
     AppRoutes.home: (context) => const HomePage(),
     AppRoutes.diaryForm: (context) => const DiaryEntryFormFlow(),
     AppRoutes.diaryDashboard: (context) => const DiaryDashboardPage(),
@@ -57,6 +59,7 @@ Map<String, WidgetBuilder> _buildRoutes() {
 
 abstract class AppRoutes {
   static const splash = '/';
+  static const onboarding = '/onboarding';
   static const home = '/home';
   static const diaryForm = '/home/diary-form';
   static const diaryDashboard = '/home/diary-dashboard';

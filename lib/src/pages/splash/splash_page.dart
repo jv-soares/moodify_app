@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moodify_app/src/app.dart';
-import 'package:provider/provider.dart';
-
-import '../diary_dashboard/notifiers/diary_dashboard_notifier.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -12,42 +10,28 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
-  late DiaryDashboardNotifier _dashboardNotifier;
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _dashboardNotifier = context.read<DiaryDashboardNotifier>();
-    _dashboardNotifier.initialize();
-    _dashboardNotifier.addListener(_onDashboardStateChanged);
+    _shouldOnboard();
   }
 
-  void _onDashboardStateChanged() {
-    final state = _dashboardNotifier.state;
-    if (state is Loaded) {
-      // if (state.entries.isEmpty) return _pushFormPage();
-      _pushDashboardPage();
-    } else {
-      _pushFormPage();
-    }
+  Future<void> _shouldOnboard() async {
+    final sharedPref = await SharedPreferences.getInstance();
+    final didOnboard = sharedPref.getBool('didOnboard') ?? false;
+    didOnboard ? _pushHome() : _pushOnboarding();
   }
 
-  void _pushFormPage() {
-    Navigator.of(context).pushReplacementNamed(AppRoutes.diaryForm);
-  }
-
-  void _pushDashboardPage() {
+  void _pushHome() {
     Navigator.of(context).pushReplacementNamed(AppRoutes.home);
+  }
+
+  void _pushOnboarding() {
+    Navigator.of(context).pushReplacementNamed(AppRoutes.onboarding);
   }
 
   @override
   Widget build(BuildContext context) {
     return const Scaffold(body: Center(child: CircularProgressIndicator()));
-  }
-
-  @override
-  void dispose() {
-    _dashboardNotifier.removeListener(_onDashboardStateChanged);
-    super.dispose();
   }
 }
