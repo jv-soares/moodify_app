@@ -54,7 +54,7 @@ class DiaryEntryDto {
       createdAt: DateTime.fromMillisecondsSinceEpoch(createdAt),
       episode: EpisodeSeverity.fromString(episode),
       moodRating: moodRating,
-      symptoms: [],
+      symptoms: const [],
       medications: medications,
       hoursOfSleep: hoursOfSleep,
       lifeEvent: lifeEvent,

@@ -13,8 +13,8 @@ final diaryEntries = List.generate(
     episode: _getEpisode(index),
     moodRating: _random.nextInt(100),
     hoursOfSleep: _random.nextInt(10),
-    symptoms: [],
-    medications: [],
+    symptoms: const [],
+    medications: const [],
   ),
 );
 

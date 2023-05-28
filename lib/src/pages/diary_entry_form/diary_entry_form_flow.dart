@@ -59,7 +59,7 @@ class _DiaryEntryFormFlowState extends State<DiaryEntryFormFlow> {
   void _showSnackBar() {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Registro adicionado'),
+        content: const Text('Registro adicionado'),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         behavior: SnackBarBehavior.floating,
       ),
