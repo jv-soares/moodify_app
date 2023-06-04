@@ -14,10 +14,10 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _shouldOnboard();
+    _resolveNextRoute();
   }
 
-  Future<void> _shouldOnboard() async {
+  Future<void> _resolveNextRoute() async {
     final sharedPref = await SharedPreferences.getInstance();
     final didOnboard = sharedPref.getBool('didOnboard') ?? false;
     didOnboard ? _pushHome() : _pushOnboarding();
