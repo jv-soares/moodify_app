@@ -13,8 +13,12 @@ part 'diary_dashboard_state.dart';
 class DiaryDashboardNotifier extends ChangeNotifier {
   final _repository = AppContainer.get<DiaryEntryService>();
 
+  DiaryDashboardNotifier() {
+    initialize();
+  }
+
   DiaryDashboardState get state => _state;
-  DiaryDashboardState _state = Initial();
+  DiaryDashboardState _state = LoadingDiary();
 
   List<EpisodeEntry>? _allEpisodes;
 
