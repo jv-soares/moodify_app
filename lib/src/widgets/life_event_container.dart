@@ -5,12 +5,23 @@ import 'moodify_primary_container.dart';
 
 class LifeEventContainer extends StatelessWidget {
   final LifeEvent lifeEvent;
+  final VoidCallback? onEditPressed;
+  final VoidCallback? onDeletePressed;
 
-  const LifeEventContainer(this.lifeEvent, {super.key});
+  const LifeEventContainer(
+    this.lifeEvent, {
+    super.key,
+    this.onEditPressed,
+    this.onDeletePressed,
+  });
 
   @override
   Widget build(BuildContext context) {
     return MoodifyPrimaryContainer(
+      popupItems: [
+        PopupMenuItem(onTap: onEditPressed, child: const Text('Editar')),
+        PopupMenuItem(onTap: onDeletePressed, child: const Text('Excluir')),
+      ],
       child: Row(
         children: [
           Expanded(

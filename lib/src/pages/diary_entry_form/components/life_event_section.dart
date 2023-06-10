@@ -31,7 +31,15 @@ class _LifeEventSectionState extends State<LifeEventSection> {
         ),
         const SizedBox(height: 16),
         _lifeEvent != null
-            ? LifeEventContainer(_lifeEvent!)
+            ? LifeEventContainer(
+                _lifeEvent!,
+                onEditPressed: () {
+                  // TODO: implement editing
+                },
+                onDeletePressed: () {
+                  setState(() => _lifeEvent = null);
+                },
+              )
             : MoodifyFilledButton(
                 label: 'Adicionar acontecimento',
                 icon: Icons.add,
