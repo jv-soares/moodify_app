@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moodify_app/src/widgets/discard_form_alert_dialog.dart';
 import 'package:provider/provider.dart';
 
 import '../../../models/taken_medication.dart';
@@ -43,7 +44,7 @@ class NewMedicationDialogState extends State<_NewMedicationDialog> {
                 if (_formState.isEmpty) return Navigator.of(context).pop();
                 showDialog(
                   context: context,
-                  builder: (_) => _DiscardFormAlertDialog(),
+                  builder: (_) => const DiscardFormAlertDialog(),
                 );
               },
             ),
@@ -63,36 +64,6 @@ class NewMedicationDialogState extends State<_NewMedicationDialog> {
             child: NewMedicationForm(key: _formKey),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _DiscardFormAlertDialog extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      content: const Text('Deseja descartar o formulário?'),
-      actions: [
-        TextButton(
-          onPressed: Navigator.of(context).pop,
-          child: const Text('Cancelar'),
-        ),
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-            Navigator.of(context).pop();
-          },
-          child: const Text('Descartar'),
-        ),
-      ],
-      contentPadding: const EdgeInsets.symmetric(
-        horizontal: 24,
-        vertical: 24,
-      ),
-      actionsPadding: const EdgeInsets.symmetric(
-        horizontal: 16,
-        vertical: 12,
       ),
     );
   }

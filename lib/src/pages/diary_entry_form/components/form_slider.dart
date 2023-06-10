@@ -4,6 +4,7 @@ class FormSlider extends StatefulWidget {
   final String label;
   final double min;
   final double max;
+  final String? description;
   final double? initialValue;
   final void Function(int)? onChanged;
   final bool showLabel;
@@ -16,6 +17,7 @@ class FormSlider extends StatefulWidget {
     required this.label,
     required this.min,
     required this.max,
+    this.description,
     this.initialValue,
     this.onChanged,
     this.showLabel = false,
@@ -62,6 +64,16 @@ class _FormSliderState extends State<FormSlider> {
             widget.label.toUpperCase(),
             style: theme.textTheme.labelLarge,
           ),
+          if (widget.description != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 4, bottom: 16),
+              child: Text(
+                widget.description!,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.colorScheme.outline,
+                ),
+              ),
+            ),
           Slider(
             value: _value,
             min: widget.min,

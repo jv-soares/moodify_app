@@ -19,7 +19,7 @@ class ObservationSection extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 16),
-        MoodifyTextField(onChanged: onChanged),
+        MoodifyTextField(onChanged: onChanged, isMultiline: true),
       ],
     );
   }

@@ -18,7 +18,7 @@ class MoodifyTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       autocorrect: false,
-      maxLines: 3,
+      maxLines: isMultiline ? 3 : null,
       style: Theme.of(context).textTheme.bodyMedium,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(
