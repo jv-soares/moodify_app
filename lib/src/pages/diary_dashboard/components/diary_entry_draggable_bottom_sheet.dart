@@ -5,6 +5,7 @@ import 'package:moodify_app/src/models/symptom.dart';
 import 'package:moodify_app/src/pages/diary_dashboard/notifiers/diary_dashboard_notifier.dart';
 import 'package:moodify_app/src/utils/episodes_chart_helper.dart';
 import 'package:moodify_app/src/utils/string_x.dart';
+import 'package:moodify_app/src/widgets/life_event_container.dart';
 import 'package:moodify_app/src/widgets/moodify_draggable_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
@@ -73,6 +74,7 @@ class _Header extends StatelessWidget {
               _getName(entry.episode),
               style: Theme.of(context).textTheme.titleLarge,
             ),
+            // TODO: enable editing diary entry
             // TextButton(
             //   onPressed: () {},
             //   style: TextButton.styleFrom(
@@ -124,36 +126,7 @@ class _LifeEventSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return _SectionContainer(
       label: 'Acontecimento',
-      child: MoodifyPrimaryContainer(
-        child: Row(
-          children: [
-            Expanded(
-              child: Text(
-                lifeEvent.description,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onBackground,
-                    ),
-              ),
-            ),
-            Container(
-              height: 40,
-              width: 40,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(4),
-                color: Theme.of(context).colorScheme.surface,
-              ),
-              child: Center(
-                child: Text(
-                  '+${lifeEvent.impactRating}',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+      child: LifeEventContainer(lifeEvent),
     );
   }
 }
