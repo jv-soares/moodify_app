@@ -98,11 +98,7 @@ class _DiaryEntryFormPageState extends State<DiaryEntryFormPage> {
                 },
               ),
               _formSpacing,
-              LifeEventSection(
-                onChanged: (value) {
-                  viewModel.lifeEvent = value;
-                },
-              ),
+              const LifeEventSection(),
               _formSpacing,
               ObservationSection(
                 onChanged: (value) {

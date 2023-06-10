@@ -18,10 +18,7 @@ class LifeEventContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MoodifyPrimaryContainer(
-      popupItems: [
-        PopupMenuItem(onTap: onEditPressed, child: const Text('Editar')),
-        PopupMenuItem(onTap: onDeletePressed, child: const Text('Excluir')),
-      ],
+      popupItems: _maybeBuildPopupItems(),
       child: Row(
         children: [
           Expanded(
@@ -51,6 +48,21 @@ class LifeEventContainer extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  List<PopupMenuEntry>? _maybeBuildPopupItems() {
+    return onEditPressed == null || onDeletePressed == null
+        ? null
+        : [
+            PopupMenuItem(
+              onTap: onEditPressed,
+              child: const Text('Editar'),
+            ),
+            PopupMenuItem(
+              onTap: onDeletePressed,
+              child: const Text('Excluir'),
+            ),
+          ];
   }
 
   String get _formattedImpactRating {
