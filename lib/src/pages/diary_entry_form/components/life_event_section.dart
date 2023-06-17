@@ -17,6 +17,11 @@ class LifeEventSection extends StatefulWidget {
 class _LifeEventSectionState extends State<LifeEventSection> {
   LifeEvent? _lifeEvent;
 
+  void _updateLifeEvent(LifeEvent? newLifeEvent) {
+    setState(() => _lifeEvent = newLifeEvent);
+    context.read<DiaryEntryViewModel>().lifeEvent = newLifeEvent;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -34,7 +39,8 @@ class _LifeEventSectionState extends State<LifeEventSection> {
             ? LifeEventContainer(
                 _lifeEvent!,
                 onEditPressed: () {
-                  // TODO: implement editing
+                  showNewLifeEventDialog(context, lifeEvent: _lifeEvent)
+                      .then(_updateLifeEvent);
                 },
                 onDeletePressed: () {
                   setState(() => _lifeEvent = null);
@@ -44,10 +50,7 @@ class _LifeEventSectionState extends State<LifeEventSection> {
                 label: 'Adicionar acontecimento',
                 icon: Icons.add,
                 onPressed: () {
-                  showNewLifeEventDialog(context).then((value) {
-                    setState(() => _lifeEvent = value);
-                    context.read<DiaryEntryViewModel>().lifeEvent = value;
-                  });
+                  showNewLifeEventDialog(context).then(_updateLifeEvent);
                 },
               ),
       ],

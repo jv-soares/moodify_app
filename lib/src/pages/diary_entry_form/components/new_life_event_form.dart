@@ -6,7 +6,9 @@ import '../../../widgets/moodify_text_form_field.dart';
 import 'form_slider.dart';
 
 class NewLifeEventForm extends StatefulWidget {
-  const NewLifeEventForm({super.key});
+  final LifeEvent? lifeEvent;
+
+  const NewLifeEventForm({super.key, this.lifeEvent});
 
   @override
   State<NewLifeEventForm> createState() => NewLifeEventFormState();
@@ -14,15 +16,35 @@ class NewLifeEventForm extends StatefulWidget {
 
 class NewLifeEventFormState extends State<NewLifeEventForm> {
   final _formKey = GlobalKey<FormState>();
-  String _description = '';
+  final _descriptionController = TextEditingController();
   int _impactRating = 0;
 
   bool get isValid => _formKey.currentState!.validate();
 
-  bool get isEmpty => _description.isEmpty;
+  bool get isEmpty => _descriptionController.text.isEmpty;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.lifeEvent != null) _edit(widget.lifeEvent!);
+  }
+
+  @override
+  void didUpdateWidget(covariant NewLifeEventForm oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.lifeEvent != null) _edit(widget.lifeEvent!);
+  }
 
   LifeEvent save() {
-    return LifeEvent(description: _description, impactRating: _impactRating);
+    return LifeEvent(
+      description: _descriptionController.text,
+      impactRating: _impactRating,
+    );
+  }
+
+  void _edit(LifeEvent lifeEvent) {
+    _descriptionController.text = lifeEvent.description;
+    _impactRating = lifeEvent.impactRating;
   }
 
   @override
@@ -34,10 +56,8 @@ class NewLifeEventFormState extends State<NewLifeEventForm> {
           MoodifyTextFormField(
             label: 'Descrição',
             isMultiline: true,
+            controller: _descriptionController,
             validator: FieldValidator.isNotEmpty,
-            onChanged: (value) {
-              _description = value;
-            },
           ),
           const SizedBox(height: 32),
           Column(
@@ -63,5 +83,11 @@ class NewLifeEventFormState extends State<NewLifeEventForm> {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _descriptionController.dispose();
+    super.dispose();
   }
 }
