@@ -18,42 +18,12 @@ class DiaryEntryFormFlow extends StatefulWidget {
 class _DiaryEntryFormFlowState extends State<DiaryEntryFormFlow> {
   final _viewModel = DiaryEntryViewModel();
   final _navigatorKey = GlobalKey<NavigatorState>();
-  late DateTime _selectedDate;
-
-  DateTime get _today => DateTime.now();
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     final notifier = context.read<DiaryDashboardNotifier>();
-    _selectedDate = notifier.addableDays.first;
-    _viewModel.update(createdAt: _selectedDate);
-  }
-
-  String _getFormattedDate() {
-    final yesterday = _today.subtract(const Duration(days: 1));
-    if (DateTimeUtils.compareDayOfYear(_selectedDate, _today)) {
-      return 'Hoje';
-    } else if (DateTimeUtils.compareDayOfYear(_selectedDate, yesterday)) {
-      return 'Ontem';
-    }
-    return DateFormat.MMMMd().format(_selectedDate);
-  }
-
-  void _selectDate() {
-    final notifier = context.read<DiaryDashboardNotifier>();
-    showDatePicker(
-      context: context,
-      initialDate: _selectedDate,
-      firstDate: _today.subtract(const Duration(days: 7)),
-      lastDate: _today,
-      selectableDayPredicate: notifier.canAddEntryAt,
-    ).then((date) {
-      if (date != null) {
-        setState(() => _selectedDate = date);
-        _viewModel.update(createdAt: _selectedDate);
-      }
-    });
+    _viewModel.update(createdAt: notifier.addableDays.first);
   }
 
   void _showSnackBar() {
@@ -68,26 +38,10 @@ class _DiaryEntryFormFlowState extends State<DiaryEntryFormFlow> {
 
   @override
   Widget build(BuildContext context) {
-    final notifier = context.read<DiaryDashboardNotifier>();
     return ChangeNotifierProvider.value(
       value: _viewModel,
       child: Scaffold(
-        appBar: AppBar(
-          title: Text(_getFormattedDate()),
-          centerTitle: true,
-          leading: notifier.isEmpty
-              ? null
-              : IconButton(
-                  onPressed: Navigator.of(context).pop,
-                  icon: const Icon(Icons.close),
-                ),
-          actions: [
-            IconButton(
-              onPressed: _selectDate,
-              icon: const Icon(Icons.edit_calendar),
-            ),
-          ],
-        ),
+        appBar: _DateAppBar(),
         body: Navigator(
           key: _navigatorKey,
           initialRoute: 'diary-form/episode-severity',
@@ -112,4 +66,60 @@ class _DiaryEntryFormFlowState extends State<DiaryEntryFormFlow> {
       ),
     );
   }
+}
+
+class _DateAppBar extends StatelessWidget implements PreferredSizeWidget {
+  DateTime get _today => DateTime.now();
+
+  String _getFormattedDate(DateTime selectedDate) {
+    final yesterday = _today.subtract(const Duration(days: 1));
+    if (DateTimeUtils.compareDayOfYear(selectedDate, _today)) {
+      return 'Hoje';
+    } else if (DateTimeUtils.compareDayOfYear(selectedDate, yesterday)) {
+      return 'Ontem';
+    }
+    return DateFormat.MMMMd().format(selectedDate);
+  }
+
+  Future<DateTime?> _selectDate(BuildContext context, DateTime selectedDate) {
+    final notifier = context.read<DiaryDashboardNotifier>();
+    return showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: _today.subtract(const Duration(days: 7)),
+      lastDate: _today,
+      selectableDayPredicate: notifier.canAddEntryAt,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final notifier = context.read<DiaryDashboardNotifier>();
+    final selectedDate = context.select<DiaryEntryViewModel, DateTime>(
+      (value) => value.createdAt,
+    );
+    return AppBar(
+      title: Text(_getFormattedDate(selectedDate)),
+      centerTitle: true,
+      leading: notifier.isEmpty
+          ? null
+          : IconButton(
+              onPressed: Navigator.of(context).pop,
+              icon: const Icon(Icons.close),
+            ),
+      actions: [
+        IconButton(
+          onPressed: () => _selectDate(context, selectedDate).then((date) {
+            if (date != null) {
+              context.read<DiaryEntryViewModel>().update(createdAt: date);
+            }
+          }),
+          icon: const Icon(Icons.edit_calendar),
+        ),
+      ],
+    );
+  }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
