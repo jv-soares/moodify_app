@@ -15,15 +15,13 @@ class LifeEventSection extends StatefulWidget {
 }
 
 class _LifeEventSectionState extends State<LifeEventSection> {
-  LifeEvent? _lifeEvent;
-
   void _updateLifeEvent(LifeEvent? newLifeEvent) {
-    setState(() => _lifeEvent = newLifeEvent);
     context.read<DiaryEntryViewModel>().update(lifeEvent: newLifeEvent);
   }
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<DiaryEntryViewModel>();
     return Column(
       children: [
         Row(
@@ -35,15 +33,17 @@ class _LifeEventSectionState extends State<LifeEventSection> {
           ],
         ),
         const SizedBox(height: 16),
-        _lifeEvent != null
+        viewModel.lifeEvent != null
             ? LifeEventContainer(
-                _lifeEvent!,
+                viewModel.lifeEvent!,
                 onEditPressed: () {
-                  showNewLifeEventDialog(context, lifeEvent: _lifeEvent)
-                      .then(_updateLifeEvent);
+                  showNewLifeEventDialog(
+                    context,
+                    lifeEvent: viewModel.lifeEvent,
+                  ).then(_updateLifeEvent);
                 },
                 onDeletePressed: () {
-                  setState(() => _lifeEvent = null);
+                  viewModel.clear(lifeEvent: true);
                 },
               )
             : MoodifyFilledButton(

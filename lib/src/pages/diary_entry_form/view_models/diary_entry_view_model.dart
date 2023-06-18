@@ -59,6 +59,11 @@ class DiaryEntryViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void clear({bool lifeEvent = false}) {
+    if (lifeEvent) _lifeEvent = null;
+    notifyListeners();
+  }
+
   void initFromModel(DiaryEntry model) {
     _id = model.id;
     update(
