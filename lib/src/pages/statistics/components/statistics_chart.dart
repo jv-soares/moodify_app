@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:moodify_app/src/pages/diary_dashboard/notifiers/diary_dashboard_notifier.dart';
 import 'package:provider/provider.dart';
 
+import '../../../models/diary_entry.dart';
 import '../../../models/episode_severity.dart';
 
 class StatisticsChart extends StatelessWidget {
@@ -20,53 +21,9 @@ class StatisticsChart extends StatelessWidget {
     return LineChart(
       LineChartData(
         lineBarsData: [
-          LineChartBarData(
-            spots: entries
-                .map((e) => FlSpot(
-                      e.createdAt.millisecondsSinceEpoch.toDouble(),
-                      e.moodRating.toDouble(),
-                    ))
-                .toList(),
-            isStrokeCapRound: true,
-            isCurved: true,
-            barWidth: 4,
-            color: Theme.of(context).colorScheme.tertiaryContainer,
-            dotData: FlDotData(show: false),
-          ),
-          LineChartBarData(
-            spots: entries
-                .map((e) => FlSpot(
-                      e.createdAt.millisecondsSinceEpoch.toDouble(),
-                      e.hoursOfSleep * 10,
-                    ))
-                .toList(),
-            isStrokeCapRound: true,
-            isCurved: true,
-            barWidth: 4,
-            color: Theme.of(context).colorScheme.primaryContainer,
-            dotData: FlDotData(show: false),
-          ),
-          LineChartBarData(
-            spots: entries
-                .map((e) => FlSpot(
-                      e.createdAt.millisecondsSinceEpoch.toDouble(),
-                      _calculateEpisodeSeverityValue(e.episode),
-                    ))
-                .toList(),
-            isStrokeCapRound: true,
-            isCurved: true,
-            barWidth: 4,
-            gradient: LinearGradient(
-              colors: [
-                Theme.of(context).colorScheme.primary,
-                Theme.of(context).colorScheme.error,
-              ],
-              stops: const [.4, 1],
-              begin: Alignment.bottomCenter,
-              end: Alignment.topCenter,
-            ),
-            dotData: FlDotData(show: false),
-          ),
+          _buildMoodRatingLine(entries, context),
+          _buildSleepLine(entries, context),
+          _buildEpisodeSeverityLine(entries, context),
         ],
         gridData: FlGridData(
           drawVerticalLine: false,
@@ -84,11 +41,73 @@ class StatisticsChart extends StatelessWidget {
     );
   }
 
-  double _calculateEpisodeSeverityValue(EpisodeSeverity episode) {
+  LineChartBarData _buildMoodRatingLine(
+    List<DiaryEntry> entries,
+    BuildContext context,
+  ) {
+    return LineChartBarData(
+      spots: entries
+          .map((e) => FlSpot(_dateToX(e.createdAt), e.moodRating.toDouble()))
+          .toList(),
+      isStrokeCapRound: true,
+      isCurved: true,
+      barWidth: 4,
+      color: Theme.of(context).colorScheme.tertiaryContainer,
+      dotData: FlDotData(show: false),
+    );
+  }
+
+  LineChartBarData _buildSleepLine(
+    List<DiaryEntry> entries,
+    BuildContext context,
+  ) {
+    return LineChartBarData(
+      spots: entries
+          .map((e) => FlSpot(_dateToX(e.createdAt), e.hoursOfSleep * 10))
+          .toList(),
+      isStrokeCapRound: true,
+      isCurved: true,
+      barWidth: 4,
+      color: Theme.of(context).colorScheme.primaryContainer,
+      dotData: FlDotData(show: false),
+    );
+  }
+
+  LineChartBarData _buildEpisodeSeverityLine(
+    List<DiaryEntry> entries,
+    BuildContext context,
+  ) {
+    return LineChartBarData(
+      spots: entries
+          .map(
+            (e) => FlSpot(_dateToX(e.createdAt), _calculateEpisodeY(e.episode)),
+          )
+          .toList(),
+      isStrokeCapRound: true,
+      isCurved: true,
+      barWidth: 4,
+      gradient: LinearGradient(
+        colors: [
+          Theme.of(context).colorScheme.primary,
+          Theme.of(context).colorScheme.error,
+        ],
+        stops: const [.4, 1],
+        begin: Alignment.bottomCenter,
+        end: Alignment.topCenter,
+      ),
+      dotData: FlDotData(show: false),
+    );
+  }
+
+  double _dateToX(DateTime date) {
+    return DateUtils.dateOnly(date).millisecondsSinceEpoch.toDouble();
+  }
+
+  double _calculateEpisodeY(EpisodeSeverity episode) {
     if (episode.isMania) {
       return 50 + episode.levelValue * 12.5;
     } else if (episode.isDepression) {
-      return episode.levelValue * 12.5;
+      return 50 - episode.levelValue * 12.5;
     } else {
       return 50;
     }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:moodify_app/src/utils/episodes_chart_helper.dart';
 import 'package:moodify_app/src/utils/string_x.dart';
 import 'package:moodify_app/src/widgets/moodify_info_chip.dart';
 
