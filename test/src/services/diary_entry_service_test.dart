@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:moodify_app/src/models/diary_entry.dart';
@@ -56,7 +58,7 @@ class FakeDiaryEntryRepository extends Fake implements DiaryEntryRepository {
   Future<String> create(DiaryEntry entry) async {
     await _delay;
     _entries.add(entry);
-    return entry.id;
+    return Random().nextInt(100).toString();
   }
 
   @override
