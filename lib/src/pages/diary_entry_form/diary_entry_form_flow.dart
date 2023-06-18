@@ -87,25 +87,27 @@ class _DateAppBar extends StatelessWidget implements PreferredSizeWidget {
     return DateFormat.MMMMd().format(selectedDate);
   }
 
-  Future<DateTime?> _selectDate(BuildContext context, DateTime selectedDate) {
+  Future<DateTime?> _selectDate(
+    BuildContext context,
+    DateTime selectedDate, {
+    bool isEditing = false,
+  }) {
     final notifier = context.read<DiaryDashboardNotifier>();
     return showDatePicker(
       context: context,
       initialDate: selectedDate,
       firstDate: _today.subtract(const Duration(days: 7)),
       lastDate: _today,
-      selectableDayPredicate: notifier.canAddEntryAt,
+      selectableDayPredicate: isEditing ? null : notifier.canAddEntryAt,
     );
   }
 
   @override
   Widget build(BuildContext context) {
     final notifier = context.read<DiaryDashboardNotifier>();
-    final selectedDate = context.select<DiaryEntryViewModel, DateTime>(
-      (value) => value.createdAt,
-    );
+    final viewModel = context.watch<DiaryEntryViewModel>();
     return AppBar(
-      title: Text(_getFormattedDate(selectedDate)),
+      title: Text(_getFormattedDate(viewModel.createdAt)),
       centerTitle: true,
       leading: notifier.isEmpty
           ? null
@@ -115,7 +117,11 @@ class _DateAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
       actions: [
         IconButton(
-          onPressed: () => _selectDate(context, selectedDate).then((date) {
+          onPressed: () => _selectDate(
+            context,
+            viewModel.createdAt,
+            isEditing: viewModel.isEditing,
+          ).then((date) {
             if (date != null) {
               context.read<DiaryEntryViewModel>().update(createdAt: date);
             }

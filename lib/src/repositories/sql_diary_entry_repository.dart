@@ -103,11 +103,15 @@ class SqlDiaryEntryRepository implements DiaryEntryRepository {
     final diaryEntryId = await _db.update(
       _Tables.diaryEntries,
       DiaryEntryDto.fromModel(entry).toJson(),
+      where: 'diaryEntryId = ?',
+      whereArgs: [entry.id],
     );
     if (entry.lifeEvent != null) {
       await _db.update(
         _Tables.lifeEvents,
         LifeEventDto.fromModel(entry.lifeEvent!, diaryEntryId).toJson(),
+        where: 'diaryEntryId = ?',
+        whereArgs: [entry.id],
       );
     }
     if (entry.medications.isNotEmpty) {
@@ -115,6 +119,8 @@ class SqlDiaryEntryRepository implements DiaryEntryRepository {
         await _db.update(
           _Tables.medications,
           MedicationDto.fromModel(medication, diaryEntryId).toJson(),
+          where: 'diaryEntryId = ?',
+          whereArgs: [entry.id],
         );
       }
     }

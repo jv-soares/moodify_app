@@ -36,6 +36,8 @@ class DiaryEntryViewModel extends ChangeNotifier {
   DateTime get createdAt => _createdAt;
   DateTime _createdAt = DateTime.now();
 
+  bool get isEditing => _id != null;
+
   void update({
     EpisodeSeverity? episodeSeverity,
     int? moodRating,
