@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:moodify_app/src/models/taken_medication.dart';
 
 abstract class MedicationRepository {
@@ -13,7 +15,7 @@ class TempMedicationRepository implements MedicationRepository {
   Future<String> create(TakenMedication medication) async {
     await _delay;
     _medications.add(medication);
-    return medication.id;
+    return Random().nextInt(100).toString();
   }
 
   @override

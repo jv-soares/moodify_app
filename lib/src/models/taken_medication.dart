@@ -1,13 +1,13 @@
 import 'package:equatable/equatable.dart';
 
 class TakenMedication extends Equatable {
-  final String id;
+  final String? id;
   final String name;
   final int tabletsTaken;
   final Dose dose;
 
   const TakenMedication({
-    required this.id,
+    this.id,
     required this.name,
     required this.tabletsTaken,
     required this.dose,

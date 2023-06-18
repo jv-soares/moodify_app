@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../../models/taken_medication.dart';
 import '../../../widgets/moodify_dropdown_form_field.dart';
@@ -24,7 +23,6 @@ class NewMedicationFormState extends State<NewMedicationForm> {
 
   TakenMedication save() {
     return TakenMedication(
-      id: const Uuid().v1(),
       name: _name,
       tabletsTaken: 1,
       dose: Dose(_dose, _unitOfMeasurement),

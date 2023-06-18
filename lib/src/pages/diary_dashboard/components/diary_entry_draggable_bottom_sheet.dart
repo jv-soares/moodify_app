@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:moodify_app/src/app.dart';
 import 'package:moodify_app/src/models/life_event.dart';
 import 'package:moodify_app/src/models/symptom.dart';
 import 'package:moodify_app/src/pages/diary_dashboard/notifiers/diary_dashboard_notifier.dart';
@@ -68,16 +69,20 @@ class _Header extends StatelessWidget {
               entry.episode.name,
               style: Theme.of(context).textTheme.titleLarge,
             ),
-            // TODO: enable editing diary entry
-            // TextButton(
-            //   onPressed: () {},
-            //   style: TextButton.styleFrom(
-            //     padding: EdgeInsets.zero,
-            //     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            //     visualDensity: VisualDensity.compact,
-            //   ),
-            //   child: const Text('EDITAR'),
-            // ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed(
+                  AppRoutes.diaryForm,
+                  arguments: entry,
+                );
+              },
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.zero,
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                visualDensity: VisualDensity.compact,
+              ),
+              child: const Text('EDITAR'),
+            ),
           ],
         ),
         const SizedBox(height: 2),

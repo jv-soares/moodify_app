@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../../models/diary_entry.dart';
 import '../../../models/episode_severity.dart';
@@ -58,9 +57,22 @@ class DiaryEntryViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void initFromModel(DiaryEntry model) {
+    update(
+      episodeSeverity: model.episode,
+      createdAt: model.createdAt,
+      hoursOfSleep: model.hoursOfSleep,
+      lifeEvent: model.lifeEvent,
+      medications: model.medications,
+      moodRating: model.moodRating,
+      moodSwitchesPerDay: model.moodSwitchesPerDay,
+      observations: model.observations,
+      symptoms: model.symptoms,
+    );
+  }
+
   DiaryEntry toModel() {
     return DiaryEntry(
-      id: const Uuid().v1(),
       createdAt: createdAt,
       episode: episodeSeverity,
       moodRating: moodRating,

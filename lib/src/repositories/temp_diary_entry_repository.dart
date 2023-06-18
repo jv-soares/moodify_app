@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:collection/collection.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -28,7 +30,7 @@ class TempDiaryEntryRepository implements DiaryEntryRepository {
     } else {
       _controller.add([entry]);
     }
-    return entry.id;
+    return Random().nextInt(100).toString();
   }
 
   Future<void> get _delay => Future.delayed(const Duration(seconds: 1));

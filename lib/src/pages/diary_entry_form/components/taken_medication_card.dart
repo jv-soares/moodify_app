@@ -59,7 +59,7 @@ class _MedicationListItemState extends State<_MedicationListItem> {
               _buildButton(
                 Icons.remove,
                 () => medicationsNotifier.decrementTabletsTaken(
-                  widget.medication.id,
+                  widget.medication.id!,
                 ),
               ),
               const SizedBox(width: 16),
@@ -71,7 +71,7 @@ class _MedicationListItemState extends State<_MedicationListItem> {
               _buildButton(
                 Icons.add,
                 () => medicationsNotifier.incrementTabletsTaken(
-                  widget.medication.id,
+                  widget.medication.id!,
                 ),
               ),
             ],

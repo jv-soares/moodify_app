@@ -7,7 +7,7 @@ import 'taken_medication.dart';
 import 'symptom.dart';
 
 class DiaryEntry extends Equatable {
-  final String id;
+  final String? id;
   final DateTime createdAt;
   final EpisodeSeverity episode;
   final int moodRating;
@@ -19,7 +19,7 @@ class DiaryEntry extends Equatable {
   final String? observations;
 
   const DiaryEntry({
-    required this.id,
+    this.id,
     required this.createdAt,
     required this.episode,
     required this.moodRating,

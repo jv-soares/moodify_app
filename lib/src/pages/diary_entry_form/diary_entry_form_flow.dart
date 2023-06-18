@@ -5,6 +5,7 @@ import 'package:moodify_app/src/pages/diary_entry_form/episode_severity_form_pag
 import 'package:moodify_app/src/pages/diary_entry_form/view_models/diary_entry_view_model.dart';
 import 'package:provider/provider.dart';
 
+import '../../models/diary_entry.dart';
 import '../../utils/date_time_utils.dart';
 import '../diary_dashboard/notifiers/diary_dashboard_notifier.dart';
 
@@ -22,8 +23,13 @@ class _DiaryEntryFormFlowState extends State<DiaryEntryFormFlow> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final notifier = context.read<DiaryDashboardNotifier>();
-    _viewModel.update(createdAt: notifier.addableDays.first);
+    final editable = ModalRoute.of(context)!.settings.arguments as DiaryEntry?;
+    if (editable != null) {
+      _viewModel.initFromModel(editable);
+    } else {
+      final notifier = context.read<DiaryDashboardNotifier>();
+      _viewModel.update(createdAt: notifier.addableDays.first);
+    }
   }
 
   void _showSnackBar() {
