@@ -99,7 +99,7 @@ class _ContentState extends State<_Content> {
           selectedItemAnchor: SelectedItemAnchor.START,
           onItemFocus: (index) {
             final entryIndex = notifier.onItemFocus(index);
-            notifier.selectEntry(entries[entryIndex]);
+            notifier.selectEntry(entryIndex);
           },
           focusOnItemTap: false,
           endOfListTolerance: 0,
@@ -163,7 +163,7 @@ class _ContentState extends State<_Content> {
       onTap: () {
         if (entries[index].hasDiaryEntry) {
           setState(() {
-            notifier.selectEntry(entries[index]);
+            notifier.selectEntry(index);
             notifier.onItemTap(index);
           });
         }

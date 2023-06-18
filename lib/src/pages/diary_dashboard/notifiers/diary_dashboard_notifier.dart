@@ -76,7 +76,11 @@ class DiaryDashboardNotifier extends ChangeNotifier {
       }).toList();
       _allEpisodes = episodes;
       _state = Loaded(episodes);
-      if (episodes.length == 1) selectEntry(episodes.single);
+      if (_selectedEntry == null) {
+        selectEntry(0);
+      } else {
+        selectEntry(_indicatorIndex);
+      }
       notifyListeners();
     });
   }
@@ -84,19 +88,24 @@ class DiaryDashboardNotifier extends ChangeNotifier {
   EpisodeEntry? get selectedEntry => _selectedEntry;
   EpisodeEntry? _selectedEntry;
 
-  void selectEntry(EpisodeEntry entry) {
-    _selectedEntry = entry;
+  void selectEntry(int index) {
+    _selectedEntry = _filteredEpisodes[index];
     notifyListeners();
   }
 
+  DateTime _start = DateTime.now().subtract(const Duration(days: 360));
+  DateTime _end = DateTime.now();
+
+  List<EpisodeEntry> get _filteredEpisodes => _allEpisodes!
+      .where((entry) => entry.date.isBetween(_start, _end))
+      .toList();
+
   void selectDateRange(DateTime start, DateTime end) {
     if (_allEpisodes == null) return;
-    final newEntries = _allEpisodes!
-        .where((entry) => entry.date.isBetween(start, end))
-        .toList();
-    _state = Loaded(newEntries);
-    notifyListeners();
-    selectEntry(newEntries.first);
+    _start = start;
+    _end = end;
+    _state = Loaded(_filteredEpisodes);
+    selectEntry(0);
     resetIndicator();
   }
 
