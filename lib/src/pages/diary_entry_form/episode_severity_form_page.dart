@@ -13,10 +13,9 @@ class EpisodeSeverityFormPage extends StatefulWidget {
 }
 
 class _EpisodeSeverityFormPageState extends State<EpisodeSeverityFormPage> {
-  EpisodeSeverity? _selectedValue = EpisodeSeverity.balanced;
-
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<DiaryEntryViewModel>();
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -39,7 +38,7 @@ class _EpisodeSeverityFormPageState extends State<EpisodeSeverityFormPage> {
                   .map(
                     (e) => RadioListTile<EpisodeSeverity>(
                       value: e.value,
-                      groupValue: _selectedValue,
+                      groupValue: viewModel.episodeSeverity,
                       isThreeLine: true,
                       contentPadding: EdgeInsets.zero,
                       title: Text(
@@ -53,10 +52,10 @@ class _EpisodeSeverityFormPageState extends State<EpisodeSeverityFormPage> {
                             ),
                       ),
                       onChanged: (value) {
-                        setState(() => _selectedValue = value);
                         if (value != null) {
-                          context.read<DiaryEntryViewModel>().episodeSeverity =
-                              value;
+                          context
+                              .read<DiaryEntryViewModel>()
+                              .update(episodeSeverity: value);
                         }
                       },
                     ),

@@ -27,7 +27,7 @@ class _DiaryEntryFormFlowState extends State<DiaryEntryFormFlow> {
     super.didChangeDependencies();
     final notifier = context.read<DiaryDashboardNotifier>();
     _selectedDate = notifier.addableDays.first;
-    _viewModel.createdAt = _selectedDate;
+    _viewModel.update(createdAt: _selectedDate);
   }
 
   String _getFormattedDate() {
@@ -51,7 +51,7 @@ class _DiaryEntryFormFlowState extends State<DiaryEntryFormFlow> {
     ).then((date) {
       if (date != null) {
         setState(() => _selectedDate = date);
-        _viewModel.createdAt = _selectedDate;
+        _viewModel.update(createdAt: _selectedDate);
       }
     });
   }
@@ -69,7 +69,7 @@ class _DiaryEntryFormFlowState extends State<DiaryEntryFormFlow> {
   @override
   Widget build(BuildContext context) {
     final notifier = context.read<DiaryDashboardNotifier>();
-    return Provider.value(
+    return ChangeNotifierProvider.value(
       value: _viewModel,
       child: Scaffold(
         appBar: AppBar(

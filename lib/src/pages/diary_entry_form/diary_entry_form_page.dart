@@ -34,7 +34,7 @@ class _DiaryEntryFormPageState extends State<DiaryEntryFormPage> {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.read<DiaryEntryViewModel>();
+    final viewModel = context.watch<DiaryEntryViewModel>();
     return Scaffold(
       floatingActionButton: ValueListenableBuilder(
         valueListenable: _notifier,
@@ -65,22 +65,23 @@ class _DiaryEntryFormPageState extends State<DiaryEntryFormPage> {
                 label: 'Como está seu humor?',
                 min: 0,
                 max: 100,
-                initialValue: viewModel.moodRating.toDouble(),
+                value: viewModel.moodRating,
                 showLabel: true,
                 onChanged: (value) {
-                  viewModel.moodRating = value;
+                  viewModel.update(moodRating: value.toInt());
                 },
                 minLabel: 'Mais depressivo\nque nunca',
                 maxLabel: 'Mais energizado\nque nunca',
               ),
               _formSpacing,
               FormSlider(
+                value: viewModel.hoursOfSleep,
                 label: 'Quantas horas você dormiu?',
                 min: 0,
                 max: 10,
                 showDivisions: true,
                 onChanged: (value) {
-                  viewModel.hoursOfSleep = value;
+                  viewModel.update(hoursOfSleep: value.toInt());
                 },
                 showLabel: true,
               ),
@@ -88,13 +89,13 @@ class _DiaryEntryFormPageState extends State<DiaryEntryFormPage> {
               SymptomChecker(
                 symptoms: Symptom.values,
                 onSymptomsChanged: (symptoms) {
-                  viewModel.symptoms = symptoms;
+                  viewModel.update(symptoms: symptoms);
                 },
               ),
               _formSpacing,
               MedicationSection(
                 onChanged: (value) {
-                  viewModel.medications = value;
+                  viewModel.update(medications: value);
                 },
               ),
               _formSpacing,
@@ -102,7 +103,7 @@ class _DiaryEntryFormPageState extends State<DiaryEntryFormPage> {
               _formSpacing,
               ObservationSection(
                 onChanged: (value) {
-                  viewModel.observations = value;
+                  viewModel.update(observations: value);
                 },
               ),
               _formSpacing,

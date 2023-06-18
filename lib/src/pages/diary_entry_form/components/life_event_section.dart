@@ -19,7 +19,7 @@ class _LifeEventSectionState extends State<LifeEventSection> {
 
   void _updateLifeEvent(LifeEvent? newLifeEvent) {
     setState(() => _lifeEvent = newLifeEvent);
-    context.read<DiaryEntryViewModel>().lifeEvent = newLifeEvent;
+    context.read<DiaryEntryViewModel>().update(lifeEvent: newLifeEvent);
   }
 
   @override

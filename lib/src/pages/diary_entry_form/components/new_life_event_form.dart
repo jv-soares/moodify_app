@@ -69,13 +69,13 @@ class NewLifeEventFormState extends State<NewLifeEventForm> {
                     'Avalie como este acontecimento impactou o seu humor no dia',
                 minLabel: 'Extremamente\nnegativo',
                 maxLabel: 'Extremamente\npositivo',
-                initialValue: _impactRating.toDouble(),
+                value: _impactRating,
                 min: -4,
                 max: 4,
                 showLabel: true,
                 showDivisions: true,
                 onChanged: (value) {
-                  _impactRating = value;
+                  setState(() => _impactRating = value);
                 },
               ),
             ],
