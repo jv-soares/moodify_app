@@ -11,7 +11,7 @@ import '../../../models/diary_entry.dart';
 part 'diary_dashboard_state.dart';
 
 class DiaryDashboardNotifier extends ChangeNotifier {
-  final _repository = AppContainer.get<DiaryEntryService>();
+  final _service = AppContainer.get<DiaryEntryService>();
 
   DiaryDashboardNotifier() {
     initialize();
@@ -59,7 +59,7 @@ class DiaryDashboardNotifier extends ChangeNotifier {
   }
 
   Future<void> initialize() async {
-    _subscription = _repository.watchAll().listen((entries) {
+    _subscription = _service.watchAll().listen((entries) {
       if (entries.isEmpty) {
         _state = Loaded([]);
         notifyListeners();

@@ -21,13 +21,26 @@ class DiaryEntryService {
     return _repository.update(entry);
   }
 
-  Future<String> _create(DiaryEntry entry) {
+  Future<String> _create(DiaryEntry entry) async {
+    final id = await _repository.create(entry);
+    final identifiedEntry = DiaryEntry(
+      id: id,
+      createdAt: entry.createdAt,
+      episode: entry.episode,
+      moodRating: entry.moodRating,
+      hoursOfSleep: entry.hoursOfSleep,
+      symptoms: entry.symptoms,
+      medications: entry.medications,
+      lifeEvent: entry.lifeEvent,
+      moodSwitchesPerDay: entry.moodSwitchesPerDay,
+      observations: entry.observations,
+    );
     if (_controller.hasValue) {
-      _controller.add([..._controller.value, entry]);
+      _controller.add([..._controller.value, identifiedEntry]);
     } else {
-      _controller.add([entry]);
+      _controller.add([identifiedEntry]);
     }
-    return _repository.create(entry);
+    return id;
   }
 
   Stream<List<DiaryEntry>> watchAll() async* {

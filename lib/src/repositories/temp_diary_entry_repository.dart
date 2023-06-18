@@ -23,8 +23,20 @@ class TempDiaryEntryRepository implements DiaryEntryRepository {
   @override
   Future<String> create(DiaryEntry entry) async {
     await _delay;
-    _entries.add(entry);
-    return Random().nextInt(100).toString();
+    final identifiedEntry = DiaryEntry(
+      id: Random().nextInt(100).toString(),
+      createdAt: entry.createdAt,
+      episode: entry.episode,
+      moodRating: entry.moodRating,
+      hoursOfSleep: entry.hoursOfSleep,
+      symptoms: entry.symptoms,
+      medications: entry.medications,
+      lifeEvent: entry.lifeEvent,
+      moodSwitchesPerDay: entry.moodSwitchesPerDay,
+      observations: entry.observations,
+    );
+    _entries.add(identifiedEntry);
+    return identifiedEntry.id!;
   }
 
   @override
