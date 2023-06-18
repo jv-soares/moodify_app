@@ -11,14 +11,6 @@ class Loaded extends DiaryDashboardState {
 
   EpisodeEntry get newestEntry => entries.first;
 
-  set selectedEntry(EpisodeEntry? entry) => _selectedEntry = entry;
-  EpisodeEntry? _selectedEntry;
-  EpisodeEntry? get selectedEntry {
-    if (_selectedEntry != null) return _selectedEntry;
-    if (entries.isNotEmpty) return entries.first;
-    return null;
-  }
-
   Loaded(this.entries);
 }
 

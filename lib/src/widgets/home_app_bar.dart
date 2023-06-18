@@ -19,11 +19,8 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
         builder: (context, _) {
           DateTime date = DateTime.now();
           if (notifier.state is Loaded) {
-            if ((notifier.state as Loaded).selectedEntry != null) {
-              date = (notifier.state as Loaded)
-                  .selectedEntry!
-                  .diaryEntry!
-                  .createdAt;
+            if (notifier.selectedEntry != null) {
+              date = notifier.selectedEntry!.diaryEntry!.createdAt;
             }
           }
           return Text(

@@ -36,7 +36,7 @@ class DiaryEntryDraggableBottomSheet extends StatelessWidget {
         child: const CircularProgressIndicator(),
       );
     } else if (notifier.state is Loaded) {
-      final entry = (notifier.state as Loaded).selectedEntry!.diaryEntry!;
+      final entry = notifier.selectedEntry!.diaryEntry!;
       return Column(
         children: [
           _Header(entry),

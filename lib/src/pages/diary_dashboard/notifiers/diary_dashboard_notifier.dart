@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:moodify_app/src/services/diary_entry_service.dart';
 import 'package:moodify_app/src/utils/date_time_utils.dart';
@@ -75,12 +76,16 @@ class DiaryDashboardNotifier extends ChangeNotifier {
       }).toList();
       _allEpisodes = episodes;
       _state = Loaded(episodes);
-      selectEntry(episodes.first);
+      if (episodes.length == 1) selectEntry(episodes.single);
+      notifyListeners();
     });
   }
 
+  EpisodeEntry? get selectedEntry => _selectedEntry;
+  EpisodeEntry? _selectedEntry;
+
   void selectEntry(EpisodeEntry entry) {
-    if (state is Loaded) (state as Loaded).selectedEntry = entry;
+    _selectedEntry = entry;
     notifyListeners();
   }
 
@@ -131,11 +136,14 @@ class DiaryDashboardNotifier extends ChangeNotifier {
   }
 }
 
-class EpisodeEntry {
+class EpisodeEntry extends Equatable {
   final DateTime date;
   final DiaryEntry? diaryEntry;
 
   const EpisodeEntry(this.date, [this.diaryEntry]);
 
   bool get hasDiaryEntry => diaryEntry != null;
+
+  @override
+  List<Object?> get props => [date, diaryEntry];
 }

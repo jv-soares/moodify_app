@@ -3,8 +3,8 @@ import 'package:moodify_app/src/utils/date_time_utils.dart';
 
 import 'episode_severity.dart';
 import 'life_event.dart';
-import 'taken_medication.dart';
 import 'symptom.dart';
+import 'taken_medication.dart';
 
 class DiaryEntry extends Equatable {
   final String? id;
@@ -36,16 +36,5 @@ class DiaryEntry extends Equatable {
   }
 
   @override
-  List<Object?> get props => [
-        id,
-        createdAt,
-        episode,
-        moodRating,
-        symptoms,
-        medications,
-        hoursOfSleep,
-        moodSwitchesPerDay,
-        lifeEvent,
-        observations,
-      ];
+  List<Object?> get props => [id];
 }

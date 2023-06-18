@@ -76,7 +76,7 @@ class _ContentState extends State<_Content> {
     notifier.itemSize = _itemSize;
     final state = notifier.state as Loaded;
     final entries = state.entries;
-    final selectedEntry = state.selectedEntry;
+    final selectedEntry = notifier.selectedEntry;
     return Stack(
       children: [
         AnimatedPositioned(
