@@ -10,7 +10,7 @@ DiaryEntryDto _$DiaryEntryDtoFromJson(Map<String, dynamic> json) =>
     DiaryEntryDto(
       diaryEntryId: json['diaryEntryId'] as int?,
       createdAt: json['createdAt'] as int,
-      episode: json['episode'] as String,
+      episode: $enumDecode(_$EpisodeSeverityEnumMap, json['episode']),
       moodRating: json['moodRating'] as int,
       hoursOfSleep: json['hoursOfSleep'] as int,
       symptoms: json['symptoms'] as String,
@@ -21,13 +21,25 @@ DiaryEntryDto _$DiaryEntryDtoFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$DiaryEntryDtoToJson(DiaryEntryDto instance) =>
     <String, dynamic>{
       'createdAt': instance.createdAt,
-      'episode': instance.episode,
+      'episode': _$EpisodeSeverityEnumMap[instance.episode]!,
       'moodRating': instance.moodRating,
       'hoursOfSleep': instance.hoursOfSleep,
       'symptoms': instance.symptoms,
       'moodSwitchesPerDay': instance.moodSwitchesPerDay,
       'observations': instance.observations,
     };
+
+const _$EpisodeSeverityEnumMap = {
+  EpisodeSeverity.maniaSevere: 'maniaSevere',
+  EpisodeSeverity.maniaModerateHigh: 'maniaModerateHigh',
+  EpisodeSeverity.maniaModerateLow: 'maniaModerateLow',
+  EpisodeSeverity.maniaMild: 'maniaMild',
+  EpisodeSeverity.balanced: 'balanced',
+  EpisodeSeverity.depressionMild: 'depressionMild',
+  EpisodeSeverity.depressionModerateLow: 'depressionModerateLow',
+  EpisodeSeverity.depressionModerateHigh: 'depressionModerateHigh',
+  EpisodeSeverity.depressionSevere: 'depressionSevere',
+};
 
 MedicationDto _$MedicationDtoFromJson(Map<String, dynamic> json) =>
     MedicationDto(

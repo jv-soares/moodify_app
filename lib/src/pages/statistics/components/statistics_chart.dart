@@ -85,10 +85,10 @@ class StatisticsChart extends StatelessWidget {
   }
 
   double _calculateEpisodeSeverityValue(EpisodeSeverity episode) {
-    if (episode is Mania) {
-      return 50 + episode.level.value * 12.5;
-    } else if (episode is Depression) {
-      return episode.level.value * 12.5;
+    if (episode.isMania) {
+      return 50 + episode.levelValue * 12.5;
+    } else if (episode.isDepression) {
+      return episode.levelValue * 12.5;
     } else {
       return 50;
     }

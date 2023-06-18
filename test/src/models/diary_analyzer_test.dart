@@ -40,14 +40,14 @@ final _diaryEntries = List.generate(
 );
 
 final _episodes = [
-  Depression(Level.severe),
-  Depression(Level.moderateHigh),
-  Depression(Level.mild),
-  Depression(Level.moderateLow),
-  Depression(Level.mild),
-  Balanced(),
-  Balanced(),
-  Mania(Level.moderateLow),
-  Mania(Level.mild),
-  Mania(Level.moderateHigh),
+  EpisodeSeverity.depressionSevere,
+  EpisodeSeverity.depressionModerateHigh,
+  EpisodeSeverity.depressionMild,
+  EpisodeSeverity.depressionModerateLow,
+  EpisodeSeverity.depressionMild,
+  EpisodeSeverity.balanced,
+  EpisodeSeverity.balanced,
+  EpisodeSeverity.maniaModerateLow,
+  EpisodeSeverity.maniaMild,
+  EpisodeSeverity.maniaModerateHigh,
 ];

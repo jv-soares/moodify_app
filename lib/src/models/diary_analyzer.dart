@@ -31,9 +31,15 @@ class DiaryAnalyzer {
     int balancedCount = 0;
     int maniaCount = 0;
     for (final episode in entries.map((e) => e.episode)) {
-      if (episode is Depression) {
+      if (episode == EpisodeSeverity.depressionMild ||
+          episode == EpisodeSeverity.depressionModerateHigh ||
+          episode == EpisodeSeverity.depressionModerateLow ||
+          episode == EpisodeSeverity.depressionSevere) {
         depressionCount += 1;
-      } else if (episode is Mania) {
+      } else if (episode == EpisodeSeverity.maniaMild ||
+          episode == EpisodeSeverity.maniaModerateHigh ||
+          episode == EpisodeSeverity.maniaModerateLow ||
+          episode == EpisodeSeverity.maniaSevere) {
         maniaCount += 1;
       } else {
         balancedCount += 1;

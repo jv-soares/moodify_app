@@ -42,7 +42,7 @@ void main() {
 final _entry = DiaryEntry(
   id: '1',
   createdAt: DateTime.now(),
-  episode: Mania(Level.mild),
+  episode: EpisodeSeverity.maniaMild,
   moodRating: 40,
   hoursOfSleep: 8,
   symptoms: const [],

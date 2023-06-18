@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:moodify_app/src/pages/diary_entry_form/view_models/diary_entry_view_model.dart';
 import 'package:provider/provider.dart';
 
+import '../../models/episode_severity.dart';
+
 class EpisodeSeverityFormPage extends StatefulWidget {
   const EpisodeSeverityFormPage({super.key});
 
@@ -11,7 +13,7 @@ class EpisodeSeverityFormPage extends StatefulWidget {
 }
 
 class _EpisodeSeverityFormPageState extends State<EpisodeSeverityFormPage> {
-  EpisodeSeverity2? _selectedValue = EpisodeSeverity2.balanced;
+  EpisodeSeverity? _selectedValue = EpisodeSeverity.balanced;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +37,7 @@ class _EpisodeSeverityFormPageState extends State<EpisodeSeverityFormPage> {
               const SizedBox(height: 16),
               ..._options
                   .map(
-                    (e) => RadioListTile<EpisodeSeverity2>(
+                    (e) => RadioListTile<EpisodeSeverity>(
                       value: e.value,
                       groupValue: _selectedValue,
                       isThreeLine: true,
@@ -71,7 +73,7 @@ class _EpisodeSeverityFormPageState extends State<EpisodeSeverityFormPage> {
 class _EpisodeSeverityOption {
   final String name;
   final String description;
-  final EpisodeSeverity2 value;
+  final EpisodeSeverity value;
 
   _EpisodeSeverityOption(this.name, this.description, this.value);
 }
@@ -80,58 +82,46 @@ final _options = [
   _EpisodeSeverityOption(
     'Mania severa',
     'Totalmente incapacitado ou hospitalizado',
-    EpisodeSeverity2.maniaSevere,
+    EpisodeSeverity.maniaSevere,
   ),
   _EpisodeSeverityOption(
     'Mania moderada-alta',
     'Com muita dificuldade em realizar certas atividades',
-    EpisodeSeverity2.maniaModerateHigh,
+    EpisodeSeverity.maniaModerateHigh,
   ),
   _EpisodeSeverityOption(
     'Mania moderada-baixa',
     'Com um pouco de dificuldade em realizar certas atividades',
-    EpisodeSeverity2.maniaModerateLow,
+    EpisodeSeverity.maniaModerateLow,
   ),
   _EpisodeSeverityOption(
     'Mania leve',
     'Mais energizado e mais produtivo, consigo realizar qualquer atividade normalmente',
-    EpisodeSeverity2.maniaMild,
+    EpisodeSeverity.maniaMild,
   ),
   _EpisodeSeverityOption(
     'Equilibrado',
     'Consigo realizar qualquer atividade normalmente',
-    EpisodeSeverity2.balanced,
+    EpisodeSeverity.balanced,
   ),
   _EpisodeSeverityOption(
     'Depressão leve',
     'Consigo realizar qualquer atividade normalmente',
-    EpisodeSeverity2.depressionMild,
+    EpisodeSeverity.depressionMild,
   ),
   _EpisodeSeverityOption(
     'Depressão moderada-baixa',
     'Funcionando com um pouco de esforço',
-    EpisodeSeverity2.depressionModerateLow,
+    EpisodeSeverity.depressionModerateLow,
   ),
   _EpisodeSeverityOption(
     'Depressão moderada-alta',
     'Funcionando com muito esforço',
-    EpisodeSeverity2.depressionModerateHigh,
+    EpisodeSeverity.depressionModerateHigh,
   ),
   _EpisodeSeverityOption(
     'Depressão severa',
     'Totalmente incapacitado ou hospitalizado',
-    EpisodeSeverity2.depressionSevere,
+    EpisodeSeverity.depressionSevere,
   ),
 ];
-
-enum EpisodeSeverity2 {
-  maniaSevere,
-  maniaModerateHigh,
-  maniaModerateLow,
-  maniaMild,
-  balanced,
-  depressionMild,
-  depressionModerateLow,
-  depressionModerateHigh,
-  depressionSevere,
-}

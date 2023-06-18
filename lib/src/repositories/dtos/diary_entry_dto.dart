@@ -12,7 +12,7 @@ class DiaryEntryDto {
   @JsonKey(includeToJson: false)
   final int? diaryEntryId;
   final int createdAt;
-  final String episode;
+  final EpisodeSeverity episode;
   final int moodRating;
   final int hoursOfSleep;
   final String symptoms;
@@ -33,7 +33,7 @@ class DiaryEntryDto {
   factory DiaryEntryDto.fromModel(DiaryEntry model) {
     return DiaryEntryDto(
       createdAt: model.createdAt.millisecondsSinceEpoch,
-      episode: model.episode.toString(),
+      episode: model.episode,
       moodRating: model.moodRating,
       symptoms: model.symptoms.map((e) => e.name).toString(),
       hoursOfSleep: model.hoursOfSleep,
@@ -52,7 +52,7 @@ class DiaryEntryDto {
     return DiaryEntry(
       id: diaryEntryId!.toString(),
       createdAt: DateTime.fromMillisecondsSinceEpoch(createdAt),
-      episode: EpisodeSeverity.fromString(episode),
+      episode: episode,
       moodRating: moodRating,
       symptoms: const [],
       medications: medications,
