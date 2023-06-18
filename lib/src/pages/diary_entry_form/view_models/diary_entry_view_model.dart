@@ -7,6 +7,8 @@ import '../../../models/symptom.dart';
 import '../../../models/taken_medication.dart';
 
 class DiaryEntryViewModel extends ChangeNotifier {
+  String? _id;
+
   EpisodeSeverity get episodeSeverity => _episodeSeverity;
   EpisodeSeverity _episodeSeverity = EpisodeSeverity.balanced;
 
@@ -58,6 +60,7 @@ class DiaryEntryViewModel extends ChangeNotifier {
   }
 
   void initFromModel(DiaryEntry model) {
+    _id = model.id;
     update(
       episodeSeverity: model.episode,
       createdAt: model.createdAt,
@@ -73,6 +76,7 @@ class DiaryEntryViewModel extends ChangeNotifier {
 
   DiaryEntry toModel() {
     return DiaryEntry(
+      id: _id,
       createdAt: createdAt,
       episode: episodeSeverity,
       moodRating: moodRating,

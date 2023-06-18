@@ -1,9 +1,7 @@
 import 'dart:developer';
 
 import 'package:collection/collection.dart';
-import 'package:moodify_app/src/core/failures.dart';
 import 'package:moodify_app/src/repositories/dtos/diary_entry_dto.dart';
-import 'package:rxdart/subjects.dart';
 import 'package:sqflite/sqflite.dart' as sql;
 
 import '../models/diary_entry.dart';
@@ -19,9 +17,6 @@ class SqlDiaryEntryRepository implements DiaryEntryRepository {
     await instance._init();
     return instance;
   }
-
-  final _controller = BehaviorSubject<List<DiaryEntry>>();
-  List<DiaryEntry>? get _cachedEntries => _controller.valueOrNull;
 
   Future<void> _init() async {
     _db = await sql.openDatabase(
@@ -41,12 +36,6 @@ class SqlDiaryEntryRepository implements DiaryEntryRepository {
 
   @override
   Future<String> create(DiaryEntry entry) async {
-    if (_cachedEntries != null) {
-      if (_cachedEntries!.any((element) => element.isSameCreationDate(entry))) {
-        throw DuplicatedEntryFailure();
-      }
-      _controller.add([..._cachedEntries!, entry]);
-    }
     final diaryEntryId = await _db.insert(
       _Tables.diaryEntries,
       DiaryEntryDto.fromModel(entry).toJson(),
@@ -107,6 +96,30 @@ class SqlDiaryEntryRepository implements DiaryEntryRepository {
       );
     }
     return list;
+  }
+
+  @override
+  Future<String> update(DiaryEntry entry) async {
+    final diaryEntryId = await _db.update(
+      _Tables.diaryEntries,
+      DiaryEntryDto.fromModel(entry).toJson(),
+    );
+    if (entry.lifeEvent != null) {
+      await _db.update(
+        _Tables.lifeEvents,
+        LifeEventDto.fromModel(entry.lifeEvent!, diaryEntryId).toJson(),
+      );
+    }
+    if (entry.medications.isNotEmpty) {
+      for (final medication in entry.medications) {
+        await _db.update(
+          _Tables.medications,
+          MedicationDto.fromModel(medication, diaryEntryId).toJson(),
+        );
+      }
+    }
+    _logAllTables();
+    return diaryEntryId.toString();
   }
 }
 

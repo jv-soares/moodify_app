@@ -10,6 +10,18 @@ class DiaryEntryService {
   final _controller = BehaviorSubject<List<DiaryEntry>>();
 
   Future<String> create(DiaryEntry entry) {
+    return entry.id != null ? _update(entry) : _create(entry);
+  }
+
+  Future<String> _update(DiaryEntry entry) {
+    final index = _controller.value.indexWhere((e) => e.id == entry.id);
+    final newList = [..._controller.value];
+    newList[index] = entry;
+    _controller.add(newList);
+    return _repository.update(entry);
+  }
+
+  Future<String> _create(DiaryEntry entry) {
     if (_controller.hasValue) {
       _controller.add([..._controller.value, entry]);
     } else {
