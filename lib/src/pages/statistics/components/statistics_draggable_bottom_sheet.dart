@@ -49,7 +49,7 @@ class DiaryEntryListTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                EpisodesChartHelper.resolveName(entry.episode),
+                entry.episode.name,
                 style: Theme.of(context).textTheme.titleSmall,
               ),
               Text(

@@ -3,14 +3,12 @@ import 'package:intl/intl.dart';
 import 'package:moodify_app/src/models/life_event.dart';
 import 'package:moodify_app/src/models/symptom.dart';
 import 'package:moodify_app/src/pages/diary_dashboard/notifiers/diary_dashboard_notifier.dart';
-import 'package:moodify_app/src/utils/episodes_chart_helper.dart';
 import 'package:moodify_app/src/utils/string_x.dart';
 import 'package:moodify_app/src/widgets/life_event_container.dart';
 import 'package:moodify_app/src/widgets/moodify_draggable_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
 import '../../../models/diary_entry.dart';
-import '../../../models/episode_severity.dart';
 import '../../../models/taken_medication.dart';
 import '../../../widgets/moodify_info_chip.dart';
 import '../../../widgets/moodify_primary_container.dart';
@@ -58,10 +56,6 @@ class _Header extends StatelessWidget {
 
   const _Header(this.entry);
 
-  String _getName(EpisodeSeverity episode) {
-    return EpisodesChartHelper.resolveName(episode);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -71,7 +65,7 @@ class _Header extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              _getName(entry.episode),
+              entry.episode.name,
               style: Theme.of(context).textTheme.titleLarge,
             ),
             // TODO: enable editing diary entry

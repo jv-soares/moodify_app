@@ -24,4 +24,18 @@ enum EpisodeSeverity {
       this == EpisodeSeverity.depressionModerateLow ||
       this == EpisodeSeverity.depressionModerateHigh ||
       this == EpisodeSeverity.depressionSevere;
+
+  String get name {
+    return switch (this) {
+      EpisodeSeverity.maniaSevere => 'Mania severa',
+      EpisodeSeverity.maniaModerateHigh => 'Mania moderada-alta',
+      EpisodeSeverity.maniaModerateLow => 'Mania moderada-baixa',
+      EpisodeSeverity.maniaMild => 'Mania leve',
+      EpisodeSeverity.balanced => 'Equilibrado',
+      EpisodeSeverity.depressionMild => 'Depressão leve',
+      EpisodeSeverity.depressionModerateLow => 'Depressão moderada-baixa',
+      EpisodeSeverity.depressionModerateHigh => 'Depressão moderada-alta',
+      EpisodeSeverity.depressionSevere => 'Depressão severa',
+    };
+  }
 }
