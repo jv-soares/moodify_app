@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:moodify_app/src/pages/diary_entry_form/notifiers/medication_notifier.dart';
 
 import '../../../models/diary_entry.dart';
 import '../../../models/episode_severity.dart';
 import '../../../models/life_event.dart';
 import '../../../models/symptom.dart';
-import '../../../models/taken_medication.dart';
 
 class DiaryEntryViewModel extends ChangeNotifier {
+  DiaryEntryViewModel() {
+    medications.addListener(notifyListeners);
+  }
+
   String? _id;
 
   EpisodeSeverity get episodeSeverity => _episodeSeverity;
@@ -21,8 +25,7 @@ class DiaryEntryViewModel extends ChangeNotifier {
   Set<Symptom> get symptoms => _symptoms;
   Set<Symptom> _symptoms = Set.unmodifiable({});
 
-  List<TakenMedication>? get medications => _medications;
-  List<TakenMedication>? _medications;
+  final medications = MedicationNotifier();
 
   LifeEvent? get lifeEvent => _lifeEvent;
   LifeEvent? _lifeEvent;
@@ -43,7 +46,6 @@ class DiaryEntryViewModel extends ChangeNotifier {
     int? moodRating,
     int? hoursOfSleep,
     Set<Symptom>? symptoms,
-    List<TakenMedication>? medications,
     LifeEvent? lifeEvent,
     String? observations,
     int? moodSwitchesPerDay,
@@ -53,7 +55,6 @@ class DiaryEntryViewModel extends ChangeNotifier {
     _moodRating = moodRating ?? _moodRating;
     _hoursOfSleep = hoursOfSleep ?? _hoursOfSleep;
     _symptoms = symptoms ?? _symptoms;
-    _medications = medications ?? _medications;
     _lifeEvent = lifeEvent ?? _lifeEvent;
     _observations = observations ?? _observations;
     _moodSwitchesPerDay = moodSwitchesPerDay ?? _moodSwitchesPerDay;
@@ -73,12 +74,12 @@ class DiaryEntryViewModel extends ChangeNotifier {
       createdAt: model.createdAt,
       hoursOfSleep: model.hoursOfSleep,
       lifeEvent: model.lifeEvent,
-      medications: model.medications,
       moodRating: model.moodRating,
       moodSwitchesPerDay: model.moodSwitchesPerDay,
       observations: model.observations,
       symptoms: model.symptoms,
     );
+    medications.data = model.medications;
   }
 
   DiaryEntry toModel() {
@@ -87,8 +88,8 @@ class DiaryEntryViewModel extends ChangeNotifier {
       createdAt: createdAt,
       episode: episodeSeverity,
       moodRating: moodRating,
-      symptoms: symptoms ?? {},
-      medications: medications ?? [],
+      symptoms: symptoms,
+      medications: medications.data!,
       hoursOfSleep: hoursOfSleep,
       lifeEvent: lifeEvent,
       moodSwitchesPerDay: moodSwitchesPerDay,

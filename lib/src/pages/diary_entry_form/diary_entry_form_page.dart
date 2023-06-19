@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:moodify_app/src/pages/diary_entry_form/components/form_slider.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/symptom.dart';
 import 'components/life_event_section.dart';
 import 'components/medication_section.dart';
 import 'components/observation_section.dart';
@@ -88,11 +87,7 @@ class _DiaryEntryFormPageState extends State<DiaryEntryFormPage> {
               _formSpacing,
               const SymptomChecker(),
               _formSpacing,
-              MedicationSection(
-                onChanged: (value) {
-                  viewModel.update(medications: value);
-                },
-              ),
+              const MedicationSection(),
               _formSpacing,
               const LifeEventSection(),
               _formSpacing,

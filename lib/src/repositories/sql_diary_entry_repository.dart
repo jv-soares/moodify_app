@@ -119,8 +119,8 @@ class SqlDiaryEntryRepository implements DiaryEntryRepository {
         await _db.update(
           _Tables.medications,
           MedicationDto.fromModel(medication, diaryEntryId).toJson(),
-          where: 'diaryEntryId = ?',
-          whereArgs: [entry.id],
+          where: 'diaryEntryId = ? AND medicationId = ?',
+          whereArgs: [entry.id, medication.id],
         );
       }
     }

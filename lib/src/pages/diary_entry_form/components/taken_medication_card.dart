@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:moodify_app/src/pages/diary_entry_form/view_models/diary_entry_view_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../../models/taken_medication.dart';
-import '../notifiers/medication_notifier.dart';
 
 class TakenMedicationsCard extends StatelessWidget {
   final List<TakenMedication> medications;
@@ -35,7 +35,7 @@ class _MedicationListItem extends StatefulWidget {
 class _MedicationListItemState extends State<_MedicationListItem> {
   @override
   Widget build(BuildContext context) {
-    final medicationsNotifier = context.read<MedicationsNotifier>();
+    final notifier = context.read<DiaryEntryViewModel>().medications;
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Row(
@@ -58,9 +58,7 @@ class _MedicationListItemState extends State<_MedicationListItem> {
             children: [
               _buildButton(
                 Icons.remove,
-                () => medicationsNotifier.decrementTabletsTaken(
-                  widget.medication.id!,
-                ),
+                () => notifier.decrementTabletsTaken(widget.medication.id!),
               ),
               const SizedBox(width: 16),
               Text(
@@ -70,9 +68,7 @@ class _MedicationListItemState extends State<_MedicationListItem> {
               const SizedBox(width: 16),
               _buildButton(
                 Icons.add,
-                () => medicationsNotifier.incrementTabletsTaken(
-                  widget.medication.id!,
-                ),
+                () => notifier.incrementTabletsTaken(widget.medication.id!),
               ),
             ],
           ),

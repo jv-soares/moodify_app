@@ -5,10 +5,10 @@ import 'package:moodify_app/src/services/diary_entry_service.dart';
 import '../../../app_container.dart';
 import '../../../models/fetch_notifier.dart';
 
-class MedicationsNotifier extends FetchNotifier<List<TakenMedication>> {
+class MedicationNotifier extends FetchNotifier<List<TakenMedication>> {
   final _service = AppContainer.get<DiaryEntryService>();
 
-  MedicationsNotifier() {
+  MedicationNotifier() {
     _initialize();
   }
 
@@ -25,7 +25,10 @@ class MedicationsNotifier extends FetchNotifier<List<TakenMedication>> {
   }
 
   void add(TakenMedication medication) {
-    data = [...?data, medication];
+    final identifiedMedication = medication.copyWith(
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
+    );
+    data = [...?data, identifiedMedication];
   }
 
   void remove(TakenMedication medication) {
@@ -42,7 +45,7 @@ class MedicationsNotifier extends FetchNotifier<List<TakenMedication>> {
   void decrementTabletsTaken(String medicationId) {
     final index = data!.indexWhere((e) => e.id == medicationId);
     final medication = data![index];
-    if (medication.tabletsTaken <= 0) return;
+    if (medication.tabletsTaken == 1) return remove(medication);
     _updateMedicationAt(index, medication.decrementedTablets());
   }
 
