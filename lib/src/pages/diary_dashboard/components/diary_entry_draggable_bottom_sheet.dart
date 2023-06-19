@@ -97,17 +97,16 @@ class _Header extends StatelessWidget {
         const SizedBox(height: 16),
         Wrap(
           spacing: 8,
+          runSpacing: 8,
           children: [
             MoodifyInfoChip(
               Icons.bedtime_outlined,
               '${entry.hoursOfSleep} horas',
             ),
             MoodifyInfoChip(Icons.mood, entry.moodRating.toString()),
-            if (entry.symptoms.contains(Symptom.dysphoricMania))
-              const MoodifyInfoChip(
-                Icons.battery_charging_full,
-                'Mania disfórica',
-              ),
+            ...entry.symptoms
+                .map((e) => MoodifyInfoChip(e.icon, e.localizedName))
+                .toList(),
           ],
         ),
         const SizedBox(height: 24),

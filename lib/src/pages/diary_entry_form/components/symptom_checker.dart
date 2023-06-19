@@ -1,26 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:moodify_app/src/pages/diary_entry_form/view_models/diary_entry_view_model.dart';
+import 'package:provider/provider.dart';
 
 import '../../../models/symptom.dart';
 
-class SymptomChecker extends StatefulWidget {
-  final Set<Symptom> symptoms;
-  final void Function(Set<Symptom>) onSymptomsChanged;
-
-  const SymptomChecker({
-    super.key,
-    required this.symptoms,
-    required this.onSymptomsChanged,
-  });
-
-  @override
-  State<SymptomChecker> createState() => _SymptomCheckerState();
-}
-
-class _SymptomCheckerState extends State<SymptomChecker> {
-  final _selectedSymptoms = <Symptom>{};
+class SymptomChecker extends StatelessWidget {
+  const SymptomChecker({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<DiaryEntryViewModel>();
+    final selected = viewModel.symptoms;
     return SizedBox(
       width: double.infinity,
       child: Column(
@@ -33,28 +23,23 @@ class _SymptomCheckerState extends State<SymptomChecker> {
           const SizedBox(height: 8),
           Wrap(
             spacing: 8,
-            children: widget.symptoms
+            children: Symptom.values
                 .map((e) => _SymptomChip(
                       e,
                       onTap: (isSelected) {
-                        setState(() {
-                          isSelected
-                              ? _selectedSymptoms.add(e)
-                              : _selectedSymptoms.remove(e);
-                        });
-                        widget.onSymptomsChanged(_selectedSymptoms);
+                        if (isSelected) {
+                          viewModel.update(symptoms: {...selected, e});
+                        } else {
+                          viewModel.update(symptoms: {...selected}..remove(e));
+                        }
                       },
-                      isSelected: _isSymptomSelected(e),
+                      isSelected: selected.contains(e),
                     ))
                 .toList(),
           ),
         ],
       ),
     );
-  }
-
-  bool _isSymptomSelected(Symptom symptom) {
-    return _selectedSymptoms.contains(symptom);
   }
 }
 
@@ -74,7 +59,7 @@ class _SymptomChip extends StatelessWidget {
     final theme = Theme.of(context);
     final primaryColor = theme.colorScheme.primary;
     return FilterChip(
-      label: Text(symptom.toLocalizedString()),
+      label: Text(symptom.localizedName),
       onSelected: (isSelected) => onTap(isSelected),
       selected: isSelected,
       selectedColor: primaryColor,
@@ -85,20 +70,5 @@ class _SymptomChip extends StatelessWidget {
       side: BorderSide(width: 1, color: primaryColor),
       checkmarkColor: theme.colorScheme.onPrimary,
     );
-  }
-}
-
-extension on Symptom {
-  String toLocalizedString() {
-    switch (this) {
-      case Symptom.anxiety:
-        return 'Ansiedade';
-      case Symptom.menstruation:
-        return 'Menstruação';
-      case Symptom.dysphoricMania:
-        return 'Mania disfórica';
-      case Symptom.panicAttack:
-        return 'Crise de pânico';
-    }
   }
 }

@@ -18,8 +18,8 @@ class DiaryEntryViewModel extends ChangeNotifier {
   int get hoursOfSleep => _hoursOfSleep;
   int _hoursOfSleep = 8;
 
-  Set<Symptom>? get symptoms => _symptoms;
-  Set<Symptom>? _symptoms;
+  Set<Symptom> get symptoms => _symptoms;
+  Set<Symptom> _symptoms = Set.unmodifiable({});
 
   List<TakenMedication>? get medications => _medications;
   List<TakenMedication>? _medications;
