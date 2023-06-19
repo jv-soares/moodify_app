@@ -60,17 +60,8 @@ class DiaryDashboardNotifier extends ChangeNotifier {
   }
 
   Future<void> initialize() async {
-    _subscription = _service.watchAll().map((entries) {
-      if (entries.isEmpty) return <EpisodeEntry>[];
-      final newest = entries.first.createdAt;
-      final oldest = entries.last.createdAt;
-      return DateTimeUtils.generateList(newest, oldest).map((date) {
-        final entryOrNull = entries.singleWhereOrNull(
-          (e) => DateTimeUtils.compareDayOfYear(e.createdAt, date),
-        );
-        return EpisodeEntry(date, entryOrNull);
-      }).toList();
-    }).listen((episodes) {
+    _subscription =
+        _service.watchAll().map(_transformDiaryEntry).listen((episodes) {
       _allEpisodes = episodes;
       _state = Loaded(episodes);
       if (_selectedEntry == null) {
@@ -80,6 +71,18 @@ class DiaryDashboardNotifier extends ChangeNotifier {
       }
       notifyListeners();
     });
+  }
+
+  List<EpisodeEntry> _transformDiaryEntry(List<DiaryEntry> entries) {
+    if (entries.isEmpty) return [];
+    final newest = entries.first.createdAt;
+    final oldest = entries.last.createdAt;
+    return DateTimeUtils.generateList(newest, oldest).map((date) {
+      final entryOrNull = entries.singleWhereOrNull(
+        (e) => DateUtils.isSameDay(e.createdAt, date),
+      );
+      return EpisodeEntry(date, entryOrNull);
+    }).toList();
   }
 
   EpisodeEntry? get selectedEntry => _selectedEntry;
