@@ -12,7 +12,7 @@ class DiaryEntry extends Equatable {
   final EpisodeSeverity episode;
   final int moodRating;
   final int hoursOfSleep;
-  final List<Symptom> symptoms;
+  final Set<Symptom> symptoms;
   final List<TakenMedication> medications;
   final int? moodSwitchesPerDay;
   final LifeEvent? lifeEvent;

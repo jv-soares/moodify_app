@@ -47,7 +47,7 @@ final _entry = DiaryEntry(
   episode: EpisodeSeverity.maniaMild,
   moodRating: 40,
   hoursOfSleep: 8,
-  symptoms: const [],
+  symptoms: const {},
   medications: const [],
 );
 

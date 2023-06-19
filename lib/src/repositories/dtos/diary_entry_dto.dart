@@ -3,6 +3,7 @@ import 'package:moodify_app/src/models/episode_severity.dart';
 
 import '../../models/diary_entry.dart';
 import '../../models/life_event.dart';
+import '../../models/symptom.dart';
 import '../../models/taken_medication.dart';
 
 part 'diary_entry_dto.g.dart';
@@ -49,12 +50,18 @@ class DiaryEntryDto {
     required List<TakenMedication> medications,
     LifeEvent? lifeEvent,
   }) {
+    final symptomSet = symptoms
+        .substring(1, symptoms.length - 1)
+        .split(',')
+        .where((e) => e.isNotEmpty)
+        .map((e) => Symptom.values.byName(e.trim()))
+        .toSet();
     return DiaryEntry(
       id: diaryEntryId!.toString(),
       createdAt: DateTime.fromMillisecondsSinceEpoch(createdAt),
       episode: episode,
       moodRating: moodRating,
-      symptoms: const [],
+      symptoms: symptomSet,
       medications: medications,
       hoursOfSleep: hoursOfSleep,
       lifeEvent: lifeEvent,

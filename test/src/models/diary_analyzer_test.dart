@@ -34,7 +34,7 @@ final _diaryEntries = List.generate(
     episode: _episodes[index],
     moodRating: index * 10,
     hoursOfSleep: index,
-    symptoms: const [],
+    symptoms: const {},
     medications: const [],
   ),
 );

@@ -18,8 +18,8 @@ class DiaryEntryViewModel extends ChangeNotifier {
   int get hoursOfSleep => _hoursOfSleep;
   int _hoursOfSleep = 8;
 
-  List<Symptom>? get symptoms => _symptoms;
-  List<Symptom>? _symptoms;
+  Set<Symptom>? get symptoms => _symptoms;
+  Set<Symptom>? _symptoms;
 
   List<TakenMedication>? get medications => _medications;
   List<TakenMedication>? _medications;
@@ -42,7 +42,7 @@ class DiaryEntryViewModel extends ChangeNotifier {
     EpisodeSeverity? episodeSeverity,
     int? moodRating,
     int? hoursOfSleep,
-    List<Symptom>? symptoms,
+    Set<Symptom>? symptoms,
     List<TakenMedication>? medications,
     LifeEvent? lifeEvent,
     String? observations,
@@ -87,7 +87,7 @@ class DiaryEntryViewModel extends ChangeNotifier {
       createdAt: createdAt,
       episode: episodeSeverity,
       moodRating: moodRating,
-      symptoms: symptoms ?? [],
+      symptoms: symptoms ?? {},
       medications: medications ?? [],
       hoursOfSleep: hoursOfSleep,
       lifeEvent: lifeEvent,

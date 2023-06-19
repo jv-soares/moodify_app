@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../../../models/symptom.dart';
 
 class SymptomChecker extends StatefulWidget {
-  final List<Symptom> symptoms;
-  final void Function(List<Symptom>) onSymptomsChanged;
+  final Set<Symptom> symptoms;
+  final void Function(Set<Symptom>) onSymptomsChanged;
 
   const SymptomChecker({
     super.key,
@@ -17,7 +17,7 @@ class SymptomChecker extends StatefulWidget {
 }
 
 class _SymptomCheckerState extends State<SymptomChecker> {
-  final _selectedSymptoms = <Symptom>[];
+  final _selectedSymptoms = <Symptom>{};
 
   @override
   Widget build(BuildContext context) {

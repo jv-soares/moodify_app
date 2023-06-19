@@ -87,7 +87,7 @@ class _DiaryEntryFormPageState extends State<DiaryEntryFormPage> {
               ),
               _formSpacing,
               SymptomChecker(
-                symptoms: Symptom.values,
+                symptoms: Symptom.values.toSet(),
                 onSymptomsChanged: (symptoms) {
                   viewModel.update(symptoms: symptoms);
                 },
