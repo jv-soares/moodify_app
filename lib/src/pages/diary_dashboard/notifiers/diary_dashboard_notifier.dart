@@ -26,7 +26,8 @@ class DiaryDashboardNotifier extends ChangeNotifier {
   EpisodeEntry? get oldestEntry => _allEpisodes?.last;
   EpisodeEntry? get newestEntry => _allEpisodes?.first;
 
-  bool get isEmpty => _state is! Loaded || _allEpisodes == null;
+  bool get isEmpty =>
+      _state is! Loaded || _allEpisodes == null || _allEpisodes!.isEmpty;
 
   bool get notEnoughData => isEmpty || _allEpisodes!.length < 2;
 
