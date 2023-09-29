@@ -48,3 +48,6 @@ app.*.map.json
 
 # Keys
 upload-keystore.jks
+
+# Firebase
+google-services.json
