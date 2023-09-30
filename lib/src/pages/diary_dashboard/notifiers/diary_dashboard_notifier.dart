@@ -65,10 +65,12 @@ class DiaryDashboardNotifier extends ChangeNotifier {
         _service.watchAll().map(_transformDiaryEntry).listen((episodes) {
       _allEpisodes = episodes;
       _state = Loaded(episodes);
-      if (_selectedEntry == null) {
-        selectEntry(0);
-      } else {
-        selectEntry(_indicatorIndex);
+      if (_allEpisodes!.isNotEmpty) {
+        if (_selectedEntry == null) {
+          selectEntry(0);
+        } else {
+          selectEntry(_indicatorIndex);
+        }
       }
       notifyListeners();
     });
